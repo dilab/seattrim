@@ -2,8 +2,11 @@
 
 namespace App\Jobs;
 
+use App\Enums\Bucket;
 use App\Models\Organization;
 use App\Models\ZoomConnection;
+use App\Models\ZoomMember;
+use App\Scan\MemberUpserter;
 use App\Tenancy\Tenancy;
 use App\Zoom\Contracts\ZoomApi;
 use App\Zoom\Exceptions\ZoomApiException;
@@ -13,8 +16,8 @@ use Illuminate\Support\Facades\Log;
 
 /**
  * Keeps zoom_members fresh between scans for user.created/updated/activated/
- * deactivated/deleted. Filled in at M3 once the members table exists; until then
- * it only re-reads the user to prove the connection still works.
+ * deactivated/deleted. Buckets are only recomputed by the next scan, except
+ * that a user who is no longer licensed drops out of the waste buckets at once.
  */
 class SyncZoomMemberFromWebhook implements ShouldQueue
 {
@@ -42,16 +45,32 @@ class SyncZoomMemberFromWebhook implements ShouldQueue
 
             $userId = (string) ($this->object['id'] ?? '');
 
-            if ($this->event === 'user.deleted' || $userId === '') {
-                Log::info('zoom.member.webhook', ['event' => $this->event, 'organization' => $organization->id]);
+            if ($userId === '') {
+                return;
+            }
+
+            if ($this->event === 'user.deleted') {
+                ZoomMember::query()->where('zoom_user_id', $userId)->update(['removed_at' => now()]);
+                Log::info('zoom.member.webhook.removed', ['organization' => $organization->id]);
 
                 return;
             }
 
             try {
-                $zoom->getUser($connection, $userId);
+                $user = $zoom->getUser($connection, $userId);
             } catch (ZoomApiException $e) {
+                if ($e->isNotFound()) {
+                    ZoomMember::query()->where('zoom_user_id', $userId)->update(['removed_at' => now()]);
+                }
                 Log::notice('zoom.member.webhook.failed', ['event' => $this->event, 'organization' => $organization->id, 'error' => $e->summary()]);
+
+                return;
+            }
+
+            $member = (new MemberUpserter)->upsert($user);
+
+            if (! $member->isLicensed() && $member->bucket->isWaste()) {
+                $member->forceFill(['bucket' => Bucket::Healthy, 'eligible_for_downgrade' => false])->save();
             }
         });
     }

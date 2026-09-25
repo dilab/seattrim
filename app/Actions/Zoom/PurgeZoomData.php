@@ -2,8 +2,13 @@
 
 namespace App\Actions\Zoom;
 
+use App\Models\DowngradeNotice;
+use App\Models\LicenseAction;
 use App\Models\Organization;
+use App\Models\Scan;
 use App\Models\ZoomConnection;
+use App\Models\ZoomMember;
+use App\Models\ZoomSeatsSnapshot;
 use App\Tenancy\Tenancy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +24,11 @@ class PurgeZoomData
 {
     /** @var array<int, class-string<Model>> Deleted in this order (children first). */
     public const MODELS = [
+        DowngradeNotice::class,
+        LicenseAction::class,
+        ZoomMember::class,
+        ZoomSeatsSnapshot::class,
+        Scan::class,
         ZoomConnection::class,
     ];
 
@@ -37,6 +47,8 @@ class PurgeZoomData
                     $query->delete();
                 }
 
+                // Anonymised audit trail: only the count survives.
+                $organization->setSetting('zoom.audit_actions_purged_count', (int) $organization->setting('zoom.audit_actions_purged_count', 0) + ($deleted['license_actions'] ?? 0));
                 $organization->setSetting('zoom.purged_at', now()->toIso8601String());
                 $organization->save();
 
