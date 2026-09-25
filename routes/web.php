@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuditExportController;
+use App\Http\Controllers\BillingController;
 use App\Http\Controllers\KeepLicenseController;
 use App\Http\Controllers\Zoom\OAuthController;
 use App\Http\Controllers\Zoom\WebhookController;
@@ -27,7 +28,9 @@ Route::middleware(['auth', 'verified', 'organization'])->group(function () {
     Route::livewire('audit', 'pages::audit')->name('audit');
     Route::livewire('automation', 'pages::automation')->name('automation');
     Route::livewire('exclusions', 'pages::exclusions')->name('exclusions');
-    Route::view('billing', 'billing-placeholder')->name('billing');
+    Route::livewire('billing', 'pages::billing')->name('billing');
+    Route::post('billing/checkout/{tier}', [BillingController::class, 'checkout'])->name('billing.checkout');
+    Route::get('billing/portal', [BillingController::class, 'portal'])->name('billing.portal');
     Route::get('audit/export.csv', AuditExportController::class)->name('audit.export');
 
     Route::livewire('connection', 'pages::connection')->name('connection.edit');

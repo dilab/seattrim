@@ -18,6 +18,7 @@ beforeEach(function () {
     $this->admin = User::factory()->create();
     $this->viewer = User::factory()->create();
     $this->organization = Organization::factory()->withMember($this->owner)->withMember($this->admin, Role::Admin)->withMember($this->viewer, Role::Viewer)->create(['timezone' => 'Europe/London', 'seat_price_cents' => 15000]);
+    onPaidPlan($this->organization);
     app(Tenancy::class)->runAs($this->organization, fn () => ZoomConnection::factory()->create());
     ScanOrganization::start($this->organization, Scan::TRIGGER_MANUAL);
 });

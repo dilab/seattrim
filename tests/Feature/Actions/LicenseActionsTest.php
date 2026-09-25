@@ -22,6 +22,7 @@ beforeEach(function () {
     $this->user = User::factory()->create();
     $this->organization = Organization::factory()->withMember($this->user)->create();
     $this->user->switchToOrganization($this->organization);
+    onPaidPlan($this->organization);
     app(Tenancy::class)->runAs($this->organization, fn () => ZoomConnection::factory()->create());
     ScanOrganization::start($this->organization, Scan::TRIGGER_MANUAL);
     $this->fake = app(FakeZoomClient::class);

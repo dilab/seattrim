@@ -99,6 +99,7 @@ test('admins can add members by email and change roles', function () {
     $admin = User::factory()->create();
     $newcomer = User::factory()->create(['email' => 'new@example.com']);
     $organization = Organization::factory()->withMember($admin, Role::Admin)->withMember(User::factory()->create(), Role::Owner)->create();
+    onPaidPlan($organization);
     $admin->switchToOrganization($organization);
 
     actingAsMemberOf($organization, $admin)

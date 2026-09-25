@@ -2,12 +2,12 @@
 
 namespace App\Support;
 
+use App\Billing\PlanResolver;
 use App\Models\Organization;
 
 /**
- * Paid-feature gate. Until billing lands (M8) every feature is allowed; M8
- * replaces the body of allows() with plan + grace-period logic so call sites
- * never change.
+ * Paid-feature gate: current plan features, minus everything paid once the
+ * seat-tier grace period has expired. Scans and the report are never gated.
  */
 class Features
 {
@@ -25,7 +25,7 @@ class Features
 
     public static function allows(Organization $organization, string $feature): bool
     {
-        return true;
+        return PlanResolver::allows($organization, $feature);
     }
 
     public static function deniedMessage(string $feature): string

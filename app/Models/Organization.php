@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Laravel\Cashier\Billable;
 
 /**
  * @property int $id
@@ -21,11 +22,17 @@ use Illuminate\Support\Carbon;
  * @property array<string, mixed>|null $settings
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property string|null $stripe_id
+ * @property string|null $pm_type
+ * @property string|null $pm_last_four
+ * @property Carbon|null $trial_ends_at
  * @property-read Membership|null $pivot
  */
 #[Fillable(['name', 'timezone', 'seat_price_cents', 'renewal_date', 'billing_cycle', 'settings'])]
 class Organization extends Model
 {
+    use Billable;
+
     /** @use HasFactory<OrganizationFactory> */
     use HasFactory;
 
@@ -95,6 +102,17 @@ class Organization extends Model
         $settings = $this->settings ?? [];
         data_set($settings, $key, $value);
         $this->settings = $settings;
+    }
+
+    /** Cashier: customer name/email come from the first owner. */
+    public function stripeEmail(): ?string
+    {
+        return $this->owners()[0]->email ?? null;
+    }
+
+    public function stripeName(): ?string
+    {
+        return $this->name;
     }
 
     /** Annual price of one seat, in cents, normalised from the billing cycle. */

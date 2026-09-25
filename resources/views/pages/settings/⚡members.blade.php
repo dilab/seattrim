@@ -3,6 +3,7 @@
 use App\Enums\Role;
 use App\Models\Membership;
 use App\Models\User;
+use App\Support\Features;
 use App\Tenancy\Tenancy;
 use Flux\Flux;
 use Illuminate\Support\Collection;
@@ -56,6 +57,12 @@ new #[Title('Members')] class extends Component {
             return;
         }
 
+        if ($validated['role'] === Role::Admin->value && ! $this->canAddAdmin($organization)) {
+            $this->addError('role', Features::deniedMessage(Features::MULTIPLE_ADMINS));
+
+            return;
+        }
+
         $organization->addMember($user, Role::from($validated['role']));
         $this->reset('email');
         unset($this->memberships);
@@ -83,10 +90,26 @@ new #[Title('Members')] class extends Component {
             return;
         }
 
+        if ($newRole->canManage() && ! $membership->role->canManage() && ! $this->canAddAdmin($organization)) {
+            Flux::toast(variant: 'danger', text: Features::deniedMessage(Features::MULTIPLE_ADMINS));
+
+            return;
+        }
+
         $membership->update(['role' => $newRole]);
         unset($this->memberships);
 
         Flux::toast(variant: 'success', text: __('Role updated.'));
+    }
+
+    /** Free plan: one managing member (owner or admin) in total. */
+    public function canAddAdmin(App\Models\Organization $organization): bool
+    {
+        if (Features::allows($organization, Features::MULTIPLE_ADMINS)) {
+            return true;
+        }
+
+        return $organization->memberships()->whereIn('role', [Role::Owner->value, Role::Admin->value])->count() < 1;
     }
 
     public function remove(int $membershipId): void

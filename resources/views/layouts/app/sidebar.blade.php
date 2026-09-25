@@ -51,6 +51,9 @@
                     <flux:sidebar.item icon="link" :href="route('connection.edit')" :current="request()->routeIs('connection.edit')" wire:navigate>
                         {{ __('Connection') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="credit-card" :href="route('billing')" :current="request()->routeIs('billing')" wire:navigate>
+                        {{ __('Billing') }}
+                    </flux:sidebar.item>
                     <flux:sidebar.item icon="cog-6-tooth" :href="route('organization.edit')" :current="request()->routeIs('organization.edit')" wire:navigate>
                         {{ __('Settings') }}
                     </flux:sidebar.item>
@@ -122,6 +125,15 @@
                 </flux:menu>
             </flux:dropdown>
         </flux:header>
+
+        @if ($currentOrganization && App\Billing\PlanResolver::overLimit($currentOrganization))
+            <div class="border-b border-amber-300 bg-amber-50 px-4 py-2 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-100" data-test="over-limit-banner">
+                {{ App\Billing\PlanResolver::graceExpired($currentOrganization)
+                    ? __('Your Zoom account has more licensed seats than your plan covers and the grace period has ended: paid features are paused.')
+                    : __('Your Zoom account has outgrown your plan. Upgrade before :date to keep paid features.', ['date' => App\Billing\PlanResolver::graceEndsAt($currentOrganization)?->toFormattedDateString()]) }}
+                <a href="{{ route('billing') }}" class="underline" wire:navigate>{{ __('See plans') }}</a>
+            </div>
+        @endif
 
         {{ $slot }}
 

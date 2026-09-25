@@ -32,6 +32,9 @@
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="ZOOM_DRIVER" value="fake"/>
+        <env name="STRIPE_PRICE_STARTER" value="price_starter"/>
+        <env name="STRIPE_PRICE_GROWTH" value="price_growth"/>
+        <env name="STRIPE_PRICE_SCALE" value="price_scale"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
     </php>
 </phpunit>

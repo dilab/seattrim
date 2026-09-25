@@ -4,6 +4,7 @@ use App\Models\Organization;
 use App\Models\User;
 use App\Tenancy\Tenancy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Cashier\Subscription;
 use Livewire\Features\SupportTesting\Testable;
 use Livewire\LivewireManager;
 use Tests\TestCase;
@@ -48,6 +49,23 @@ expect()->extend('toBeOne', function () {
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
+
+/**
+ * Put an organization on a paid plan by inserting a Cashier subscription row (no Stripe call).
+ */
+function onPaidPlan(Organization $organization, string $tier = 'growth'): Subscription
+{
+    $organization->forceFill(['stripe_id' => 'cus_test_'.$organization->getKey()])->save();
+
+    return Subscription::query()->create([
+        'organization_id' => $organization->getKey(),
+        'type' => 'default',
+        'stripe_id' => 'sub_test_'.$organization->getKey().'_'.uniqid(),
+        'stripe_status' => 'active',
+        'stripe_price' => 'price_'.$tier,
+        'quantity' => 1,
+    ]);
+}
 
 /**
  * Act as a member of an organization in Livewire component tests, where the

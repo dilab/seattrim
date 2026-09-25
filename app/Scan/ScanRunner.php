@@ -2,6 +2,7 @@
 
 namespace App\Scan;
 
+use App\Billing\PlanResolver;
 use App\Models\Exclusion;
 use App\Models\Organization;
 use App\Models\Scan;
@@ -89,6 +90,8 @@ class ScanRunner
 
             $organization->setSetting('scan.last_completed_at', CarbonImmutable::now()->toIso8601String());
             $organization->save();
+
+            PlanResolver::recordSeatCheck($organization);
 
             Log::info('scan.done', ['organization' => $organization->id, 'scan' => $scan->id, 'warnings' => count($scan->warnings ?? [])]);
         } catch (ConnectionRevokedException $e) {
