@@ -136,6 +136,13 @@ new #[Title('Dashboard')] class extends Component {
         </flux:callout>
     @endif
 
+    @if ($org->setting('onboarding.billing_skipped_at') && ($org->renewal_date === null))
+        <flux:callout icon="calendar" variant="secondary">
+            <flux:callout.text>{{ __('Dollar figures use the default seat price. Add what you actually pay and your renewal date to get an exact right-sizing target and reminders before renewal.') }}</flux:callout.text>
+            <flux:callout.link :href="route('organization.edit')" wire:navigate>{{ __('Add billing details') }}</flux:callout.link>
+        </flux:callout>
+    @endif
+
     @if ($scan)
         {{-- Headline --}}
         <flux:card class="space-y-3">

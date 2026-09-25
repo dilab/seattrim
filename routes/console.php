@@ -8,3 +8,6 @@ Schedule::command('seattrim:dispatch-scheduled-scans')->hourly()->withoutOverlap
 
 // Weekly digest on Monday 08:00 local time (checked hourly).
 Schedule::command('seattrim:send-weekly-digests')->hourly()->withoutOverlapping();
+
+// Renewal reminders 60/30/7 days before the Zoom renewal date, 09:00 local (checked hourly).
+Schedule::command('seattrim:send-renewal-reminders')->hourly()->withoutOverlapping();
