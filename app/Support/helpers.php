@@ -7,11 +7,8 @@ if (! function_exists('onDemoPlan')) {
     /** Gives a demo organization the Growth feature set without touching Stripe. */
     function onDemoPlan(Organization $organization): void
     {
+        // The "demo_" stripe_id prefix is what PlanResolver recognises; the price is informational.
         $price = (string) (config('plans.tiers.growth.stripe_price') ?: 'price_growth_demo');
-
-        if ($price === 'price_growth_demo') {
-            config(['plans.tiers.growth.stripe_price' => $price]);
-        }
 
         Subscription::query()->create([
             'organization_id' => $organization->getKey(),

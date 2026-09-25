@@ -24,6 +24,11 @@ class PlanResolver
             return Plans::free();
         }
 
+        // Public-demo organizations carry a synthetic subscription (see onDemoPlan()).
+        if (str_starts_with((string) $subscription->stripe_id, 'demo_')) {
+            return Plans::find('growth') ?? Plans::free();
+        }
+
         return Plans::byStripePrice($subscription->stripe_price) ?? Plans::free();
     }
 
