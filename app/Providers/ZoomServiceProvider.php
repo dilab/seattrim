@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Zoom\Contracts\ZoomApi;
+use App\Zoom\DelegatingZoomApi;
 use App\Zoom\FakeZoomClient;
 use App\Zoom\FixtureSet;
 use App\Zoom\TokenManager;
@@ -17,10 +18,12 @@ class ZoomServiceProvider extends ServiceProvider
 
         $this->app->singleton(FakeZoomClient::class, fn () => new FakeZoomClient(FixtureSet::default()));
 
+        // Tests and ZOOM_DRIVER=fake resolve straight to the fake so test controls (failNext, patchUser)
+        // apply; production gets the delegate that serves demo organizations from fixtures.
         $this->app->singleton(ZoomApi::class, function ($app) {
             return match (config('zoom.driver')) {
                 'fake' => $app->make(FakeZoomClient::class),
-                default => $app->make(ZoomClient::class),
+                default => new DelegatingZoomApi($app->make(FakeZoomClient::class), $app->make(ZoomClient::class)),
             };
         });
     }

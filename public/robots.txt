@@ -1,2 +1,13 @@
 User-agent: *
-Disallow:
+Disallow: /dashboard
+Disallow: /members
+Disallow: /settings
+Disallow: /connection
+Disallow: /automation
+Disallow: /exclusions
+Disallow: /audit
+Disallow: /billing
+Disallow: /onboarding
+Disallow: /keep/
+Disallow: /demo
+Sitemap: /sitemap.xml

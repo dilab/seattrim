@@ -15,6 +15,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    // Public demo on fixture data (/demo). Disable if you do not want throw-away demo organizations.
+    'demo_enabled' => env('DEMO_ENABLED', true),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

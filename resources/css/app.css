@@ -64,3 +64,22 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+/* Minimal article styling for docs, legal and blog pages (no typography plugin). */
+.prose { line-height: 1.7; color: var(--color-zinc-700); }
+.prose h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 1rem; color: var(--color-zinc-900); }
+.prose h2 { font-size: 1.25rem; font-weight: 600; margin: 2rem 0 0.5rem; color: var(--color-zinc-900); }
+.prose p, .prose ul, .prose ol, .prose table { margin: 0.75rem 0; }
+.prose ul { list-style: disc; padding-inline-start: 1.5rem; }
+.prose ol { list-style: decimal; padding-inline-start: 1.5rem; }
+.prose li { margin: 0.25rem 0; }
+.prose a { color: var(--color-blue-600); text-decoration: underline; }
+.prose code { font-size: 0.875em; background: var(--color-zinc-100); padding: 0.1em 0.35em; border-radius: 0.25rem; }
+.prose table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.prose th, .prose td { text-align: start; padding: 0.5rem; border-bottom: 1px solid var(--color-zinc-200); vertical-align: top; }
+.prose .lead { font-size: 1.125rem; color: var(--color-zinc-600); }
+.dark .prose, .prose-invert { color: var(--color-zinc-300); }
+.dark .prose h1, .dark .prose h2 { color: var(--color-zinc-50); }
+.dark .prose code { background: var(--color-zinc-800); }
+.dark .prose th, .dark .prose td { border-color: var(--color-zinc-700); }
+.dark .prose a { color: var(--color-blue-400); }
