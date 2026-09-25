@@ -31,6 +31,21 @@ class DowngradeMember implements ShouldQueue
 
     public function __construct(public int $organizationId, public int $actionId) {}
 
+    /** Crash outside our own handling (timeout, lost DB): the audit row must never stay "queued". */
+    public function failed(?\Throwable $e): void
+    {
+        $organization = Organization::query()->find($this->organizationId);
+
+        if ($organization === null) {
+            return;
+        }
+
+        app(Tenancy::class)->runAs($organization, function () use ($e): void {
+            LicenseAction::query()->whereKey($this->actionId)->where('status', LicenseAction::STATUS_QUEUED)
+                ->update(['status' => LicenseAction::STATUS_FAILED, 'reason' => 'Job crashed: '.($e?->getMessage() ?? 'unknown error'), 'performed_at' => now()]);
+        });
+    }
+
     public function handle(Tenancy $tenancy, ZoomApi $zoom, GuardrailCheck $guardrails): void
     {
         $organization = Organization::query()->find($this->organizationId);

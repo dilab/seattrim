@@ -323,3 +323,20 @@ Source: https://developers.zoom.us/docs/api/errors/. Body shape `{"code": 300, "
   last four digits of account and an ID document (not displayed). Company name must match the privacy
   policy exactly (StaticMaker Pte Ltd).
 - Review SLA: first response within 72 hours, typically 36.
+
+
+---
+
+## 14. Implementation decisions that follow from the above
+
+- **Pending invites in accounts with bundle plans** are classified `pending_licensed` but *not* eligible for
+  downgrade, with reason "license bundle unknown": list rows for pending users carry no `zoom_one_type`
+  and no id to fetch. Accounts without any bundle plan get eligible pending invites. Revisit once a real
+  bundle account has been observed (M10 checklist).
+- **Zoom Rooms** are not detectable up front; they become protected after the first `PATCH` answers error
+  200 "A Zoom Room user cannot be changed to a free user type". The fixture account contains two rooms to
+  exercise this path.
+- **Windows** are 30 days (≤31 per request). Threshold 30/60/90 uses three windows; 180 uses six.
+- **Unknown hosting** (report failed or scope missing) never marks anyone idle.
+- **Demo organizations** (`settings.demo = true`) are served by `FakeZoomClient` even with `ZOOM_DRIVER=http`,
+  through `DelegatingZoomApi`; their tokens are fake and never refreshed.

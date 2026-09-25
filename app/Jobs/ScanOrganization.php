@@ -42,6 +42,21 @@ class ScanOrganization implements ShouldQueue
         return [(new WithoutOverlapping("scan:{$this->organizationId}"))->dontRelease()->expireAfter(1800)];
     }
 
+    /** The job crashed outside ScanRunner's own error handling (e.g. timeout): leave a failed scan row, never a stuck "running" one. */
+    public function failed(?\Throwable $e): void
+    {
+        $organization = Organization::query()->find($this->organizationId);
+
+        if ($organization === null) {
+            return;
+        }
+
+        app(Tenancy::class)->runAs($organization, function () use ($e): void {
+            Scan::query()->whereKey($this->scanId)->whereIn('status', [Scan::STATUS_QUEUED, Scan::STATUS_RUNNING])
+                ->update(['status' => Scan::STATUS_FAILED, 'finished_at' => now(), 'error' => 'The scan did not finish: '.($e?->getMessage() ?? 'unknown error')]);
+        });
+    }
+
     public function handle(Tenancy $tenancy, ScanRunner $runner): void
     {
         $organization = Organization::query()->find($this->organizationId);

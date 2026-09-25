@@ -18,6 +18,9 @@ class HandleZoomWebhook implements ShouldQueue
 
     public int $tries = 3;
 
+    /** @var array<int, int> seconds */
+    public array $backoff = [30, 300, 1800];
+
     /** @param array<string, mixed> $payload */
     public function __construct(
         public string $event,
@@ -35,6 +38,11 @@ class HandleZoomWebhook implements ShouldQueue
             str_starts_with($this->event, 'user.') => $this->userEvent(),
             default => Log::info('zoom.webhook.ignored', ['event' => $this->event]),
         };
+    }
+
+    public function failed(?\Throwable $e): void
+    {
+        Log::error('zoom.webhook.failed', ['event' => $this->event, 'tracking_id' => $this->trackingId, 'error' => $e?->getMessage()]);
     }
 
     private function deauthorize(DisconnectZoom $disconnect): void

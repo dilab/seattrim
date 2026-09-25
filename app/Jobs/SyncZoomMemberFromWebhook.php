@@ -25,6 +25,9 @@ class SyncZoomMemberFromWebhook implements ShouldQueue
 
     public int $tries = 3;
 
+    /** @var array<int, int> seconds */
+    public array $backoff = [60, 600, 3600];
+
     /** @param array<string, mixed> $object */
     public function __construct(public int $organizationId, public string $event, public array $object) {}
 

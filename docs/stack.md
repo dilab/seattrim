@@ -18,9 +18,11 @@ Update this file whenever a major dependency changes.
 | Pint | 1.32.1 | Preset `laravel` (`pint.json`). |
 | Larastan / PHPStan | ^3.9 | Level 7 (`phpstan.neon`). Memory limit raised to 1G in the composer script. |
 | Node | 22.14.0 | Vite 8 + `vite-plus`, Tailwind CSS 4 via `@tailwindcss/vite`. |
+| Laravel Cashier (Stripe) | 16.8.0 | Organization is the Billable customer model; own migrations. |
+| Laravel Horizon | ^5.50 | Production queue dashboard at `/horizon`, gated by `HORIZON_ADMIN_EMAILS`. |
 
 Scaffolded with `laravel new seattrim --livewire --pest --database=sqlite --npm --no-boost --git`
-(Laravel Installer 5.31.0, official Livewire starter kit). Not yet added: Cashier (M8), Horizon (M10).
+(Laravel Installer 5.31.0, official Livewire starter kit). Cashier added in M8, Horizon in M10.
 
 ## Databases and queues
 

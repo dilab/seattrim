@@ -33,7 +33,7 @@ class FakeZoomClient implements ZoomApi
     /** @var array<int, array{method: string, args: array<int|string, mixed>}> */
     public array $calls = [];
 
-    /** @var array<string, ZoomApiException> method => exception thrown on next call */
+    /** @var array<string, \Throwable> method => exception thrown on next call */
     private array $failNext = [];
 
     private bool $planUsageUnavailable = false;
@@ -47,7 +47,7 @@ class FakeZoomClient implements ZoomApi
 
     // ---------------------------------------------------------- test controls
 
-    public function failNext(string $method, ZoomApiException $exception): self
+    public function failNext(string $method, \Throwable $exception): self
     {
         $this->failNext[$method] = $exception;
 
