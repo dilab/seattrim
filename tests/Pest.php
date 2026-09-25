@@ -1,6 +1,11 @@
 <?php
 
+use App\Models\Organization;
+use App\Models\User;
+use App\Tenancy\Tenancy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Features\SupportTesting\Testable;
+use Livewire\LivewireManager;
 use Tests\TestCase;
 
 /*
@@ -44,7 +49,14 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+/**
+ * Act as a member of an organization in Livewire component tests, where the
+ * `organization` middleware does not run. Mirrors what EnsureCurrentOrganization does.
+ */
+function actingAsMemberOf(Organization $organization, User $user): Testable|LivewireManager
 {
-    // ..
+    $user->switchToOrganization($organization);
+    app(Tenancy::class)->set($organization);
+
+    return Livewire\Livewire::actingAs($user);
 }

@@ -4,6 +4,10 @@
             <flux:navlist.item :href="route('profile.edit')" wire:navigate>{{ __('Profile') }}</flux:navlist.item>
             <flux:navlist.item :href="route('security.edit')" wire:navigate>{{ __('Security') }}</flux:navlist.item>
             <flux:navlist.item :href="route('appearance.edit')" wire:navigate>{{ __('Appearance') }}</flux:navlist.item>
+            <flux:navlist.group :heading="__('Organization')" expandable :expanded="true">
+                <flux:navlist.item :href="route('organization.edit')" wire:navigate>{{ __('Organization') }}</flux:navlist.item>
+                <flux:navlist.item :href="route('members.edit')" wire:navigate>{{ __('Members') }}</flux:navlist.item>
+            </flux:navlist.group>
         </flux:navlist>
     </div>
 

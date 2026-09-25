@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -19,6 +20,8 @@ class DashboardTest extends TestCase
     public function test_authenticated_users_can_visit_the_dashboard(): void
     {
         $user = User::factory()->create();
+        $organization = Organization::factory()->withMember($user)->create();
+        $user->switchToOrganization($organization);
         $this->actingAs($user);
 
         $response = $this->get(route('dashboard'));

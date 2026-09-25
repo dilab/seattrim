@@ -18,6 +18,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('security.edit');
 });
 
+Route::middleware(['auth', 'verified', 'organization'])->group(function () {
+    Route::livewire('settings/organization', 'pages::settings.organization')->name('organization.edit');
+    Route::livewire('settings/members', 'pages::settings.members')->name('members.edit');
+});
+
 Route::get('.well-known/passkey-endpoints', function () {
     return response()->json([
         'enroll' => route('security.edit'),

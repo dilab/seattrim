@@ -10,6 +10,27 @@
                 <flux:sidebar.collapse class="lg:hidden" />
             </flux:sidebar.header>
 
+            @php($currentOrganization = app(App\Tenancy\Tenancy::class)->current())
+            @if ($currentOrganization)
+                <flux:dropdown position="bottom" align="start" class="px-2 pb-2">
+                    <flux:button variant="subtle" size="sm" icon:trailing="chevrons-up-down" class="w-full justify-between" data-test="organization-switcher">
+                        <span class="truncate">{{ $currentOrganization->name }}</span>
+                    </flux:button>
+                    <flux:menu>
+                        <flux:menu.radio.group>
+                            @foreach (auth()->user()->organizations()->orderBy('name')->get() as $organization)
+                                <form method="POST" action="{{ route('organizations.switch', $organization) }}">
+                                    @csrf
+                                    <flux:menu.item as="button" type="submit" :icon="$organization->is($currentOrganization) ? 'check' : null" class="w-full cursor-pointer">{{ $organization->name }}</flux:menu.item>
+                                </form>
+                            @endforeach
+                        </flux:menu.radio.group>
+                        <flux:menu.separator />
+                        <flux:menu.item :href="route('organizations.create')" icon="plus" wire:navigate>{{ __('New organization') }}</flux:menu.item>
+                    </flux:menu>
+                </flux:dropdown>
+            @endif
+
             <flux:sidebar.nav>
                 <flux:sidebar.group :heading="__('Platform')" class="grid">
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
@@ -21,11 +42,7 @@
             <flux:spacer />
 
             <flux:sidebar.nav>
-                <flux:sidebar.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                    {{ __('Repository') }}
-                </flux:sidebar.item>
-
-                <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
+                <flux:sidebar.item icon="book-open-text" href="{{ url('/docs') }}" target="_blank">
                     {{ __('Documentation') }}
                 </flux:sidebar.item>
             </flux:sidebar.nav>
