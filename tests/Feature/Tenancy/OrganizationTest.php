@@ -36,7 +36,7 @@ test('the dashboard loads for a member and shows the organization name', functio
     $organization = Organization::factory()->withMember($user)->create(['name' => 'Northwind Nonprofit']);
     $user->switchToOrganization($organization);
 
-    $this->actingAs($user)->get(route('dashboard'))
+    $this->actingAs($user)->get(route('onboarding'))
         ->assertOk()
         ->assertSee('Northwind Nonprofit');
 });
@@ -58,7 +58,7 @@ test('a stale current organization is replaced by one the user belongs to', func
     $theirs = Organization::factory()->withMember(User::factory()->create())->create();
     $user->forceFill(['current_organization_id' => $theirs->id])->save();
 
-    $this->actingAs($user)->get(route('dashboard'))->assertOk()->assertSee($mine->name)->assertDontSee($theirs->name);
+    $this->actingAs($user)->get(route('onboarding'))->assertOk()->assertSee($mine->name)->assertDontSee($theirs->name);
 
     expect($user->fresh()->current_organization_id)->toBe($mine->id);
 });

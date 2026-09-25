@@ -56,7 +56,7 @@ test('the fake driver completes the whole flow and stores encrypted tokens', fun
     $state = session('zoom.oauth.state');
 
     $this->actingAs($user)->get(route('zoom.callback', ['code' => 'fake-code', 'state' => $state]))
-        ->assertRedirect(route('connection.edit'))
+        ->assertRedirect(route('onboarding'))
         ->assertSessionHas('zoom.connected');
 
     $connection = ZoomConnection::query()->allOrganizations()->where('organization_id', $organization->id)->firstOrFail();

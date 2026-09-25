@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Zoom;
 
 use App\Http\Controllers\Controller;
+use App\Models\Scan;
 use App\Models\ZoomConnection;
 use App\Tenancy\Tenancy;
 use App\Zoom\Contracts\ZoomApi;
@@ -111,6 +112,8 @@ class OAuthController extends Controller
 
         Log::info('zoom.oauth.connected', ['organization' => $organization->getKey(), 'connection' => $connection->describe(), 'missing_scopes' => $connection->missingScopes()]);
 
-        return redirect()->route('connection.edit')->with('zoom.connected', true);
+        $hasScan = Scan::query()->where('status', Scan::STATUS_DONE)->exists();
+
+        return redirect()->route($hasScan ? 'connection.edit' : 'onboarding')->with('zoom.connected', true);
     }
 }

@@ -24,7 +24,8 @@ class DashboardTest extends TestCase
         $user->switchToOrganization($organization);
         $this->actingAs($user);
 
+        // Without a Zoom connection and a completed scan, the dashboard hands off to onboarding.
         $response = $this->get(route('dashboard'));
-        $response->assertOk();
+        $response->assertRedirect(route('onboarding'));
     }
 }

@@ -36,8 +36,14 @@
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="users" :href="route('members')" :current="request()->routeIs('members')" wire:navigate>
+                        {{ __('Members') }}
+                    </flux:sidebar.item>
                     <flux:sidebar.item icon="link" :href="route('connection.edit')" :current="request()->routeIs('connection.edit')" wire:navigate>
                         {{ __('Connection') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="cog-6-tooth" :href="route('organization.edit')" :current="request()->routeIs('organization.edit')" wire:navigate>
+                        {{ __('Settings') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>

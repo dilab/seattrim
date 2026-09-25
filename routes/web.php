@@ -19,7 +19,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware(['auth', 'verified', 'organization'])->group(function () {
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::livewire('dashboard', 'pages::dashboard')->name('dashboard');
+    Route::livewire('onboarding', 'pages::onboarding')->name('onboarding');
+    Route::livewire('members', 'pages::members')->name('members');
 
     Route::livewire('connection', 'pages::connection')->name('connection.edit');
     Route::post('zoom/connect', [OAuthController::class, 'connect'])->name('zoom.connect');
