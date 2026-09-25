@@ -19,7 +19,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $cancelled_at
  * @property string|null $cancel_reason
  * @property int|null $executed_action_id
- * @property-read ZoomMember $member
+ * @property-read ZoomMember|null $member
  */
 #[Fillable(['organization_id', 'zoom_member_id', 'sent_at', 'scheduled_for', 'kept_at', 'cancelled_at', 'cancel_reason', 'executed_action_id'])]
 class DowngradeNotice extends Model

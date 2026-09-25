@@ -39,6 +39,12 @@
                     <flux:sidebar.item icon="users" :href="route('members')" :current="request()->routeIs('members')" wire:navigate>
                         {{ __('Members') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="bolt" :href="route('automation')" :current="request()->routeIs('automation')" wire:navigate>
+                        {{ __('Automation') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="shield-check" :href="route('exclusions')" :current="request()->routeIs('exclusions')" wire:navigate>
+                        {{ __('Exclusions') }}
+                    </flux:sidebar.item>
                     <flux:sidebar.item icon="clipboard-document-list" :href="route('audit')" :current="request()->routeIs('audit')" wire:navigate>
                         {{ __('Audit log') }}
                     </flux:sidebar.item>

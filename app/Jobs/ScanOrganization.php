@@ -57,7 +57,11 @@ class ScanOrganization implements ShouldQueue
                 return;
             }
 
-            $runner->run($organization, $scan);
+            $scan = $runner->run($organization, $scan);
+
+            if ($scan->status === Scan::STATUS_DONE && $scan->trigger === Scan::TRIGGER_SCHEDULED) {
+                RunAutomation::dispatch($organization->getKey());
+            }
         });
     }
 }
