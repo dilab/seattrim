@@ -1,0 +1,46 @@
+{
+    "plan_base": {
+        "type": "yearly",
+        "hosts": 64,
+        "usage": 59,
+        "pending": 4,
+        "active_hosts": 21
+    },
+    "plan_zoom_one": [
+        {
+            "type": "zoom_one_business_plus_yearly",
+            "hosts": 3,
+            "usage": 3,
+            "pending": 0
+        }
+    ],
+    "plan_webinar": [
+        {
+            "type": "webinar500_yearly",
+            "hosts": 1,
+            "usage": 1,
+            "pending": 0
+        }
+    ],
+    "plan_large_meeting": [
+        {
+            "type": "large500_yearly",
+            "hosts": 1,
+            "usage": 1,
+            "pending": 0
+        }
+    ],
+    "plan_zoom_rooms": {
+        "type": "zoom_rooms_yearly",
+        "hosts": 2,
+        "usage": 2
+    },
+    "plan_recording": {
+        "type": "cmr_yearly",
+        "free_storage": "5 GB",
+        "free_storage_usage": "1.2 GB",
+        "plan_storage": "0",
+        "plan_storage_usage": "0",
+        "plan_storage_exceed": "0"
+    }
+}

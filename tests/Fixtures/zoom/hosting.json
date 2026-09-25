@@ -1,0 +1,141 @@
+{
+    "u01_danaowner": [
+        "@days_ago:2",
+        "@days_ago:9",
+        "@days_ago:16"
+    ],
+    "u02_samadmin": [
+        "@days_ago:4",
+        "@days_ago:20"
+    ],
+    "u03_leeadmin": [
+        "@days_ago:140"
+    ],
+    "u04_teacher1": [
+        "@days_ago:2",
+        "@days_ago:4",
+        "@days_ago:28"
+    ],
+    "u05_teacher2": [
+        "@days_ago:3",
+        "@days_ago:5",
+        "@days_ago:28"
+    ],
+    "u06_teacher3": [
+        "@days_ago:4",
+        "@days_ago:6",
+        "@days_ago:28"
+    ],
+    "u07_teacher4": [
+        "@days_ago:5",
+        "@days_ago:7",
+        "@days_ago:28"
+    ],
+    "u08_teacher5": [
+        "@days_ago:6",
+        "@days_ago:8",
+        "@days_ago:28"
+    ],
+    "u09_teacher6": [
+        "@days_ago:7",
+        "@days_ago:9",
+        "@days_ago:28"
+    ],
+    "u10_teacher7": [
+        "@days_ago:8",
+        "@days_ago:10",
+        "@days_ago:28"
+    ],
+    "u11_teacher8": [
+        "@days_ago:9",
+        "@days_ago:11",
+        "@days_ago:28"
+    ],
+    "u12_teacher9": [
+        "@days_ago:10",
+        "@days_ago:12",
+        "@days_ago:28"
+    ],
+    "u13_teacher10": [
+        "@days_ago:11",
+        "@days_ago:13",
+        "@days_ago:28"
+    ],
+    "u14_teacher11": [
+        "@days_ago:12",
+        "@days_ago:14",
+        "@days_ago:28"
+    ],
+    "u15_teacher12": [
+        "@days_ago:13",
+        "@days_ago:3",
+        "@days_ago:28"
+    ],
+    "u16_teacher13": [
+        "@days_ago:14",
+        "@days_ago:4",
+        "@days_ago:28"
+    ],
+    "u17_teacher14": [
+        "@days_ago:15",
+        "@days_ago:5",
+        "@days_ago:28"
+    ],
+    "u18_teacher15": [
+        "@days_ago:16",
+        "@days_ago:6",
+        "@days_ago:28"
+    ],
+    "u19_teacher16": [
+        "@days_ago:17",
+        "@days_ago:7",
+        "@days_ago:28"
+    ],
+    "u20_teacher17": [
+        "@days_ago:18",
+        "@days_ago:8",
+        "@days_ago:28"
+    ],
+    "u21_teacher18": [
+        "@days_ago:19",
+        "@days_ago:9",
+        "@days_ago:28"
+    ],
+    "u22_idle301": [
+        "@days_ago:36",
+        "@days_ago:50"
+    ],
+    "u23_idle302": [
+        "@days_ago:37",
+        "@days_ago:50"
+    ],
+    "u24_idle303": [
+        "@days_ago:38",
+        "@days_ago:50"
+    ],
+    "u25_idle304": [
+        "@days_ago:39",
+        "@days_ago:50"
+    ],
+    "u26_idle601": [
+        "@days_ago:62",
+        "@days_ago:85"
+    ],
+    "u27_idle602": [
+        "@days_ago:63",
+        "@days_ago:85"
+    ],
+    "u28_idle603": [
+        "@days_ago:64",
+        "@days_ago:85"
+    ],
+    "u29_idle901": [
+        "@days_ago:120"
+    ],
+    "u30_idle902": [
+        "@days_ago:140"
+    ],
+    "u31_idle903": [
+        "@days_ago:160"
+    ]
+}

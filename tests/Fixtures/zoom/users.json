@@ -1,0 +1,1498 @@
+[
+    {
+        "id": "u01_danaowner",
+        "first_name": "Dana",
+        "last_name": "Owner",
+        "display_name": "Dana Owner",
+        "email": "dana.owner@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "IT",
+        "group_ids": [],
+        "role_id": "0",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0,
+        "role_name": "Owner"
+    },
+    {
+        "id": "u02_samadmin",
+        "first_name": "Sam",
+        "last_name": "Admin",
+        "display_name": "Sam Admin",
+        "email": "sam.admin@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "IT",
+        "group_ids": [],
+        "role_id": "1",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0,
+        "role_name": "Admin"
+    },
+    {
+        "id": "u03_leeadmin",
+        "first_name": "Lee",
+        "last_name": "Admin",
+        "display_name": "Lee Admin",
+        "email": "lee.admin@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "IT",
+        "group_ids": [],
+        "role_id": "1",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0,
+        "role_name": "Admin"
+    },
+    {
+        "id": "u04_teacher1",
+        "first_name": "Teacher",
+        "last_name": "1",
+        "display_name": "Teacher 1",
+        "email": "teacher1@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Science",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u05_teacher2",
+        "first_name": "Teacher",
+        "last_name": "2",
+        "display_name": "Teacher 2",
+        "email": "teacher2@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "English",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u06_teacher3",
+        "first_name": "Teacher",
+        "last_name": "3",
+        "display_name": "Teacher 3",
+        "email": "teacher3@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Admin",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u07_teacher4",
+        "first_name": "Teacher",
+        "last_name": "4",
+        "display_name": "Teacher 4",
+        "email": "teacher4@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Counseling",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u08_teacher5",
+        "first_name": "Teacher",
+        "last_name": "5",
+        "display_name": "Teacher 5",
+        "email": "teacher5@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Athletics",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u09_teacher6",
+        "first_name": "Teacher",
+        "last_name": "6",
+        "display_name": "Teacher 6",
+        "email": "teacher6@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Math",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u10_teacher7",
+        "first_name": "Teacher",
+        "last_name": "7",
+        "display_name": "Teacher 7",
+        "email": "teacher7@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Science",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u11_teacher8",
+        "first_name": "Teacher",
+        "last_name": "8",
+        "display_name": "Teacher 8",
+        "email": "teacher8@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "English",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u12_teacher9",
+        "first_name": "Teacher",
+        "last_name": "9",
+        "display_name": "Teacher 9",
+        "email": "teacher9@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Admin",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u13_teacher10",
+        "first_name": "Teacher",
+        "last_name": "10",
+        "display_name": "Teacher 10",
+        "email": "teacher10@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Counseling",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u14_teacher11",
+        "first_name": "Teacher",
+        "last_name": "11",
+        "display_name": "Teacher 11",
+        "email": "teacher11@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Athletics",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u15_teacher12",
+        "first_name": "Teacher",
+        "last_name": "12",
+        "display_name": "Teacher 12",
+        "email": "teacher12@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Math",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u16_teacher13",
+        "first_name": "Teacher",
+        "last_name": "13",
+        "display_name": "Teacher 13",
+        "email": "teacher13@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Science",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u17_teacher14",
+        "first_name": "Teacher",
+        "last_name": "14",
+        "display_name": "Teacher 14",
+        "email": "teacher14@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "English",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u18_teacher15",
+        "first_name": "Teacher",
+        "last_name": "15",
+        "display_name": "Teacher 15",
+        "email": "teacher15@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Admin",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u19_teacher16",
+        "first_name": "Teacher",
+        "last_name": "16",
+        "display_name": "Teacher 16",
+        "email": "teacher16@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Counseling",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u20_teacher17",
+        "first_name": "Teacher",
+        "last_name": "17",
+        "display_name": "Teacher 17",
+        "email": "teacher17@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Athletics",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u21_teacher18",
+        "first_name": "Teacher",
+        "last_name": "18",
+        "display_name": "Teacher 18",
+        "email": "teacher18@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Math",
+        "group_ids": [
+            "grp_teachers"
+        ],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u22_idle301",
+        "first_name": "Idle",
+        "last_name": "Thirty 1",
+        "display_name": "Idle Thirty 1",
+        "email": "idle30_1@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Science",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:35",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u23_idle302",
+        "first_name": "Idle",
+        "last_name": "Thirty 2",
+        "display_name": "Idle Thirty 2",
+        "email": "idle30_2@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Science",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:35",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u24_idle303",
+        "first_name": "Idle",
+        "last_name": "Thirty 3",
+        "display_name": "Idle Thirty 3",
+        "email": "idle30_3@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Science",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:35",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u25_idle304",
+        "first_name": "Idle",
+        "last_name": "Thirty 4",
+        "display_name": "Idle Thirty 4",
+        "email": "idle30_4@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Science",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:35",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u26_idle601",
+        "first_name": "Idle",
+        "last_name": "Sixty 1",
+        "display_name": "Idle Sixty 1",
+        "email": "idle60_1@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "English",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:70",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u27_idle602",
+        "first_name": "Idle",
+        "last_name": "Sixty 2",
+        "display_name": "Idle Sixty 2",
+        "email": "idle60_2@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "English",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:70",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u28_idle603",
+        "first_name": "Idle",
+        "last_name": "Sixty 3",
+        "display_name": "Idle Sixty 3",
+        "email": "idle60_3@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "English",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:70",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u29_idle901",
+        "first_name": "Idle",
+        "last_name": "Ninety 1",
+        "display_name": "Idle Ninety 1",
+        "email": "idle90_1@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Admin",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:120",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u30_idle902",
+        "first_name": "Idle",
+        "last_name": "Ninety 2",
+        "display_name": "Idle Ninety 2",
+        "email": "idle90_2@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Admin",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:120",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u31_idle903",
+        "first_name": "Idle",
+        "last_name": "Ninety 3",
+        "display_name": "Idle Ninety 3",
+        "email": "idle90_3@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Admin",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:120",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u32_never1",
+        "first_name": "Never",
+        "last_name": "Hosted 1",
+        "display_name": "Never Hosted 1",
+        "email": "never1@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Athletics",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:200",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u33_never2",
+        "first_name": "Never",
+        "last_name": "Hosted 2",
+        "display_name": "Never Hosted 2",
+        "email": "never2@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Athletics",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:200",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u34_never3",
+        "first_name": "Never",
+        "last_name": "Hosted 3",
+        "display_name": "Never Hosted 3",
+        "email": "never3@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Athletics",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:200",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u35_never4",
+        "first_name": "Never",
+        "last_name": "Hosted 4",
+        "display_name": "Never Hosted 4",
+        "email": "never4@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Athletics",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:200",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u36_never5",
+        "first_name": "Never",
+        "last_name": "Hosted 5",
+        "display_name": "Never Hosted 5",
+        "email": "never5@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Athletics",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:200",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u37_never6",
+        "first_name": "Never",
+        "last_name": "Hosted 6",
+        "display_name": "Never Hosted 6",
+        "email": "never6@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Athletics",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:200",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u38_gone1",
+        "first_name": "Former",
+        "last_name": "Staff 1",
+        "display_name": "Former Staff 1",
+        "email": "gone1@example.edu",
+        "type": 2,
+        "status": "inactive",
+        "dept": "Admin",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u39_gone2",
+        "first_name": "Former",
+        "last_name": "Staff 2",
+        "display_name": "Former Staff 2",
+        "email": "gone2@example.edu",
+        "type": 2,
+        "status": "inactive",
+        "dept": "Admin",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u40_gone3",
+        "first_name": "Former",
+        "last_name": "Staff 3",
+        "display_name": "Former Staff 3",
+        "email": "gone3@example.edu",
+        "type": 2,
+        "status": "inactive",
+        "dept": "Admin",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u41_gone4",
+        "first_name": "Former",
+        "last_name": "Staff 4",
+        "display_name": "Former Staff 4",
+        "email": "gone4@example.edu",
+        "type": 2,
+        "status": "inactive",
+        "dept": "Admin",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u42_gone5",
+        "first_name": "Former",
+        "last_name": "Staff 5",
+        "display_name": "Former Staff 5",
+        "email": "gone5@example.edu",
+        "type": 2,
+        "status": "inactive",
+        "dept": "Admin",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u43_gonebasic1",
+        "first_name": "Former",
+        "last_name": "Basic 1",
+        "display_name": "Former Basic 1",
+        "email": "gonebasic1@example.edu",
+        "type": 1,
+        "status": "inactive",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u44_gonebasic2",
+        "first_name": "Former",
+        "last_name": "Basic 2",
+        "display_name": "Former Basic 2",
+        "email": "gonebasic2@example.edu",
+        "type": 1,
+        "status": "inactive",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u45_invite1",
+        "first_name": "Pending",
+        "last_name": "Invite 1",
+        "display_name": "Pending Invite 1",
+        "email": "invite1@example.edu",
+        "type": 2,
+        "status": "pending",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:20",
+        "last_login_time": "",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u46_invite2",
+        "first_name": "Pending",
+        "last_name": "Invite 2",
+        "display_name": "Pending Invite 2",
+        "email": "invite2@example.edu",
+        "type": 2,
+        "status": "pending",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:40",
+        "last_login_time": "",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u47_invite3",
+        "first_name": "Pending",
+        "last_name": "Invite 3",
+        "display_name": "Pending Invite 3",
+        "email": "invite3@example.edu",
+        "type": 2,
+        "status": "pending",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:60",
+        "last_login_time": "",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u48_invite4",
+        "first_name": "Pending",
+        "last_name": "Invite 4",
+        "display_name": "Pending Invite 4",
+        "email": "invite4@example.edu",
+        "type": 2,
+        "status": "pending",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:80",
+        "last_login_time": "",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u49_invitebasic",
+        "first_name": "Pending",
+        "last_name": "Basic",
+        "display_name": "Pending Basic",
+        "email": "invitebasic@example.edu",
+        "type": 1,
+        "status": "pending",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u50_basic1",
+        "first_name": "Basic",
+        "last_name": "User 1",
+        "display_name": "Basic User 1",
+        "email": "basic1@example.edu",
+        "type": 1,
+        "status": "active",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u51_basic2",
+        "first_name": "Basic",
+        "last_name": "User 2",
+        "display_name": "Basic User 2",
+        "email": "basic2@example.edu",
+        "type": 1,
+        "status": "active",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u52_basic3",
+        "first_name": "Basic",
+        "last_name": "User 3",
+        "display_name": "Basic User 3",
+        "email": "basic3@example.edu",
+        "type": 1,
+        "status": "active",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u53_basic4",
+        "first_name": "Basic",
+        "last_name": "User 4",
+        "display_name": "Basic User 4",
+        "email": "basic4@example.edu",
+        "type": 1,
+        "status": "active",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u54_basic5",
+        "first_name": "Basic",
+        "last_name": "User 5",
+        "display_name": "Basic User 5",
+        "email": "basic5@example.edu",
+        "type": 1,
+        "status": "active",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u55_basic6",
+        "first_name": "Basic",
+        "last_name": "User 6",
+        "display_name": "Basic User 6",
+        "email": "basic6@example.edu",
+        "type": 1,
+        "status": "active",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u56_joinonly",
+        "first_name": "Join",
+        "last_name": "Only",
+        "display_name": "Join Only",
+        "email": "joinonly@example.edu",
+        "type": 4,
+        "status": "active",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u57_roomlibrary",
+        "first_name": "Library",
+        "last_name": "Room",
+        "display_name": "Library Room",
+        "email": "room.library@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Facilities",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:2",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u58_roomboardroom",
+        "first_name": "Boardroom",
+        "last_name": "Room",
+        "display_name": "Boardroom Room",
+        "email": "room.boardroom@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Facilities",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:2",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u59_bundleworkplace1",
+        "first_name": "Wanda",
+        "last_name": "Workplace",
+        "display_name": "Wanda Workplace",
+        "email": "bundle.workplace1@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 16,
+        "license_info_list": [
+            {
+                "license_type": "ZOOM_WORKPLACE_BUNDLE",
+                "license_option": 16,
+                "subscription_id": "SUBREF-1"
+            }
+        ]
+    },
+    {
+        "id": "u60_bundleworkplace2",
+        "first_name": "Walter",
+        "last_name": "Workplace",
+        "display_name": "Walter Workplace",
+        "email": "bundle.workplace2@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 4
+    },
+    {
+        "id": "u61_bundleunited",
+        "first_name": "Uma",
+        "last_name": "United",
+        "display_name": "Uma United",
+        "email": "bundle.united@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0,
+        "plan_united_type": "16"
+    },
+    {
+        "id": "u62_phone1",
+        "first_name": "Pat",
+        "last_name": "Phone",
+        "display_name": "Pat Phone",
+        "email": "phone1@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Front Desk",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u63_phone2",
+        "first_name": "Priya",
+        "last_name": "Phone",
+        "display_name": "Priya Phone",
+        "email": "phone2@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Front Desk",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u64_webinar1",
+        "first_name": "Wes",
+        "last_name": "Webinar",
+        "display_name": "Wes Webinar",
+        "email": "webinar1@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Communications",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u65_largemeeting1",
+        "first_name": "Lara",
+        "last_name": "Large",
+        "display_name": "Lara Large",
+        "email": "largemeeting1@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Communications",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u66_upcoming1",
+        "first_name": "Ulla",
+        "last_name": "Upcoming",
+        "display_name": "Ulla Upcoming",
+        "email": "upcoming1@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Counseling",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u67_upcoming2",
+        "first_name": "Uri",
+        "last_name": "Upcoming",
+        "display_name": "Uri Upcoming",
+        "email": "upcoming2@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Counseling",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:400",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u68_newhire1",
+        "first_name": "Nadia",
+        "last_name": "Newhire",
+        "display_name": "Nadia Newhire",
+        "email": "newhire1@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:6",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    },
+    {
+        "id": "u69_newhire2",
+        "first_name": "Noah",
+        "last_name": "Newhire",
+        "display_name": "Noah Newhire",
+        "email": "newhire2@example.edu",
+        "type": 2,
+        "status": "active",
+        "dept": "Operations",
+        "group_ids": [],
+        "role_id": "2",
+        "user_created_at": "@days_ago:21",
+        "last_login_time": "@days_ago:3",
+        "last_client_version": "6.4.0.51205(mac)",
+        "timezone": "America/Chicago",
+        "verified": 1,
+        "login_types": [
+            100
+        ],
+        "zoom_one_type": 0
+    }
+]

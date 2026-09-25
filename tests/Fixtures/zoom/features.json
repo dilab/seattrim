@@ -1,0 +1,28 @@
+{
+    "u62_phone1": {
+        "zoom_phone": true,
+        "webinar": false,
+        "large_meeting": false,
+        "meeting_capacity": 300
+    },
+    "u63_phone2": {
+        "zoom_phone": true,
+        "webinar": false,
+        "large_meeting": false,
+        "meeting_capacity": 300
+    },
+    "u64_webinar1": {
+        "zoom_phone": false,
+        "webinar": true,
+        "webinar_capacity": 500,
+        "large_meeting": false,
+        "meeting_capacity": 300
+    },
+    "u65_largemeeting1": {
+        "zoom_phone": false,
+        "webinar": false,
+        "large_meeting": true,
+        "large_meeting_capacity": 500,
+        "meeting_capacity": 500
+    }
+}
