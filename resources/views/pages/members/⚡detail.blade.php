@@ -4,6 +4,7 @@ use App\Enums\Bucket;
 use App\Models\ZoomMember;
 use App\Scan\Window;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 /**
@@ -20,6 +21,7 @@ new class extends Component {
         $this->member = $member;
     }
 
+    #[On('member-updated')]
     public function refreshMember(): void
     {
         $this->member = $this->member->fresh(['actions.performer']) ?? $this->member;

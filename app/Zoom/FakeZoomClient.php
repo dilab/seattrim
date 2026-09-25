@@ -248,18 +248,19 @@ class FakeZoomClient implements ZoomApi
             throw new ZoomApiException("A Zoom Room user cannot be changed to a free user type: {$userId}", 400, 200, 'fake-'.Str::random(6), "/users/{$userId}");
         }
 
-        $found = false;
+        // Zoom accepts either the user id or the email address as {userId}.
+        $resolvedId = null;
         foreach ($this->users($connection) as $user) {
-            if (($user['id'] ?? null) === $userId) {
-                $found = true;
+            if (($user['id'] ?? null) === $userId || ($user['email'] ?? null) === $userId) {
+                $resolvedId = (string) $user['id'];
             }
         }
-        if (! $found) {
+        if ($resolvedId === null) {
             throw new ZoomApiException("User does not exist: {$userId}", 404, 1001, 'fake-'.Str::random(6), "/users/{$userId}");
         }
 
         $overrides = $this->overrides($connection);
-        $overrides[$userId]['type'] = $type;
+        $overrides[$resolvedId]['type'] = $type;
         Cache::forever($this->overridesKey($connection), $overrides);
 
         return new ApiResult('fake-'.Str::random(6));

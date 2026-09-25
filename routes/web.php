@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuditExportController;
 use App\Http\Controllers\Zoom\OAuthController;
 use App\Http\Controllers\Zoom\WebhookController;
 use App\Models\Organization;
@@ -22,6 +23,8 @@ Route::middleware(['auth', 'verified', 'organization'])->group(function () {
     Route::livewire('dashboard', 'pages::dashboard')->name('dashboard');
     Route::livewire('onboarding', 'pages::onboarding')->name('onboarding');
     Route::livewire('members', 'pages::members')->name('members');
+    Route::livewire('audit', 'pages::audit')->name('audit');
+    Route::get('audit/export.csv', AuditExportController::class)->name('audit.export');
 
     Route::livewire('connection', 'pages::connection')->name('connection.edit');
     Route::post('zoom/connect', [OAuthController::class, 'connect'])->name('zoom.connect');

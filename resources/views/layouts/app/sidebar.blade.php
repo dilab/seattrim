@@ -39,6 +39,9 @@
                     <flux:sidebar.item icon="users" :href="route('members')" :current="request()->routeIs('members')" wire:navigate>
                         {{ __('Members') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="clipboard-document-list" :href="route('audit')" :current="request()->routeIs('audit')" wire:navigate>
+                        {{ __('Audit log') }}
+                    </flux:sidebar.item>
                     <flux:sidebar.item icon="link" :href="route('connection.edit')" :current="request()->routeIs('connection.edit')" wire:navigate>
                         {{ __('Connection') }}
                     </flux:sidebar.item>

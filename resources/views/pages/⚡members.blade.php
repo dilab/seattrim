@@ -11,6 +11,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -127,6 +128,13 @@ new #[Title('Members')] class extends Component {
         $this->open = $id;
         unset($this->openMember);
         $this->modal('member')->show();
+    }
+
+    #[On('member-updated')]
+    #[On('bulk-queued')]
+    public function refreshList(): void
+    {
+        unset($this->members, $this->openMember);
     }
 
     public function updatedSelectPage(bool $value): void
