@@ -81,8 +81,8 @@ the M0 summary.
   (`@theme`: brand/ink/mint/blush/coral/lav colors, `shadow-card`, `shadow-float`, 28/36px radii, Manrope as
   `font-display`). Layout `resources/views/layouts/public.blade.php`, helpers in `resources/views/components/public/`.
   Marketing pages are light-only by design; the app keeps Flux light/dark.
-- Text on the field: the lower half of the light field is pastel, so raw white text there fails contrast.
-  Hero text always goes through `x-public.page-hero`, which brings its own dark band (`x-public.field-band`,
-  alpha rising with depth, 64px fade tail); buttons on the field use `x-public.field-button`; anything else
-  on the field sits on a card or pill. `tests/Feature/Public/FieldTextGuardTest.php` fails the build if a
-  page file contains `text-white` without a solid dark background on the same line.
+- Hero field: solid `brand-600` (#2c63e0), chosen over brand-500 because white body text needs 4.5:1
+  (5.3:1 here; the muted `brand-100` clause is 4.3:1 as large text). Hero text goes through
+  `x-public.page-hero`, buttons on the field through `x-public.field-button`, everything else sits on a
+  card or pill. `tests/Feature/Public/FieldTextGuardTest.php` fails the build if a page file contains
+  `text-white` without a solid dark background on the same line.

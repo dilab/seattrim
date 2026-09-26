@@ -3,10 +3,9 @@
 use Illuminate\Support\Facades\File;
 
 /**
- * The marketing "light field" is pastel in its lower half, so raw white text on it fails contrast.
- * Page files must put field text through <x-public.page-hero> (which brings its own dark band) and
- * field buttons through <x-public.field-button>; white text is only allowed on a solid dark background
- * declared on the same line.
+ * Keeps hero text and buttons on the marketing field in the shared components (<x-public.page-hero>,
+ * <x-public.field-button>) so type, spacing and contrast stay consistent. In page files, white text is
+ * only allowed on a solid dark background declared on the same line.
  */
 test('page files never place raw white text on the light field', function () {
     $offenders = [];

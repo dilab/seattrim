@@ -1,13 +1,10 @@
 @props(['label' => null, 'heading' => null, 'muted' => null, 'intro' => null, 'size' => 'compact'])
-{{-- Hero text on the light field. Brings its own <x-public.field-band> so contrast is guaranteed wherever
-     it sits. `compact` (inner pages): glass label, two-tone headline, intro, optional `meta`, `actions`
-     and `aside` (glass tile → two columns), with bottom padding equal to the band's fade tail.
-     `display` (home): larger type, no bottom padding, plus a `note` slot; the band fades into the
-     top of whatever follows (the landing mockup, whose cards carry their own backgrounds). --}}
+{{-- Hero text on the solid blue field. `compact` (inner pages): glass label, two-tone headline, intro,
+     optional `meta`, `actions` and `aside` (glass tile → two columns). `display` (home): larger type,
+     no bottom padding so the landing mockup can bleed to the field edge, plus a `note` slot. --}}
 @php($twoColumn = isset($aside))
 @php($display = $size === 'display')
-<div class="relative w-full {{ $display ? 'pt-6 pb-0' : 'pt-1 pb-16 sm:pt-2' }}">
-    <x-public.field-band :class="$display ? '-bottom-16' : ''" />
+<div class="w-full {{ $display ? 'pt-6 pb-0' : 'pt-1 pb-10 sm:pt-2 sm:pb-12' }}">
     <div class="{{ $twoColumn ? 'grid items-start gap-8 md:grid-cols-[1.4fr_1fr]' : 'mx-auto flex max-w-2xl flex-col items-center text-center' }}">
         <div class="flex flex-col {{ $display ? 'gap-5' : 'gap-4' }} {{ $twoColumn ? 'items-start' : 'items-center' }}">
             @if ($label)
