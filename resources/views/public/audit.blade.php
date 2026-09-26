@@ -2,8 +2,8 @@
     <x-slot name="hero">
         <x-public.page-hero :label="__('Free · about five minutes')" :heading="__('Free Zoom license audit.')" :muted="__('Keep the report.')" :intro="__('Find out how many Licensed seats your organization pays for that nobody uses, and what they cost per year. Connect as a Zoom admin, let SeatTrim run one scan, and keep the report.')">
             <x-slot name="actions">
-                <a href="{{ route('register') }}" class="inline-flex h-11 items-center rounded-full bg-white px-5 text-sm font-medium text-ink-900 shadow-card transition hover:bg-brand-50 active:scale-[.98]">↳ {{ __('Start the free audit') }}</a>
-                <a href="{{ route('demo') }}" class="inline-flex h-11 items-center rounded-full border border-white/60 px-5 text-sm font-medium text-white transition hover:bg-white/15 active:scale-[.98]">{{ __('See a sample report first') }}</a>
+                <x-public.field-button :href="route('register')">↳ {{ __('Start the free audit') }}</x-public.field-button>
+                <x-public.field-button :href="route('demo')" variant="outline">{{ __('See a sample report first') }}</x-public.field-button>
             </x-slot>
             <x-slot name="aside">
                 <div class="text-[14px] font-medium text-ink-900">{{ __('What you need') }}</div>

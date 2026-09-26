@@ -1,7 +1,8 @@
 @props(['title' => null, 'description' => null, 'canonical' => null, 'noindex' => false, 'jsonLd' => null])
 {{-- Marketing layout (design-system.html): cool page ground, Manrope, and on every page the light field
      (blue → lavender → blush gradient with masked halftone dots) holding the glassy pill nav and the page's
-     `hero` slot. Home fills the field with its mockup scene; other pages use <x-public.page-hero>. Light only. --}}
+     `hero` slot. Text on the field always goes through <x-public.page-hero>, which carries its own dark band
+     (<x-public.field-band>) for contrast; everything else on the field sits on a card or pill. Light only. --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -39,9 +40,9 @@
 
         <div class="mx-auto flex w-full max-w-[1180px] flex-col gap-16 px-4 py-4 sm:px-6 md:gap-20">
             <div class="relative overflow-hidden rounded-4xl shadow-float" style="background:radial-gradient(ellipse 55% 60% at 8% 95%, #f2a9d4 0%, rgba(242,169,212,0) 65%), radial-gradient(ellipse 45% 70% at 95% 80%, #e6b8e2 0%, rgba(230,184,226,0) 60%), radial-gradient(ellipse 90% 90% at 50% -10%, #2c63e0 0%, #3d7bff 35%, #6d9bff 70%, #b9cfff 100%)">
-                <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(180deg, rgba(31,75,179,.45) 0%, rgba(31,75,179,.15) 45%, rgba(31,75,179,0) 70%)"></div>
                 <div class="pointer-events-none absolute inset-0 opacity-40" style="background-image:radial-gradient(rgba(255,255,255,.8) 1px, transparent 1.3px);background-size:9px 9px;mask-image:radial-gradient(ellipse 55% 45% at 50% 70%, #000 0%, transparent 100%);-webkit-mask-image:radial-gradient(ellipse 55% 45% at 50% 70%, #000 0%, transparent 100%)"></div>
-                <div class="relative flex flex-col items-center gap-8 px-5 pt-5 sm:px-8 sm:pt-6">
+                {{-- `isolate` lets the hero's field-band (z -10) sit above the gradient and dots but below nav and text. --}}
+                <div class="relative isolate flex flex-col items-center gap-8 px-5 pt-5 sm:px-8 sm:pt-6">
                     <div class="flex w-full items-center justify-between gap-3">
                         <a href="{{ route('home') }}" class="flex items-center gap-2 text-white" aria-label="SeatTrim home">
                             <x-app-logo-icon class="size-8 text-white" />

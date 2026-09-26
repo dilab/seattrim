@@ -4,15 +4,13 @@
     :jsonLd="['@context' => 'https://schema.org', '@type' => 'SoftwareApplication', 'name' => 'SeatTrim', 'applicationCategory' => 'BusinessApplication', 'operatingSystem' => 'Web', 'offers' => ['@type' => 'Offer', 'price' => '0', 'priceCurrency' => 'USD'], 'description' => 'Reclaim unused Zoom licenses before your renewal.', 'url' => url('/')]">
 
     <x-slot name="hero">
-        <div class="flex max-w-2xl flex-col items-center gap-5 pt-6 text-center">
-            <h1 class="text-[40px] font-normal leading-[1.05] tracking-[-0.02em] text-white sm:text-[48px] md:text-[56px]" style="text-wrap:balance">{{ __('Stop paying for seats no one is sitting in.') }}</h1>
-            <p class="max-w-lg text-[16px] leading-[1.6] text-white">{{ __('SeatTrim finds the Zoom licenses nobody uses and downgrades them safely, so you buy fewer seats and pay for fewer at renewal.') }}</p>
-            <div class="flex flex-wrap justify-center gap-3 pt-1">
-                <a href="{{ route('register') }}" class="inline-flex h-11 items-center rounded-full bg-white px-5 text-sm font-medium text-ink-900 shadow-card transition hover:bg-brand-50 active:scale-[.98]">↳ {{ __('Scan my Zoom account') }}</a>
-                <a href="{{ route('demo') }}" class="inline-flex h-11 items-center rounded-full border border-white/60 px-5 text-sm font-medium text-white transition hover:bg-white/15 active:scale-[.98]">{{ __('See a sample report') }}</a>
-            </div>
-            <p class="text-[13px] text-white">{{ __('Free plan: unlimited scans and the full report. No card.') }}</p>
-        </div>
+        <x-public.page-hero size="display" :heading="__('Stop paying for seats no one is sitting in.')" :intro="__('SeatTrim finds the Zoom licenses nobody uses and downgrades them safely, so you buy fewer seats and pay for fewer at renewal.')">
+            <x-slot name="actions">
+                <x-public.field-button :href="route('register')">↳ {{ __('Scan my Zoom account') }}</x-public.field-button>
+                <x-public.field-button :href="route('demo')" variant="outline">{{ __('See a sample report') }}</x-public.field-button>
+            </x-slot>
+            <x-slot name="note">{{ __('Free plan: unlimited scans and the full report. No card.') }}</x-slot>
+        </x-public.page-hero>
 
         {{-- Product cards tilted into the fold, floating status pills around them (numbers from the demo account). --}}
         <div class="relative mt-4 h-[300px] w-full max-w-3xl">
