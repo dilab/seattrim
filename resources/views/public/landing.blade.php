@@ -4,7 +4,7 @@
     :jsonLd="['@context' => 'https://schema.org', '@type' => 'SoftwareApplication', 'name' => 'SeatTrim', 'applicationCategory' => 'BusinessApplication', 'operatingSystem' => 'Web', 'offers' => ['@type' => 'Offer', 'price' => '0', 'priceCurrency' => 'USD'], 'description' => 'Reclaim unused Zoom licenses before your renewal.', 'url' => url('/')]">
 
     <x-slot name="hero">
-        <x-public.page-hero size="display" :heading="__('Stop paying for seats no one is sitting in.')" :intro="__('SeatTrim finds the Zoom licenses nobody uses and downgrades them safely, so you buy fewer seats and pay for fewer at renewal.')">
+        <x-public.page-hero size="display" :label="__('For Zoom admins with 50–2,000 seats')" :heading="__('Stop paying for seats no one is sitting in.')" :intro="__('SeatTrim finds the Zoom licenses nobody uses and downgrades them safely, so you buy fewer seats and pay for fewer at renewal.')">
             <x-slot name="actions">
                 <x-public.field-button :href="route('register')">↳ {{ __('Scan my Zoom account') }}</x-public.field-button>
                 <x-public.field-button :href="route('demo')" variant="outline">{{ __('See a sample report') }}</x-public.field-button>
