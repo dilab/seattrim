@@ -1,15 +1,16 @@
 @props(['title', 'description'])
 <x-layouts::public :title="$title" :description="$description">
-    <div class="grid gap-10 md:grid-cols-[220px_1fr]">
-        <nav class="text-sm">
-            <div class="font-semibold">{{ __('Documentation') }}</div>
-            <ul class="mt-3 space-y-2">
+    <div class="grid gap-8 pt-6 md:grid-cols-[220px_1fr]">
+        <nav class="md:sticky md:top-28 md:self-start" aria-label="Documentation">
+            <x-public.section-label>{{ __('Documentation') }}</x-public.section-label>
+            <ul class="mt-4 flex flex-col gap-1 border-l border-ink-200 text-[13px]">
                 @foreach (['index' => __('Overview'), 'add-the-app' => __('Adding the app'), 'using-seattrim' => __('Using SeatTrim'), 'remove-the-app' => __('Removing the app and your data'), 'troubleshooting' => __('Troubleshooting'), 'faq' => __('FAQ')] as $slug => $label)
-                    <li><a href="{{ $slug === 'index' ? route('docs.index') : route('docs.show', $slug) }}" class="hover:underline {{ (request()->routeIs('docs.index') && $slug === 'index') || request()->route('page') === $slug ? 'font-semibold text-blue-600' : '' }}">{{ $label }}</a></li>
+                    @php($active = (request()->routeIs('docs.index') && $slug === 'index') || request()->route('page') === $slug)
+                    <li><a href="{{ $slug === 'index' ? route('docs.index') : route('docs.show', $slug) }}" class="block py-1 pl-4 {{ $active ? '-ml-px border-l-2 border-coral-500 font-medium text-ink-900' : 'text-ink-400 hover:text-ink-700' }}">{{ $label }}</a></li>
                 @endforeach
             </ul>
         </nav>
-        <article class="prose prose-zinc max-w-none dark:prose-invert">
+        <article class="prose max-w-none rounded-3xl bg-white p-6 shadow-card sm:p-8">
             {{ $slot }}
         </article>
     </div>

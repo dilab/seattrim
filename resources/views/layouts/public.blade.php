@@ -1,11 +1,13 @@
-@props(['title' => null, 'description' => null, 'canonical' => null, 'noindex' => false, 'jsonLd' => null])
+@props(['title' => null, 'description' => null, 'canonical' => null, 'noindex' => false, 'jsonLd' => null, 'hero' => false])
+{{-- Marketing layout (design-system.html): cool page ground, Manrope, wordmark left + pill nav + one primary pill,
+     white floating bar by default or a glassy bar inside the hero field when $hero is set. Light only. --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{{ filled($title) ? $title.' · '.config('app.name') : config('app.name').' · Reclaim unused Zoom licenses' }}</title>
-        <meta name="description" content="{{ $description ?? 'SeatTrim connects to your Zoom account, finds licensed seats nobody uses, and lets you downgrade them safely before your renewal.' }}">
+        <meta name="description" content="{{ $description ?? 'SeatTrim finds the Zoom licenses nobody uses and downgrades them safely, so you buy fewer seats and pay for fewer at renewal.' }}">
         <link rel="canonical" href="{{ $canonical ?? url()->current() }}">
         @if ($noindex)<meta name="robots" content="noindex,follow">@endif
         <meta property="og:type" content="website">
@@ -15,7 +17,8 @@
         <meta property="og:url" content="{{ $canonical ?? url()->current() }}">
         <meta property="og:image" content="{{ asset('og-image.png') }}">
         <meta name="twitter:card" content="summary_large_image">
-        <link rel="icon" href="/favicon.ico" sizes="any">
+        <meta name="theme-color" content="#3d7bff">
+        <link rel="icon" href="/favicon.ico" sizes="32x32">
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
         @if ($jsonLd)
@@ -23,69 +26,115 @@
         @endif
         @fonts
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @fluxAppearance
     </head>
-    <body class="min-h-screen bg-white text-zinc-800 antialiased dark:bg-zinc-900 dark:text-zinc-100">
-        <header class="border-b border-zinc-200 dark:border-zinc-800">
-            <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
-                <a href="{{ route('home') }}" class="flex items-center gap-2 font-semibold">
-                    <x-app-logo-icon class="size-7 fill-current text-blue-600" />
-                    <span>{{ config('app.name') }}</span>
-                </a>
-                <nav class="hidden items-center gap-6 text-sm md:flex">
-                    <a href="{{ route('pricing') }}" class="hover:underline">{{ __('Pricing') }}</a>
-                    <a href="{{ route('free-audit') }}" class="hover:underline">{{ __('Free audit') }}</a>
-                    <a href="{{ route('docs.index') }}" class="hover:underline">{{ __('Docs') }}</a>
-                    <a href="{{ route('blog.index') }}" class="hover:underline">{{ __('Blog') }}</a>
-                </nav>
-                <div class="flex items-center gap-2">
-                    @auth
-                        <flux:button :href="route('dashboard')" size="sm" variant="primary">{{ __('Dashboard') }}</flux:button>
-                    @else
-                        <flux:button :href="route('login')" size="sm" variant="ghost">{{ __('Log in') }}</flux:button>
-                        <flux:button :href="route('register')" size="sm" variant="primary">{{ __('Get started') }}</flux:button>
-                    @endauth
-                </div>
-            </div>
-        </header>
+    <body class="min-h-screen bg-page font-display text-ink-900 antialiased">
+        @php($nav = [
+            ['label' => 'Product', 'route' => 'home', 'active' => request()->routeIs('home')],
+            ['label' => 'Pricing', 'route' => 'pricing', 'active' => request()->routeIs('pricing')],
+            ['label' => 'Free audit', 'route' => 'free-audit', 'active' => request()->routeIs('free-audit')],
+            ['label' => 'Docs', 'route' => 'docs.index', 'active' => request()->routeIs('docs.*')],
+            ['label' => 'Blog', 'route' => 'blog.index', 'active' => request()->routeIs('blog.*')],
+        ])
 
-        <main class="mx-auto w-full max-w-6xl px-4 py-10">
-            {{ $slot }}
-        </main>
+        <div class="mx-auto flex w-full max-w-[1180px] flex-col gap-24 px-4 py-4 sm:px-6 md:gap-32">
+            @if ($hero)
+                {{-- Hero field: light gradient + masked halftone, glassy nav inside, then the page's hero slot. --}}
+                <div class="relative overflow-hidden rounded-4xl shadow-float" style="background:radial-gradient(ellipse 55% 60% at 8% 95%, #f2a9d4 0%, rgba(242,169,212,0) 65%), radial-gradient(ellipse 45% 70% at 95% 80%, #e6b8e2 0%, rgba(230,184,226,0) 60%), radial-gradient(ellipse 90% 90% at 50% -10%, #5f8ffb 0%, #8fb3ff 45%, #c9d6fb 100%)">
+                    <div class="pointer-events-none absolute inset-0 opacity-50" style="background-image:radial-gradient(rgba(255,255,255,.8) 1px, transparent 1.3px);background-size:9px 9px;mask-image:radial-gradient(ellipse 55% 45% at 50% 70%, #000 0%, transparent 100%);-webkit-mask-image:radial-gradient(ellipse 55% 45% at 50% 70%, #000 0%, transparent 100%)"></div>
+                    <div class="relative flex flex-col items-center gap-8 px-5 pt-5 sm:px-8 sm:pt-6">
+                        <div class="flex w-full items-center justify-between gap-3">
+                            <a href="{{ route('home') }}" class="flex items-center gap-2 text-white" aria-label="SeatTrim home">
+                                <x-app-logo-icon class="size-8 text-white" />
+                                <span class="text-[17px] tracking-tight"><span class="font-semibold">Seat</span><span class="font-normal text-white/80">Trim</span></span>
+                            </a>
+                            <nav class="hidden gap-1 rounded-full border border-white/30 bg-white/25 p-1 backdrop-blur md:inline-flex" aria-label="Main">
+                                @foreach ($nav as $item)
+                                    <a href="{{ route($item['route']) }}" class="inline-flex h-8 items-center gap-1.5 rounded-full px-3.5 text-[13px] {{ $item['active'] ? 'bg-white/90 font-medium text-ink-900' : 'text-white hover:bg-white/20' }}">
+                                        @if ($item['active'])<span class="size-1 rounded-full bg-brand-500"></span>@endif{{ __($item['label']) }}
+                                    </a>
+                                @endforeach
+                            </nav>
+                            <div class="flex items-center gap-2">
+                                @auth
+                                    <a href="{{ route('dashboard') }}" class="inline-flex h-9 items-center rounded-full bg-white px-4 text-[13px] font-medium text-ink-900 shadow-card hover:bg-brand-50">↳ {{ __('Open dashboard') }}</a>
+                                @else
+                                    <a href="{{ route('login') }}" class="hidden h-9 items-center rounded-full px-3 text-[13px] text-white hover:bg-white/15 sm:inline-flex">{{ __('Log in') }}</a>
+                                    <a href="{{ route('register') }}" class="inline-flex h-9 items-center rounded-full bg-white px-4 text-[13px] font-medium text-ink-900 shadow-card hover:bg-brand-50">↳ {{ __('Try for free') }}</a>
+                                @endauth
+                                <x-public.mobile-menu :nav="$nav" on-hero />
+                            </div>
+                        </div>
+                        {{ $hero }}
+                    </div>
+                </div>
+            @else
+                <header class="sticky top-4 z-30 flex h-[64px] items-center justify-between gap-3 rounded-3xl border border-white bg-white/80 px-4 shadow-card backdrop-blur sm:h-[76px] sm:px-6">
+                    <a href="{{ route('home') }}" class="flex items-center gap-2" aria-label="SeatTrim home">
+                        <x-app-logo-icon class="size-8 text-brand-500" />
+                        <x-app-wordmark class="text-[17px]" />
+                    </a>
+                    <nav class="hidden gap-1 rounded-full border border-white bg-brand-50/70 p-1 md:inline-flex" aria-label="Main">
+                        @foreach ($nav as $item)
+                            <a href="{{ route($item['route']) }}" class="inline-flex h-8 items-center gap-1.5 rounded-full px-3.5 text-[13px] {{ $item['active'] ? 'bg-white font-medium text-ink-900 shadow-sm' : 'text-ink-500 hover:text-ink-900' }}">
+                                @if ($item['active'])<span class="size-1 rounded-full bg-brand-500"></span>@endif{{ __($item['label']) }}
+                            </a>
+                        @endforeach
+                    </nav>
+                    <div class="flex items-center gap-2">
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="inline-flex h-9 items-center rounded-full bg-ink-900 px-4 text-[13px] font-medium text-white hover:bg-ink-700">↳ {{ __('Open dashboard') }}</a>
+                        @else
+                            <a href="{{ route('login') }}" class="hidden h-9 items-center rounded-full px-3 text-[13px] text-ink-500 hover:bg-ink-100 hover:text-ink-900 sm:inline-flex">{{ __('Log in') }}</a>
+                            <a href="{{ route('register') }}" class="inline-flex h-9 items-center rounded-full bg-ink-900 px-4 text-[13px] font-medium text-white hover:bg-ink-700">↳ {{ __('Try for free') }}</a>
+                        @endauth
+                        <x-public.mobile-menu :nav="$nav" />
+                    </div>
+                </header>
+            @endif
 
-        <footer class="mt-16 border-t border-zinc-200 py-10 text-sm text-zinc-500 dark:border-zinc-800">
-            <div class="mx-auto grid max-w-6xl gap-8 px-4 md:grid-cols-4">
-                <div>
-                    <div class="font-semibold text-zinc-700 dark:text-zinc-200">{{ config('app.name') }}</div>
-                    <p class="mt-2">{{ __('Reclaim unused Zoom licenses. A product of StaticMaker Pte Ltd, Singapore.') }}</p>
-                    <p class="mt-2">{{ __('SeatTrim is not affiliated with Zoom Video Communications, Inc.') }}</p>
+            <main class="flex flex-col gap-24 md:gap-32">
+                {{ $slot }}
+            </main>
+
+            <footer class="flex flex-col gap-10 rounded-3xl bg-white p-6 shadow-card sm:p-8">
+                <div class="grid grid-cols-2 gap-8 text-[13px] md:grid-cols-[180px_repeat(4,1fr)]">
+                    <div class="col-span-2 md:col-span-1">
+                        <a href="{{ route('home') }}" class="inline-flex h-9 items-center gap-2 rounded-full bg-brand-50 px-3 text-brand-600" aria-label="SeatTrim home">
+                            <x-app-logo-icon class="size-5 text-brand-500" />
+                            <x-app-wordmark class="text-[14px] text-ink-900" />
+                        </a>
+                        <p class="mt-4 text-xs leading-relaxed text-ink-500">{{ __('Quiet software for seats nobody is sitting in. A product of StaticMaker Pte Ltd, Singapore.') }}</p>
+                    </div>
+                    <div class="flex flex-col gap-2.5">
+                        <div class="font-medium text-ink-900">{{ __('Product') }}</div>
+                        <a href="{{ route('home') }}#how" class="text-ink-500 hover:text-ink-900">{{ __('How it works') }}</a>
+                        <a href="{{ route('pricing') }}" class="text-ink-500 hover:text-ink-900">{{ __('Pricing') }}</a>
+                        <a href="{{ route('free-audit') }}" class="text-ink-500 hover:text-ink-900">{{ __('Free Zoom license audit') }}</a>
+                        <a href="{{ route('demo') }}" class="text-ink-500 hover:text-ink-900">{{ __('Live demo') }}</a>
+                    </div>
+                    <div class="flex flex-col gap-2.5">
+                        <div class="font-medium text-ink-900">{{ __('Resources') }}</div>
+                        <a href="{{ route('docs.index') }}" class="text-ink-500 hover:text-ink-900">{{ __('Documentation') }}</a>
+                        <a href="{{ route('docs.show', 'add-the-app') }}" class="text-ink-500 hover:text-ink-900">{{ __('Adding the app') }}</a>
+                        <a href="{{ route('docs.show', 'remove-the-app') }}" class="text-ink-500 hover:text-ink-900">{{ __('Removing the app') }}</a>
+                        <a href="{{ route('blog.index') }}" class="text-ink-500 hover:text-ink-900">{{ __('Blog') }}</a>
+                    </div>
+                    <div class="flex flex-col gap-2.5">
+                        <div class="font-medium text-ink-900">{{ __('Company') }}</div>
+                        <a href="{{ route('support') }}" class="text-ink-500 hover:text-ink-900">{{ __('Support') }}</a>
+                        <a href="mailto:hello@seattrim.com" class="text-ink-500 hover:text-ink-900">{{ __('Contact') }}</a>
+                    </div>
+                    <div class="flex flex-col gap-2.5">
+                        <div class="font-medium text-ink-900">{{ __('Legal') }}</div>
+                        <a href="{{ route('privacy') }}" class="text-ink-500 hover:text-ink-900">{{ __('Privacy') }}</a>
+                        <a href="{{ route('terms') }}" class="text-ink-500 hover:text-ink-900">{{ __('Terms') }}</a>
+                    </div>
                 </div>
-                <div>
-                    <div class="font-semibold text-zinc-700 dark:text-zinc-200">{{ __('Product') }}</div>
-                    <ul class="mt-2 space-y-1">
-                        <li><a href="{{ route('pricing') }}" class="hover:underline">{{ __('Pricing') }}</a></li>
-                        <li><a href="{{ route('free-audit') }}" class="hover:underline">{{ __('Free Zoom license audit') }}</a></li>
-                        <li><a href="{{ route('demo') }}" class="hover:underline">{{ __('Live demo') }}</a></li>
-                    </ul>
+                <div class="flex flex-wrap items-center justify-between gap-3 border-t border-ink-100 pt-6 text-xs text-ink-400">
+                    <span>{{ __('SeatTrim is not affiliated with Zoom Video Communications, Inc.') }}</span>
+                    <span class="inline-flex h-7 items-center gap-2 rounded-full bg-ink-100 px-3 text-[11px] font-medium text-ink-700">{{ __('Available on Zoom App Marketplace') }}</span>
                 </div>
-                <div>
-                    <div class="font-semibold text-zinc-700 dark:text-zinc-200">{{ __('Help') }}</div>
-                    <ul class="mt-2 space-y-1">
-                        <li><a href="{{ route('docs.index') }}" class="hover:underline">{{ __('Documentation') }}</a></li>
-                        <li><a href="{{ route('docs.show', 'add-the-app') }}" class="hover:underline">{{ __('Adding the app') }}</a></li>
-                        <li><a href="{{ route('docs.show', 'remove-the-app') }}" class="hover:underline">{{ __('Removing the app') }}</a></li>
-                        <li><a href="{{ route('support') }}" class="hover:underline">{{ __('Support') }}</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <div class="font-semibold text-zinc-700 dark:text-zinc-200">{{ __('Legal') }}</div>
-                    <ul class="mt-2 space-y-1">
-                        <li><a href="{{ route('privacy') }}" class="hover:underline">{{ __('Privacy policy') }}</a></li>
-                        <li><a href="{{ route('terms') }}" class="hover:underline">{{ __('Terms of service') }}</a></li>
-                    </ul>
-                </div>
-            </div>
-        </footer>
-        @fluxScripts
+            </footer>
+        </div>
     </body>
 </html>

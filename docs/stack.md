@@ -68,3 +68,16 @@ the M0 summary.
 | `composer lint` | Pint, fixing. |
 | `composer dev` | `php artisan dev` (server, queue, logs, vite). |
 | `npm run build` / `npm run dev` | Vite. |
+
+## Brand assets
+
+- Source kit: `resources/brand/` (`svg/`, `png/`, `README.md`). Never edit these; they are the master files.
+- Web copies: `public/brand/` (metadata-stripped SVGs and PNG app icons), `public/favicon.svg`, `public/favicon.ico`
+  (32+16 from the kit PNGs), `public/apple-touch-icon.png` (180), `public/og-image.png` (rendered from
+  `social-1200x630.svg` with Manrope). Regenerate with the Python/rsvg steps recorded in git history if the kit changes.
+- Blade: `<x-app-logo-icon>` (mark, `currentColor` dots + blush ring), `<x-app-wordmark>` (Seat 600 / Trim 400 blue),
+  `<x-app-logo>` (lockup for sidebar/header).
+- Marketing site: `design-system.html` at the repo root is the reference; its tokens live in `resources/css/app.css`
+  (`@theme`: brand/ink/mint/blush/coral/lav colors, `shadow-card`, `shadow-float`, 28/36px radii, Manrope as
+  `font-display`). Layout `resources/views/layouts/public.blade.php`, helpers in `resources/views/components/public/`.
+  Marketing pages are light-only by design; the app keeps Flux light/dark.

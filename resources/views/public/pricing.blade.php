@@ -1,47 +1,48 @@
 <x-layouts::public :title="__('Pricing')" :description="__('SeatTrim pricing: free audit and report, paid plans from $290 per year by licensed seats. Annual billing, cancel any time.')">
-    <h1 class="text-4xl font-semibold tracking-tight">{{ __('Simple annual pricing') }}</h1>
-    <p class="mt-3 max-w-2xl text-zinc-600 dark:text-zinc-300">{{ __('Priced by the licensed seats SeatTrim finds in your Zoom account. Billed yearly, because that is when your Zoom seat count actually changes. The free plan never limits scans or the report.') }}</p>
+    <section class="flex flex-col items-center gap-4 pt-6 text-center">
+        <x-public.section-label>{{ __('Pricing') }}</x-public.section-label>
+        <h1 class="max-w-3xl text-[36px] font-light leading-[1.1] tracking-[-0.02em] md:text-[48px]" style="text-wrap:balance">{{ __('Priced by the seats you have.') }} <span class="text-ink-400">{{ __('Paid once a year, like Zoom.') }}</span></h1>
+        <p class="max-w-xl text-[15px] leading-relaxed text-ink-500">{{ __('Tiers follow the licensed seats SeatTrim finds in your latest scan. The free plan never limits scans or the report.') }}</p>
+    </section>
 
-    <div class="mt-10 grid gap-4 md:grid-cols-4">
+    <section class="grid gap-6 md:grid-cols-4">
         @foreach (App\Billing\Plans::all() as $plan)
-            <div class="flex flex-col rounded-2xl border p-6 {{ $plan->key === 'growth' ? 'border-blue-500' : 'border-zinc-200 dark:border-zinc-700' }}">
-                <div class="text-lg font-semibold">{{ $plan->name }}</div>
-                <div class="mt-2 text-3xl font-semibold">{{ $plan->isFree() ? __('Free') : App\Support\Money::format($plan->priceCents, 'USD') }}<span class="text-base font-normal text-zinc-500">{{ $plan->isFree() ? '' : '/'.__('yr') }}</span></div>
-                <div class="mt-1 text-sm text-zinc-500">{{ $plan->seatLimit === null ? __('any account size') : __('up to :n licensed seats', ['n' => $plan->seatLimit]) }}</div>
-                <ul class="mt-4 flex-1 space-y-2 text-sm">
-                    <li>✓ {{ __('Connect, daily scan, full report') }}</li>
-                    <li>✓ {{ __('Downgrade and restore one user at a time') }}</li>
+            <div class="flex flex-col gap-4 rounded-3xl bg-white p-6 shadow-card {{ $plan->key === 'growth' ? 'ring-2 ring-brand-500' : '' }}">
+                <div class="flex items-center justify-between">
+                    <div class="text-[15px] font-medium">{{ $plan->name }}</div>
+                    @if ($plan->key === 'growth')<x-public.pill tone="brand">{{ __('Most chosen') }}</x-public.pill>@endif
+                </div>
+                <div class="text-[40px] leading-none tracking-tight">{{ $plan->isFree() ? __('Free') : App\Support\Money::format($plan->priceCents, 'USD') }}@if (! $plan->isFree())<span class="ml-1 text-[16px] text-ink-400">/{{ __('yr') }}</span>@endif</div>
+                <div class="text-[13px] text-ink-500">{{ $plan->seatLimit === null ? __('any account size') : __('up to :n licensed seats', ['n' => $plan->seatLimit]) }}</div>
+                <ul class="flex flex-1 flex-col gap-2 text-[13px] text-ink-700">
+                    <li class="flex gap-2"><span class="text-brand-500">—</span>{{ __('Connect, daily scan, full report') }}</li>
+                    <li class="flex gap-2"><span class="text-brand-500">—</span>{{ __('Downgrade and restore one user at a time') }}</li>
                     @if ($plan->isFree())
-                        <li>✓ {{ __('1 admin') }}</li>
+                        <li class="flex gap-2"><span class="text-brand-500">—</span>{{ __('1 admin') }}</li>
                     @else
-                        <li>✓ {{ __('Bulk downgrade and restore') }}</li>
-                        <li>✓ {{ __('Automation: warning email, keep-my-license link, dry run') }}</li>
-                        <li>✓ {{ __('Weekly digest and renewal reminders') }}</li>
-                        <li>✓ {{ __('CSV export of the audit log') }}</li>
-                        <li>✓ {{ __('Multiple admins and viewers') }}</li>
+                        <li class="flex gap-2"><span class="text-brand-500">—</span>{{ __('Bulk downgrade and restore') }}</li>
+                        <li class="flex gap-2"><span class="text-brand-500">—</span>{{ __('Automation: warning email, keep-my-license link, dry run') }}</li>
+                        <li class="flex gap-2"><span class="text-brand-500">—</span>{{ __('Weekly digest and renewal reminders') }}</li>
+                        <li class="flex gap-2"><span class="text-brand-500">—</span>{{ __('CSV export of the audit log') }}</li>
+                        <li class="flex gap-2"><span class="text-brand-500">—</span>{{ __('Multiple admins and viewers') }}</li>
                     @endif
                 </ul>
-                <flux:button :href="route('register')" class="mt-6" :variant="$plan->key === 'growth' ? 'primary' : 'filled'">{{ $plan->isFree() ? __('Start free') : __('Start with :plan', ['plan' => $plan->name]) }}</flux:button>
+                <a href="{{ route('register') }}" class="inline-flex h-11 items-center justify-center rounded-full text-sm font-medium transition active:scale-[.98] {{ $plan->key === 'growth' ? 'bg-ink-900 text-white hover:bg-ink-700' : 'bg-brand-50 text-brand-600 hover:bg-brand-100' }}">{{ $plan->isFree() ? __('Start free') : '↳ '.__('Start with :plan', ['plan' => $plan->name]) }}</a>
             </div>
         @endforeach
-    </div>
+    </section>
 
-    <div class="mt-12 grid gap-6 md:grid-cols-2">
-        <div>
-            <h2 class="font-semibold">{{ __('What happens if my account grows past the tier?') }}</h2>
-            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300">{{ __('You get a banner and 14 days to move up. After that, paid features pause until you do. Scans and the report keep working.') }}</p>
-        </div>
-        <div>
-            <h2 class="font-semibold">{{ __('Why annual only?') }}</h2>
-            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300">{{ __('Zoom renews yearly for most organizations, and the seat count only changes then. An annual plan keeps SeatTrim watching in the months that matter instead of being switched on for one clean-up.') }}</p>
-        </div>
-        <div>
-            <h2 class="font-semibold">{{ __('Does SeatTrim change my Zoom bill?') }}</h2>
-            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300">{{ __('No. It frees seats and tells you the number to cut. You change the quantity in Zoom Billing, usually at renewal.') }}</p>
-        </div>
-        <div>
-            <h2 class="font-semibold">{{ __('Who is behind it?') }}</h2>
-            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300">{{ __('StaticMaker Pte Ltd, Singapore. Payments are processed by Stripe; invoices come from Stripe.') }}</p>
-        </div>
-    </div>
+    <section class="grid gap-6 rounded-3xl bg-white p-6 shadow-card sm:p-8 md:grid-cols-2">
+        @foreach ([
+            [__('What happens if my account grows past the tier?'), __('You get a banner and 14 days to move up. After that, paid features pause until you do. Scans and the report keep working.')],
+            [__('Why annual only?'), __('Zoom renews yearly for most organizations, and the seat count only changes then. An annual plan keeps SeatTrim watching in the months that matter instead of being switched on for one clean-up.')],
+            [__('Does SeatTrim change my Zoom bill?'), __('No. It frees seats and tells you the number to cut. You change the quantity in Zoom Billing, usually at renewal.')],
+            [__('Who is behind it?'), __('StaticMaker Pte Ltd, Singapore. Payments and invoices are handled by Stripe.')],
+        ] as [$q, $a])
+            <div class="flex flex-col gap-2">
+                <div class="text-[15px] font-medium">{{ $q }}</div>
+                <p class="text-[13px] leading-relaxed text-ink-500">{{ $a }}</p>
+            </div>
+        @endforeach
+    </section>
 </x-layouts::public>

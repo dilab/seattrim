@@ -23,16 +23,53 @@
     --color-zinc-900: #171717;
     --color-zinc-950: #0a0a0a;
 
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
+    /* Brand (design-system.html): Manrope display face, brand blue is the only action color,
+       ink neutrals carry the page, blush/mint/coral/lavender are status and atmosphere only. */
+    --font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+
+    --color-page: #eef1f7;
+    --color-brand-50: #edf3ff;
+    --color-brand-100: #dbe7ff;
+    --color-brand-200: #b9cfff;
+    --color-brand-300: #8fb3ff;
+    --color-brand-400: #6d9bff;
+    --color-brand-500: #3d7bff;
+    --color-brand-600: #2c63e0;
+    --color-brand-700: #1f4bb3;
+    --color-ink-100: #f2f4f8;
+    --color-ink-200: #e2e6ee;
+    --color-ink-400: #9aa1ad;
+    --color-ink-500: #6b7280;
+    --color-ink-700: #3a4150;
+    --color-ink-900: #0f1420;
+    --color-mint-100: #dff6e6;
+    --color-mint-500: #2eb872;
+    --color-mint-700: #1f8a55;
+    --color-blush-100: #fbe3f2;
+    --color-blush-400: #f07fc4;
+    --color-blush-500: #e457ad;
+    --color-coral-100: #fde8e4;
+    --color-coral-500: #ee6f5a;
+    --color-lav-100: #eceefc;
+    --color-lav-200: #d9ddfb;
+    --color-lav-400: #a9b1f5;
+
+    --radius-3xl: 28px;
+    --radius-4xl: 36px;
+    --shadow-card: 0 1px 2px rgba(15, 20, 32, 0.04), 0 12px 32px -12px rgba(15, 20, 32, 0.12);
+    --shadow-float: 0 24px 60px -20px rgba(31, 75, 179, 0.25), 0 2px 6px rgba(15, 20, 32, 0.06);
+
+    /* The application accent is the brand blue. */
+    --color-accent: var(--color-brand-500);
+    --color-accent-content: var(--color-brand-600);
     --color-accent-foreground: var(--color-white);
 }
 
 @layer theme {
     .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
+        --color-accent: var(--color-brand-400);
+        --color-accent-content: var(--color-brand-300);
+        --color-accent-foreground: var(--color-white);
     }
 }
 
@@ -65,21 +102,20 @@ select:focus[data-flux-control] {
     @apply size-4;
 } */
 
-/* Minimal article styling for docs, legal and blog pages (no typography plugin). */
-.prose { line-height: 1.7; color: var(--color-zinc-700); }
-.prose h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 1rem; color: var(--color-zinc-900); }
-.prose h2 { font-size: 1.25rem; font-weight: 600; margin: 2rem 0 0.5rem; color: var(--color-zinc-900); }
+/* Article styling for docs, legal and blog pages (design-system.html type scale; no typography plugin). */
+.prose { font-size: 15px; line-height: 1.6; color: var(--color-ink-700); }
+.prose h1 { font-size: 32px; font-weight: 300; line-height: 1.15; letter-spacing: -0.015em; margin: 0 0 1rem; color: var(--color-ink-900); }
+.prose h2 { font-size: 18px; font-weight: 500; line-height: 1.3; margin: 2rem 0 0.5rem; color: var(--color-ink-900); }
 .prose p, .prose ul, .prose ol, .prose table { margin: 0.75rem 0; }
 .prose ul { list-style: disc; padding-inline-start: 1.5rem; }
 .prose ol { list-style: decimal; padding-inline-start: 1.5rem; }
 .prose li { margin: 0.25rem 0; }
-.prose a { color: var(--color-blue-600); text-decoration: underline; }
-.prose code { font-size: 0.875em; background: var(--color-zinc-100); padding: 0.1em 0.35em; border-radius: 0.25rem; }
-.prose table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-.prose th, .prose td { text-align: start; padding: 0.5rem; border-bottom: 1px solid var(--color-zinc-200); vertical-align: top; }
-.prose .lead { font-size: 1.125rem; color: var(--color-zinc-600); }
-.dark .prose, .prose-invert { color: var(--color-zinc-300); }
-.dark .prose h1, .dark .prose h2 { color: var(--color-zinc-50); }
-.dark .prose code { background: var(--color-zinc-800); }
-.dark .prose th, .dark .prose td { border-color: var(--color-zinc-700); }
-.dark .prose a { color: var(--color-blue-400); }
+.prose a { color: var(--color-brand-600); text-decoration: underline; text-underline-offset: 2px; }
+.prose a:hover { color: var(--color-brand-700); }
+.prose strong { color: var(--color-ink-900); font-weight: 500; }
+.prose code { font-size: 0.875em; background: var(--color-ink-100); padding: 0.1em 0.4em; border-radius: 6px; color: var(--color-ink-900); }
+.prose table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.prose th, .prose td { text-align: start; padding: 0.5rem; border-bottom: 1px solid var(--color-ink-200); vertical-align: top; }
+.prose th { color: var(--color-ink-900); font-weight: 500; }
+.prose .lead { font-size: 18px; font-weight: 300; color: var(--color-ink-500); }
+.prose .not-prose { margin: 1rem 0; }
