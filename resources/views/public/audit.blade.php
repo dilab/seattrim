@@ -6,8 +6,8 @@
                 <a href="{{ route('demo') }}" class="inline-flex h-11 items-center rounded-full border border-white/60 px-5 text-sm font-medium text-white transition hover:bg-white/15 active:scale-[.98]">{{ __('See a sample report first') }}</a>
             </x-slot>
             <x-slot name="aside">
-                <div class="text-[13px] font-medium text-ink-900">{{ __('What you need') }}</div>
-                <ul class="flex flex-col gap-2.5 text-[13px] leading-relaxed text-ink-700">
+                <div class="text-[14px] font-medium text-ink-900">{{ __('What you need') }}</div>
+                <ul class="flex flex-col gap-2.5 text-[14px] leading-[1.5] text-ink-700">
                     <li class="flex gap-3"><span class="text-brand-500">—</span>{{ __('A Zoom account on Pro, Business, Education or Enterprise. The host report is not available on free Zoom accounts.') }}</li>
                     <li class="flex gap-3"><span class="text-brand-500">—</span>{{ __('Owner or admin role in Zoom, with permission to view usage reports and manage users.') }}</li>
                     <li class="flex gap-3"><span class="text-brand-500">—</span>{{ __('Optional: your per-seat price and renewal date from Zoom Billing, for exact dollar figures.') }}</li>
@@ -28,7 +28,7 @@
                 <li class="flex flex-col gap-3">
                     <span class="flex size-8 items-center justify-center rounded-full bg-brand-50 text-[13px] font-medium text-brand-600">{{ $i + 1 }}</span>
                     <div class="text-[15px] font-medium">{{ $heading }}</div>
-                    <p class="text-[13px] leading-relaxed text-ink-500">{{ $text }}</p>
+                    <p class="text-[15px] leading-[1.6] text-ink-700">{{ $text }}</p>
                 </li>
             @endforeach
         </ol>

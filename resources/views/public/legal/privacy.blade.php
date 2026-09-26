@@ -3,7 +3,7 @@
         <x-public.page-hero :label="__('Legal')" :heading="__('Privacy policy')" :intro="__('Last updated 25 September 2026. Controller: StaticMaker Pte Ltd, Singapore (“we”).')" />
     </x-slot>
 
-    <article class="prose mx-auto w-full max-w-3xl rounded-3xl bg-white p-6 shadow-card sm:p-8 [&>*:first-child]:mt-0">
+    <x-public.article class="mx-auto w-full max-w-3xl">
         <h2>{{ __('What we collect') }}</h2>
         <ul>
             <li><strong>{{ __('Account data:') }}</strong> {{ __('your name, email address and password hash; organization name, timezone, seat price and renewal date you enter; billing records via Stripe (we never see card numbers).') }}</li>
@@ -22,5 +22,5 @@
         <p>{{ __('You can access, correct, export or delete your data from the app or by emailing privacy@seattrim.com. Zoom users who receive a warning email can ask their organization’s admin, who can exclude them or delete the data.') }}</p>
         <h2>{{ __('Contact') }}</h2>
         <p>{{ __('StaticMaker Pte Ltd, Singapore · privacy@seattrim.com') }}</p>
-    </article>
+    </x-public.article>
 </x-layouts::public>

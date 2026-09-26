@@ -11,8 +11,8 @@
                     @if ($plan->key === 'growth')<x-public.pill tone="brand">{{ __('Most chosen') }}</x-public.pill>@endif
                 </div>
                 <div class="text-[40px] leading-none tracking-tight">{{ $plan->isFree() ? __('Free') : App\Support\Money::format($plan->priceCents, 'USD') }}@if (! $plan->isFree())<span class="ml-1 text-[16px] text-ink-400">/{{ __('yr') }}</span>@endif</div>
-                <div class="text-[13px] text-ink-500">{{ $plan->seatLimit === null ? __('any account size') : __('up to :n licensed seats', ['n' => $plan->seatLimit]) }}</div>
-                <ul class="flex flex-1 flex-col gap-2 text-[13px] text-ink-700">
+                <div class="text-[14px] text-ink-500">{{ $plan->seatLimit === null ? __('any account size') : __('up to :n licensed seats', ['n' => $plan->seatLimit]) }}</div>
+                <ul class="flex flex-1 flex-col gap-2 text-[14px] leading-[1.5] text-ink-700">
                     <li class="flex gap-2"><span class="text-brand-500">—</span>{{ __('Connect, daily scan, full report') }}</li>
                     <li class="flex gap-2"><span class="text-brand-500">—</span>{{ __('Downgrade and restore one user at a time') }}</li>
                     @if ($plan->isFree())
@@ -39,7 +39,7 @@
         ] as [$q, $a])
             <div class="flex flex-col gap-2">
                 <div class="text-[15px] font-medium">{{ $q }}</div>
-                <p class="text-[13px] leading-relaxed text-ink-500">{{ $a }}</p>
+                <p class="max-w-prose text-[15px] leading-[1.6] text-ink-700">{{ $a }}</p>
             </div>
         @endforeach
     </section>

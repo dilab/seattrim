@@ -3,18 +3,18 @@
      optional `meta` (pill + date above the h1), `actions` (buttons) and `aside` (glass tile → two columns).
      Carries its own bottom padding so the landing hero, which bleeds to the field's edge, is unaffected. --}}
 @php($twoColumn = isset($aside))
-<div class="w-full pt-2 pb-10 sm:pt-4 sm:pb-14">
+<div class="w-full pt-1 pb-8 sm:pt-2 sm:pb-10">
     <div class="{{ $twoColumn ? 'grid items-start gap-8 md:grid-cols-[1.4fr_1fr]' : 'mx-auto flex max-w-2xl flex-col items-center text-center' }}">
         <div class="flex flex-col gap-4 {{ $twoColumn ? 'items-start' : 'items-center' }}">
             <x-public.section-label glass>{{ $label }}</x-public.section-label>
             @isset($meta)
-                <div class="flex items-center gap-2 text-[12px] text-white/70">{{ $meta }}</div>
+                <div class="flex items-center gap-2 text-[13px] text-white">{{ $meta }}</div>
             @endisset
             @if ($heading)
-                <h1 class="text-[32px] font-light leading-[1.1] tracking-[-0.02em] text-white sm:text-[40px] md:text-[48px]" style="text-wrap:balance">{{ $heading }}@if ($muted) <span class="text-white/70">{{ $muted }}</span>@endif</h1>
+                <h1 class="text-[32px] font-normal leading-[1.1] tracking-[-0.02em] text-white sm:text-[40px] md:text-[48px]" style="text-wrap:balance">{{ $heading }}@if ($muted) <span class="font-light text-brand-100">{{ $muted }}</span>@endif</h1>
             @endif
             @if ($intro)
-                <p class="max-w-xl text-[15px] leading-relaxed text-white/85">{{ $intro }}</p>
+                <p class="max-w-xl text-[16px] leading-[1.6] text-white">{{ $intro }}</p>
             @endif
             @isset($actions)
                 <div class="flex flex-wrap gap-3 pt-1 {{ $twoColumn ? 'justify-start' : 'justify-center' }}">{{ $actions }}</div>

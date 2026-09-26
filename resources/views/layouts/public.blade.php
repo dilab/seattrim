@@ -37,14 +37,15 @@
             ['label' => 'Blog', 'route' => 'blog.index', 'active' => request()->routeIs('blog.*')],
         ])
 
-        <div class="mx-auto flex w-full max-w-[1180px] flex-col gap-24 px-4 py-4 sm:px-6 md:gap-32">
-            <div class="relative overflow-hidden rounded-4xl shadow-float" style="background:radial-gradient(ellipse 55% 60% at 8% 95%, #f2a9d4 0%, rgba(242,169,212,0) 65%), radial-gradient(ellipse 45% 70% at 95% 80%, #e6b8e2 0%, rgba(230,184,226,0) 60%), radial-gradient(ellipse 90% 90% at 50% -10%, #5f8ffb 0%, #8fb3ff 45%, #c9d6fb 100%)">
-                <div class="pointer-events-none absolute inset-0 opacity-50" style="background-image:radial-gradient(rgba(255,255,255,.8) 1px, transparent 1.3px);background-size:9px 9px;mask-image:radial-gradient(ellipse 55% 45% at 50% 70%, #000 0%, transparent 100%);-webkit-mask-image:radial-gradient(ellipse 55% 45% at 50% 70%, #000 0%, transparent 100%)"></div>
+        <div class="mx-auto flex w-full max-w-[1180px] flex-col gap-16 px-4 py-4 sm:px-6 md:gap-20">
+            <div class="relative overflow-hidden rounded-4xl shadow-float" style="background:radial-gradient(ellipse 55% 60% at 8% 95%, #f2a9d4 0%, rgba(242,169,212,0) 65%), radial-gradient(ellipse 45% 70% at 95% 80%, #e6b8e2 0%, rgba(230,184,226,0) 60%), radial-gradient(ellipse 90% 90% at 50% -10%, #2c63e0 0%, #3d7bff 35%, #6d9bff 70%, #b9cfff 100%)">
+                <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(180deg, rgba(31,75,179,.45) 0%, rgba(31,75,179,.15) 45%, rgba(31,75,179,0) 70%)"></div>
+                <div class="pointer-events-none absolute inset-0 opacity-40" style="background-image:radial-gradient(rgba(255,255,255,.8) 1px, transparent 1.3px);background-size:9px 9px;mask-image:radial-gradient(ellipse 55% 45% at 50% 70%, #000 0%, transparent 100%);-webkit-mask-image:radial-gradient(ellipse 55% 45% at 50% 70%, #000 0%, transparent 100%)"></div>
                 <div class="relative flex flex-col items-center gap-8 px-5 pt-5 sm:px-8 sm:pt-6">
                     <div class="flex w-full items-center justify-between gap-3">
                         <a href="{{ route('home') }}" class="flex items-center gap-2 text-white" aria-label="SeatTrim home">
                             <x-app-logo-icon class="size-8 text-white" />
-                            <span class="text-[17px] tracking-tight"><span class="font-semibold">Seat</span><span class="font-normal text-white/80">Trim</span></span>
+                            <span class="text-[17px] tracking-tight"><span class="font-semibold">Seat</span><span class="font-normal text-brand-100">Trim</span></span>
                         </a>
                         <nav class="hidden gap-1 rounded-full border border-white/30 bg-white/25 p-1 backdrop-blur md:inline-flex" aria-label="Main">
                             @foreach ($nav as $item)
@@ -78,7 +79,7 @@
                             <x-app-logo-icon class="size-5 text-brand-500" />
                             <x-app-wordmark class="text-[14px] text-ink-900" />
                         </a>
-                        <p class="mt-4 text-xs leading-relaxed text-ink-500">{{ __('Quiet software for seats nobody is sitting in. A product of StaticMaker Pte Ltd, Singapore.') }}</p>
+                        <p class="mt-4 text-[13px] leading-relaxed text-ink-500">{{ __('Quiet software for seats nobody is sitting in. A product of StaticMaker Pte Ltd, Singapore.') }}</p>
                     </div>
                     <div class="flex flex-col gap-2.5">
                         <div class="font-medium text-ink-900">{{ __('Product') }}</div>
@@ -105,7 +106,7 @@
                         <a href="{{ route('terms') }}" class="text-ink-500 hover:text-ink-900">{{ __('Terms') }}</a>
                     </div>
                 </div>
-                <div class="flex flex-wrap items-center justify-between gap-3 border-t border-ink-100 pt-6 text-xs text-ink-400">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-t border-ink-100 pt-6 text-[13px] text-ink-500">
                     <span>{{ __('SeatTrim is not affiliated with Zoom Video Communications, Inc.') }}</span>
                     <span class="inline-flex h-7 items-center gap-2 rounded-full bg-ink-100 px-3 text-[11px] font-medium text-ink-700">{{ __('Available on Zoom App Marketplace') }}</span>
                 </div>

@@ -3,7 +3,7 @@
         <x-public.page-hero :label="__('Legal')" :heading="__('Terms of service')" :intro="__('Last updated 25 September 2026. These terms are between you (the organization using SeatTrim) and StaticMaker Pte Ltd, Singapore (“StaticMaker”, “we”).')" />
     </x-slot>
 
-    <article class="prose mx-auto w-full max-w-3xl rounded-3xl bg-white p-6 shadow-card sm:p-8 [&>*:first-child]:mt-0">
+    <x-public.article class="mx-auto w-full max-w-3xl">
         <h2>{{ __('The service') }}</h2>
         <p>{{ __('SeatTrim analyses your Zoom account and, when you instruct it, changes users between Licensed and Basic through Zoom’s API. You are responsible for the changes you request or automate, and for lowering seat quantities with Zoom. SeatTrim does not change your Zoom subscription or guarantee any saving.') }}</p>
         <h2>{{ __('Your obligations') }}</h2>
@@ -23,5 +23,5 @@
         <h2>{{ __('Governing law') }}</h2>
         <p>{{ __('Singapore law; courts of Singapore.') }}</p>
         <p>{{ __('SeatTrim is not affiliated with, endorsed by or sponsored by Zoom Video Communications, Inc.') }}</p>
-    </article>
+    </x-public.article>
 </x-layouts::public>

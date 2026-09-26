@@ -48,8 +48,10 @@
     --color-blush-100: #fbe3f2;
     --color-blush-400: #f07fc4;
     --color-blush-500: #e457ad;
+    --color-blush-700: #b0287a;
     --color-coral-100: #fde8e4;
     --color-coral-500: #ee6f5a;
+    --color-coral-700: #bf4530;
     --color-lav-100: #eceefc;
     --color-lav-200: #d9ddfb;
     --color-lav-400: #a9b1f5;
@@ -103,7 +105,10 @@ select:focus[data-flux-control] {
 } */
 
 /* Article styling for docs, legal and blog pages (design-system.html type scale; no typography plugin). */
-.prose { font-size: 15px; line-height: 1.6; color: var(--color-ink-700); }
+.prose { font-size: 16px; line-height: 1.6; color: var(--color-ink-700); max-width: 70ch; }
+.prose.max-w-none { max-width: none; }
+.prose.max-w-none > * { max-width: 70ch; }
+.prose h2 { scroll-margin-top: 1.5rem; }
 .prose h1 { font-size: 32px; font-weight: 300; line-height: 1.15; letter-spacing: -0.015em; margin: 0 0 1rem; color: var(--color-ink-900); }
 .prose h2 { font-size: 18px; font-weight: 500; line-height: 1.3; margin: 2rem 0 0.5rem; color: var(--color-ink-900); }
 .prose p, .prose ul, .prose ol, .prose table { margin: 0.75rem 0; }
@@ -114,7 +119,7 @@ select:focus[data-flux-control] {
 .prose a:hover { color: var(--color-brand-700); }
 .prose strong { color: var(--color-ink-900); font-weight: 500; }
 .prose code { font-size: 0.875em; background: var(--color-ink-100); padding: 0.1em 0.4em; border-radius: 6px; color: var(--color-ink-900); }
-.prose table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.prose table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .prose th, .prose td { text-align: start; padding: 0.5rem; border-bottom: 1px solid var(--color-ink-200); vertical-align: top; }
 .prose th { color: var(--color-ink-900); font-weight: 500; }
 .prose .lead { font-size: 18px; font-weight: 300; color: var(--color-ink-500); }

@@ -13,5 +13,5 @@
             <div class="flex flex-col gap-1 rounded-3xl bg-white p-6 shadow-card"><div class="text-[13px] font-medium text-ink-900">{{ $dt }}</div><div class="text-[15px] text-ink-700">{!! $dd !!}</div></div>
         @endforeach
     </section>
-    <p class="text-[13px] text-ink-500">{{ __('Security issue? Email security@seattrim.com. Please do not include Zoom tokens or personal data in reports.') }}</p>
+    <p class="text-[14px] text-ink-500">{{ __('Security issue? Email security@seattrim.com. Please do not include Zoom tokens or personal data in reports.') }}</p>
 </x-layouts::public>
