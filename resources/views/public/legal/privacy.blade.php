@@ -1,7 +1,9 @@
 <x-layouts::public :title="__('Privacy policy')" :description="__('How SeatTrim (StaticMaker Pte Ltd) collects, uses, stores and deletes data, including data from your Zoom account.')">
-    <article class="prose mx-auto mt-6 w-full max-w-3xl rounded-3xl bg-white p-6 shadow-card sm:p-8">
-        <h1>{{ __('Privacy policy') }}</h1>
-        <p><em>{{ __('Last updated 25 September 2026. Controller: StaticMaker Pte Ltd, Singapore ("we").') }}</em></p>
+    <x-slot name="hero">
+        <x-public.page-hero :label="__('Legal')" :heading="__('Privacy policy')" :intro="__('Last updated 25 September 2026. Controller: StaticMaker Pte Ltd, Singapore (“we”).')" />
+    </x-slot>
+
+    <article class="prose mx-auto w-full max-w-3xl rounded-3xl bg-white p-6 shadow-card sm:p-8 [&>*:first-child]:mt-0">
         <h2>{{ __('What we collect') }}</h2>
         <ul>
             <li><strong>{{ __('Account data:') }}</strong> {{ __('your name, email address and password hash; organization name, timezone, seat price and renewal date you enter; billing records via Stripe (we never see card numbers).') }}</li>

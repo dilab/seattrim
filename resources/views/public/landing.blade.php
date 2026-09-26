@@ -1,5 +1,4 @@
 <x-layouts::public
-    :hero="true"
     :title="__('Reclaim unused Zoom licenses')"
     :description="__('SeatTrim finds the Zoom licenses nobody uses and downgrades them safely, so you buy fewer seats and pay for fewer at renewal.')"
     :jsonLd="['@context' => 'https://schema.org', '@type' => 'SoftwareApplication', 'name' => 'SeatTrim', 'applicationCategory' => 'BusinessApplication', 'operatingSystem' => 'Web', 'offers' => ['@type' => 'Offer', 'price' => '0', 'priceCurrency' => 'USD'], 'description' => 'Reclaim unused Zoom licenses before your renewal.', 'url' => url('/')]">

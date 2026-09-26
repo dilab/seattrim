@@ -1,9 +1,8 @@
 <x-layouts::public :title="__('Support')" :description="__('How to reach SeatTrim support, our hours and response time.')">
-    <section class="flex flex-col gap-5 pt-6">
-        <x-public.section-label>{{ __('Support') }}</x-public.section-label>
-        <h1 class="text-[36px] font-light leading-[1.1] tracking-[-0.02em] md:text-[48px]">{{ __('We answer like a careful colleague.') }}</h1>
-        <p class="max-w-xl text-[15px] leading-relaxed text-ink-500">{{ __('SeatTrim is built and supported by StaticMaker Pte Ltd in Singapore.') }}</p>
-    </section>
+    <x-slot name="hero">
+        <x-public.page-hero :label="__('Support')" :heading="__('We answer like a careful colleague.')" :intro="__('SeatTrim is built and supported by StaticMaker Pte Ltd in Singapore.')" />
+    </x-slot>
+
     <section class="grid gap-6 md:grid-cols-2">
         @foreach ([
             [__('Email'), '<a href="mailto:support@seattrim.com">support@seattrim.com</a>'],

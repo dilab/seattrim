@@ -1,6 +1,7 @@
-@props(['title' => null, 'description' => null, 'canonical' => null, 'noindex' => false, 'jsonLd' => null, 'hero' => false])
-{{-- Marketing layout (design-system.html): cool page ground, Manrope, wordmark left + pill nav + one primary pill,
-     white floating bar by default or a glassy bar inside the hero field when $hero is set. Light only. --}}
+@props(['title' => null, 'description' => null, 'canonical' => null, 'noindex' => false, 'jsonLd' => null])
+{{-- Marketing layout (design-system.html): cool page ground, Manrope, and on every page the light field
+     (blue → lavender → blush gradient with masked halftone dots) holding the glassy pill nav and the page's
+     `hero` slot. Home fills the field with its mockup scene; other pages use <x-public.page-hero>. Light only. --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -37,60 +38,34 @@
         ])
 
         <div class="mx-auto flex w-full max-w-[1180px] flex-col gap-24 px-4 py-4 sm:px-6 md:gap-32">
-            @if ($hero)
-                {{-- Hero field: light gradient + masked halftone, glassy nav inside, then the page's hero slot. --}}
-                <div class="relative overflow-hidden rounded-4xl shadow-float" style="background:radial-gradient(ellipse 55% 60% at 8% 95%, #f2a9d4 0%, rgba(242,169,212,0) 65%), radial-gradient(ellipse 45% 70% at 95% 80%, #e6b8e2 0%, rgba(230,184,226,0) 60%), radial-gradient(ellipse 90% 90% at 50% -10%, #5f8ffb 0%, #8fb3ff 45%, #c9d6fb 100%)">
-                    <div class="pointer-events-none absolute inset-0 opacity-50" style="background-image:radial-gradient(rgba(255,255,255,.8) 1px, transparent 1.3px);background-size:9px 9px;mask-image:radial-gradient(ellipse 55% 45% at 50% 70%, #000 0%, transparent 100%);-webkit-mask-image:radial-gradient(ellipse 55% 45% at 50% 70%, #000 0%, transparent 100%)"></div>
-                    <div class="relative flex flex-col items-center gap-8 px-5 pt-5 sm:px-8 sm:pt-6">
-                        <div class="flex w-full items-center justify-between gap-3">
-                            <a href="{{ route('home') }}" class="flex items-center gap-2 text-white" aria-label="SeatTrim home">
-                                <x-app-logo-icon class="size-8 text-white" />
-                                <span class="text-[17px] tracking-tight"><span class="font-semibold">Seat</span><span class="font-normal text-white/80">Trim</span></span>
-                            </a>
-                            <nav class="hidden gap-1 rounded-full border border-white/30 bg-white/25 p-1 backdrop-blur md:inline-flex" aria-label="Main">
-                                @foreach ($nav as $item)
-                                    <a href="{{ route($item['route']) }}" class="inline-flex h-8 items-center gap-1.5 rounded-full px-3.5 text-[13px] {{ $item['active'] ? 'bg-white/90 font-medium text-ink-900' : 'text-white hover:bg-white/20' }}">
-                                        @if ($item['active'])<span class="size-1 rounded-full bg-brand-500"></span>@endif{{ __($item['label']) }}
-                                    </a>
-                                @endforeach
-                            </nav>
-                            <div class="flex items-center gap-2">
-                                @auth
-                                    <a href="{{ route('dashboard') }}" class="inline-flex h-9 items-center rounded-full bg-white px-4 text-[13px] font-medium text-ink-900 shadow-card hover:bg-brand-50">↳ {{ __('Open dashboard') }}</a>
-                                @else
-                                    <a href="{{ route('login') }}" class="hidden h-9 items-center rounded-full px-3 text-[13px] text-white hover:bg-white/15 sm:inline-flex">{{ __('Log in') }}</a>
-                                    <a href="{{ route('register') }}" class="inline-flex h-9 items-center rounded-full bg-white px-4 text-[13px] font-medium text-ink-900 shadow-card hover:bg-brand-50">↳ {{ __('Try for free') }}</a>
-                                @endauth
-                                <x-public.mobile-menu :nav="$nav" on-hero />
-                            </div>
+            <div class="relative overflow-hidden rounded-4xl shadow-float" style="background:radial-gradient(ellipse 55% 60% at 8% 95%, #f2a9d4 0%, rgba(242,169,212,0) 65%), radial-gradient(ellipse 45% 70% at 95% 80%, #e6b8e2 0%, rgba(230,184,226,0) 60%), radial-gradient(ellipse 90% 90% at 50% -10%, #5f8ffb 0%, #8fb3ff 45%, #c9d6fb 100%)">
+                <div class="pointer-events-none absolute inset-0 opacity-50" style="background-image:radial-gradient(rgba(255,255,255,.8) 1px, transparent 1.3px);background-size:9px 9px;mask-image:radial-gradient(ellipse 55% 45% at 50% 70%, #000 0%, transparent 100%);-webkit-mask-image:radial-gradient(ellipse 55% 45% at 50% 70%, #000 0%, transparent 100%)"></div>
+                <div class="relative flex flex-col items-center gap-8 px-5 pt-5 sm:px-8 sm:pt-6">
+                    <div class="flex w-full items-center justify-between gap-3">
+                        <a href="{{ route('home') }}" class="flex items-center gap-2 text-white" aria-label="SeatTrim home">
+                            <x-app-logo-icon class="size-8 text-white" />
+                            <span class="text-[17px] tracking-tight"><span class="font-semibold">Seat</span><span class="font-normal text-white/80">Trim</span></span>
+                        </a>
+                        <nav class="hidden gap-1 rounded-full border border-white/30 bg-white/25 p-1 backdrop-blur md:inline-flex" aria-label="Main">
+                            @foreach ($nav as $item)
+                                <a href="{{ route($item['route']) }}" class="inline-flex h-8 items-center gap-1.5 rounded-full px-3.5 text-[13px] {{ $item['active'] ? 'bg-white/90 font-medium text-ink-900' : 'text-white hover:bg-white/20' }}">
+                                    @if ($item['active'])<span class="size-1 rounded-full bg-brand-500"></span>@endif{{ __($item['label']) }}
+                                </a>
+                            @endforeach
+                        </nav>
+                        <div class="flex items-center gap-2">
+                            @auth
+                                <a href="{{ route('dashboard') }}" class="inline-flex h-9 items-center rounded-full bg-white px-4 text-[13px] font-medium text-ink-900 shadow-card hover:bg-brand-50">↳ {{ __('Open dashboard') }}</a>
+                            @else
+                                <a href="{{ route('login') }}" class="hidden h-9 items-center rounded-full px-3 text-[13px] text-white hover:bg-white/15 sm:inline-flex">{{ __('Log in') }}</a>
+                                <a href="{{ route('register') }}" class="inline-flex h-9 items-center rounded-full bg-white px-4 text-[13px] font-medium text-ink-900 shadow-card hover:bg-brand-50">↳ {{ __('Try for free') }}</a>
+                            @endauth
+                            <x-public.mobile-menu :nav="$nav" />
                         </div>
-                        {{ $hero }}
                     </div>
+                    {{ $hero ?? '' }}
                 </div>
-            @else
-                <header class="sticky top-4 z-30 flex h-[64px] items-center justify-between gap-3 rounded-3xl border border-white bg-white/80 px-4 shadow-card backdrop-blur sm:h-[76px] sm:px-6">
-                    <a href="{{ route('home') }}" class="flex items-center gap-2" aria-label="SeatTrim home">
-                        <x-app-logo-icon class="size-8 text-brand-500" />
-                        <x-app-wordmark class="text-[17px]" />
-                    </a>
-                    <nav class="hidden gap-1 rounded-full border border-white bg-brand-50/70 p-1 md:inline-flex" aria-label="Main">
-                        @foreach ($nav as $item)
-                            <a href="{{ route($item['route']) }}" class="inline-flex h-8 items-center gap-1.5 rounded-full px-3.5 text-[13px] {{ $item['active'] ? 'bg-white font-medium text-ink-900 shadow-sm' : 'text-ink-500 hover:text-ink-900' }}">
-                                @if ($item['active'])<span class="size-1 rounded-full bg-brand-500"></span>@endif{{ __($item['label']) }}
-                            </a>
-                        @endforeach
-                    </nav>
-                    <div class="flex items-center gap-2">
-                        @auth
-                            <a href="{{ route('dashboard') }}" class="inline-flex h-9 items-center rounded-full bg-ink-900 px-4 text-[13px] font-medium text-white hover:bg-ink-700">↳ {{ __('Open dashboard') }}</a>
-                        @else
-                            <a href="{{ route('login') }}" class="hidden h-9 items-center rounded-full px-3 text-[13px] text-ink-500 hover:bg-ink-100 hover:text-ink-900 sm:inline-flex">{{ __('Log in') }}</a>
-                            <a href="{{ route('register') }}" class="inline-flex h-9 items-center rounded-full bg-ink-900 px-4 text-[13px] font-medium text-white hover:bg-ink-700">↳ {{ __('Try for free') }}</a>
-                        @endauth
-                        <x-public.mobile-menu :nav="$nav" />
-                    </div>
-                </header>
-            @endif
+            </div>
 
             <main class="flex flex-col gap-24 md:gap-32">
                 {{ $slot }}

@@ -1,5 +1,4 @@
-<x-public.docs-layout :title="__('Adding SeatTrim to your Zoom account')" :description="__('Step-by-step: requirements, authorizing the SeatTrim Zoom app as an admin, scopes, and the first scan.')">
-    <h1>{{ __('Adding the app') }}</h1>
+<x-public.docs-layout :title="__('Adding SeatTrim to your Zoom account')" :heading="__('Adding the app')" :intro="__('Requirements, the Zoom authorization screen, scopes and the first scan.')" :description="__('Step-by-step: requirements, authorizing the SeatTrim Zoom app as an admin, scopes, and the first scan.')">
     <h2>{{ __('Requirements') }}</h2>
     <ul>
         <li>{{ __('A Zoom account on Pro, Business, Education or Enterprise. Free Zoom accounts do not expose the host report; SeatTrim will connect but cannot detect idle hosts.') }}</li>

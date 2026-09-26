@@ -1,5 +1,4 @@
-<x-public.docs-layout :title="__('Using SeatTrim')" :description="__('How the dashboard, buckets, guardrails, downgrades, automation, exclusions and renewal reminders work.')">
-    <h1>{{ __('Using SeatTrim') }}</h1>
+<x-public.docs-layout :title="__('Using SeatTrim')" :heading="__('Using SeatTrim')" :intro="__('Dashboard, buckets, guardrails, downgrades, automation, exclusions and renewal.')" :description="__('How the dashboard, buckets, guardrails, downgrades, automation, exclusions and renewal reminders work.')">
     <h2>{{ __('Dashboard') }}</h2>
     <p>{{ __('The headline is the annual cost of licensed seats you are paying for but not using, at your seat price. Below it: purchased, assigned and unassigned seats; the renewal card; and one card per bucket.') }}</p>
     <h2>{{ __('Buckets') }}</h2>

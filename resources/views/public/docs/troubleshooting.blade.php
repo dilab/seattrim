@@ -1,5 +1,4 @@
-<x-public.docs-layout :title="__('Troubleshooting')" :description="__('Fixes for common SeatTrim issues: authorization errors, missing scopes, empty reports, failed downgrades.')">
-    <h1>{{ __('Troubleshooting') }}</h1>
+<x-public.docs-layout :title="__('Troubleshooting')" :heading="__('Troubleshooting')" :intro="__('Authorization errors, missing scopes, empty reports, failed downgrades.')" :description="__('Fixes for common SeatTrim issues: authorization errors, missing scopes, empty reports, failed downgrades.')">
     <h2>{{ __('Zoom says I do not have permission to add the app') }}</h2>
     <p>{{ __('Only an account owner or admin can add an admin-managed app. Your Zoom admin may also need to pre-approve SeatTrim in the Marketplace.') }}</p>
     <h2>{{ __('The scan shows "missing scopes"') }}</h2>

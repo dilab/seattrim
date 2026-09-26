@@ -1,9 +1,7 @@
 <x-layouts::public :title="__('Pricing')" :description="__('SeatTrim pricing: free audit and report, paid plans from $290 per year by licensed seats. Annual billing, cancel any time.')">
-    <section class="flex flex-col items-center gap-4 pt-6 text-center">
-        <x-public.section-label>{{ __('Pricing') }}</x-public.section-label>
-        <h1 class="max-w-3xl text-[36px] font-light leading-[1.1] tracking-[-0.02em] md:text-[48px]" style="text-wrap:balance">{{ __('Priced by the seats you have.') }} <span class="text-ink-400">{{ __('Paid once a year, like Zoom.') }}</span></h1>
-        <p class="max-w-xl text-[15px] leading-relaxed text-ink-500">{{ __('Tiers follow the licensed seats SeatTrim finds in your latest scan. The free plan never limits scans or the report.') }}</p>
-    </section>
+    <x-slot name="hero">
+        <x-public.page-hero :label="__('Pricing')" :heading="__('Priced by the seats you have.')" :muted="__('Paid once a year, like Zoom.')" :intro="__('Tiers follow the licensed seats SeatTrim finds in your latest scan. The free plan never limits scans or the report.')" />
+    </x-slot>
 
     <section class="grid gap-6 md:grid-cols-4">
         @foreach (App\Billing\Plans::all() as $plan)

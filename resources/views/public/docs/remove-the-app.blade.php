@@ -1,5 +1,4 @@
-<x-public.docs-layout :title="__('Removing SeatTrim and what happens to your data')" :description="__('Two ways to remove SeatTrim from your Zoom account, and exactly which data is deleted when you do.')">
-    <h1>{{ __('Removing the app') }}</h1>
+<x-public.docs-layout :title="__('Removing SeatTrim and what happens to your data')" :heading="__('Removing the app')" :intro="__('Two ways to disconnect, and exactly what is deleted when you do.')" :description="__('Two ways to remove SeatTrim from your Zoom account, and exactly which data is deleted when you do.')">
     <h2>{{ __('Option 1: from SeatTrim') }}</h2>
     <ol>
         <li>{{ __('Sign in as an organization owner and open Connection.') }}</li>

@@ -1,8 +1,8 @@
 <x-layouts::public :title="__('Blog')" :description="__('Guides for Zoom admins on finding and reclaiming unused licenses.')">
-    <section class="flex flex-col gap-4 pt-6">
-        <x-public.section-label>{{ __('Blog') }}</x-public.section-label>
-        <h1 class="text-[36px] font-light leading-[1.1] tracking-[-0.02em] md:text-[48px]">{{ __('Notes for Zoom admins.') }} <span class="text-ink-400">{{ __('Short, practical, no hype.') }}</span></h1>
-    </section>
+    <x-slot name="hero">
+        <x-public.page-hero :label="__('Blog')" :heading="__('Notes for Zoom admins.')" :muted="__('Short, practical, no hype.')" />
+    </x-slot>
+
     <section class="grid gap-6 md:grid-cols-3">
         @foreach ($posts as $slug => $post)
             <article class="flex flex-col gap-3 rounded-3xl bg-white p-6 shadow-card">

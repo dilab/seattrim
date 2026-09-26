@@ -1,5 +1,4 @@
-<x-public.docs-layout :title="__('FAQ')" :description="__('Frequently asked questions about SeatTrim: authorization, emails, unsubscribing, data handling.')">
-    <h1>{{ __('FAQ') }}</h1>
+<x-public.docs-layout :title="__('FAQ')" :heading="__('FAQ')" :intro="__('Authorization, emails, opting out, data handling.')" :description="__('Frequently asked questions about SeatTrim: authorization, emails, unsubscribing, data handling.')">
     <h2>{{ __('Does SeatTrim lower my Zoom bill?') }}</h2><p>{{ __('Not directly. It frees seats and tells you how many to cut. You change the quantity in Zoom Billing, typically at renewal. Annual plans do not refund mid-term.') }}</p>
     <h2>{{ __('Will it downgrade someone by surprise?') }}</h2><p>{{ __('No. Manual actions need a click; automation is off by default, starts in dry run, warns the user by email first, and re-checks guardrails before acting.') }}</p>
     <h2>{{ __('Can users opt out of the warning emails?') }}</h2><p>{{ __('The email is sent only when a downgrade is scheduled for them, at most once per notice. Clicking "Keep my license" excludes them for 90 days; admins can add them to exclusions permanently.') }}</p>

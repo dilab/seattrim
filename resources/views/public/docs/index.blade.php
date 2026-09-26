@@ -1,6 +1,4 @@
-<x-public.docs-layout :title="__('Documentation')" :description="__('How to add SeatTrim to your Zoom account, use it, and remove it, including what happens to your data.')">
-    <h1>{{ __('SeatTrim documentation') }}</h1>
-    <p>{{ __('SeatTrim is an admin-managed Zoom Marketplace app that finds Licensed seats nobody uses and helps you downgrade them safely. These pages cover adding the app, day-to-day use, and removal.') }}</p>
+<x-public.docs-layout :title="__('Documentation')" :heading="__('SeatTrim documentation')" :intro="__('SeatTrim is an admin-managed Zoom Marketplace app that finds Licensed seats nobody uses and helps you downgrade them safely. These pages cover adding the app, day-to-day use, and removal.')" :description="__('How to add SeatTrim to your Zoom account, use it, and remove it, including what happens to your data.')">
     <ul>
         <li><a href="{{ route('docs.show', 'add-the-app') }}">{{ __('Adding the app') }}</a> — {{ __('requirements, the Zoom authorization screen, scopes and the first scan.') }}</li>
         <li><a href="{{ route('docs.show', 'using-seattrim') }}">{{ __('Using SeatTrim') }}</a> — {{ __('dashboard, buckets, guardrails, downgrades, automation, exclusions, renewal.') }}</li>
