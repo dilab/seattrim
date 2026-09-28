@@ -340,3 +340,28 @@ Source: https://developers.zoom.us/docs/api/errors/. Body shape `{"code": 300, "
 - **Unknown hosting** (report failed or scope missing) never marks anyone idle.
 - **Demo organizations** (`settings.demo = true`) are served by `FakeZoomClient` even with `ZOOM_DRIVER=http`,
   through `DelegatingZoomApi`; their tokens are fake and never refreshed.
+
+---
+
+## 15. Blog sources (checked 2026-09-28)
+
+Every Zoom claim in `resources/views/public/blog/posts/*` traces to one of these. Re-check before editing a post.
+
+| Claim | Source |
+| --- | --- |
+| "Deactivating a user will remove all licenses associated with a user"; data kept; delete is permanent; transferable items; PMI meetings not transferable; unlink gives a free Basic account with data | Zoom KB0066997 "Deactivating, unlinking, or deleting users" https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0066997 |
+| License reduction "will take effect at the end of your current billing cycle, not immediately"; must unassign first; billing role; custom pricing / contract → contact Zoom; menu paths | Zoom KB0057881 "Reducing the quantity of licenses" https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0057881 |
+| Downgrade: Edit → Unassigned + Zoom Meetings Basic ("up to 40 minutes"); bulk Change Licenses | Zoom KB0064911 "Assigning or removing Zoom licenses from users" https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0064911 |
+| CSV: Import → Update Users; value "Unassigned with Zoom Meetings Basic"; blank fields don't change; < 9999 rows | Zoom KB0068315 "Batch importing, exporting, or updating users" https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0068315 |
+| Inactive Hosts: "users who did not host a meeting or webinar during a specific period"; Account Management → Reports → Usage reports | Zoom KB0060623 "Getting started with Zoom reporting" https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0060623 |
+| Reports show meetings that ended at least 15 minutes ago; ≤ 1 month per report | Zoom KB0059073 "Generating Active Host reports" https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0059073 |
+| Six-month history, one-month range, active/inactive host definitions, Pro+ prerequisite | §5 above (`GET /report/users`) |
+| `last_login_time` three-day buffer | §3 above |
+| Pending counted separately in plan usage | §6 above (`plan_base.pending`) |
+| Upcoming Zoom Events block change to Basic (error 300); bundles may refuse (2039) | §7 above |
+
+**Conflict found 2026-09-28:** KB0066997 says deactivation removes licenses, which contradicts the
+`deactivated_licensed` bucket's premise (`app/Enums/Bucket.php`) and copy on the landing page, free-audit
+page and docs "Using SeatTrim". Third-party blogs (Stitchflow, Torii) disagree with each other. Verify on a
+real account whether `GET /users?status=inactive` ever returns `type = 2`; if not, retire or re-word the
+bucket and that copy.

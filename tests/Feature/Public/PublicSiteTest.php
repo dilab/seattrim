@@ -34,7 +34,9 @@ test('public pages render with titles, descriptions and Open Graph tags', functi
     ['docs.show', ['page' => 'troubleshooting'], 'Troubleshooting', 'Zoom error 200'],
     ['docs.show', ['page' => 'faq'], 'FAQ', 'dry run'],
     ['blog.index', [], 'Blog', 'How to free up Zoom licenses'],
-    ['blog.show', ['slug' => 'zoom-inactive-users-report-explained'], 'Zoom inactive users report, explained', 'Draft outline'],
+    ['blog.show', ['slug' => 'how-to-free-up-zoom-licenses'], 'How to free up Zoom licenses (without cutting anyone off)', 'The safe downgrade checklist'],
+    ['blog.show', ['slug' => 'zoom-inactive-users-report-explained'], 'Zoom inactive users report, explained', 'Why last login time misleads'],
+    ['blog.show', ['slug' => 'zoom-deactivated-user-still-using-a-license'], 'Zoom deactivated user still using a license? Here is why, and the fix', 'Deactivating removes the license, not the seat'],
 ]);
 
 test('unknown docs and blog pages are 404', function () {

@@ -3,8 +3,9 @@
 namespace App\Support;
 
 /**
- * Blog scaffold for the hub-and-spoke SEO cluster (brief §10). Content is
- * placeholder; titles, meta descriptions and slugs are final.
+ * Hub-and-spoke SEO cluster (brief §10). Each post's body lives in
+ * resources/views/public/blog/posts/{slug}.blade.php; sources are listed in
+ * docs/zoom-api-notes.md §15.
  */
 class Blog
 {
@@ -41,13 +42,13 @@ class Blog
             ],
             'zoom-deactivated-user-still-using-a-license' => [
                 'title' => 'Zoom deactivated user still using a license? Here is why, and the fix',
-                'description' => 'Deactivating a Zoom user does not release their Licensed seat. Learn how to find these users and what Zoom lets you do: downgrade, reassign, or delete with recording transfer.',
+                'description' => 'Deactivating a Zoom user removes their license, but the seat stays on your bill until renewal. Where the seat goes, how to check for leftovers, and what to do: reassign, reduce, or delete with data transfer.',
                 'type' => 'spoke',
                 'published_at' => '2026-10-15',
                 'outline' => [
-                    'Deactivate ≠ downgrade: what Zoom keeps billing',
-                    'Finding deactivated licensed users in bulk',
-                    'Options: downgrade to Basic, reactivate-then-downgrade, delete with recording transfer',
+                    'Deactivating removes the license, not the seat',
+                    'Check: are any deactivated users still Licensed?',
+                    'Options: reassign, reduce the quantity, delete with data transfer, unlink',
                     'Automating the clean-up',
                 ],
             ],

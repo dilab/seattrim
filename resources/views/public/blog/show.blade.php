@@ -9,12 +9,9 @@
     </x-slot>
 
     <article class="prose mx-auto w-full max-w-3xl rounded-3xl bg-white p-6 shadow-card sm:p-8 [&>*:first-child]:mt-0">
-        <div class="not-prose rounded-2xl border border-dashed border-ink-200 bg-ink-100 p-4 text-[14px]">
-            <div class="font-medium text-ink-900">{{ __('Draft outline (content coming soon)') }}</div>
-            <ol class="mt-2 list-decimal space-y-1 ps-5 text-ink-700">
-                @foreach ($post['outline'] as $item)<li>{{ $item }}</li>@endforeach
-            </ol>
-        </div>
+        @include('public.blog.posts.'.$slug)
+
+        <hr>
         @if ($post['type'] === 'spoke')
             <p>{{ __('Part of the guide') }} <a href="{{ route('blog.show', 'how-to-free-up-zoom-licenses') }}">{{ __('How to free up Zoom licenses') }}</a>.</p>
         @else
