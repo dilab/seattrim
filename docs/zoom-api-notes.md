@@ -360,8 +360,11 @@ Every Zoom claim in `resources/views/public/blog/posts/*` traces to one of these
 | Pending counted separately in plan usage | §6 above (`plan_base.pending`) |
 | Upcoming Zoom Events block change to Basic (error 300); bundles may refuse (2039) | §7 above |
 
-**Conflict found 2026-09-28:** KB0066997 says deactivation removes licenses, which contradicts the
-`deactivated_licensed` bucket's premise (`app/Enums/Bucket.php`) and copy on the landing page, free-audit
-page and docs "Using SeatTrim". Third-party blogs (Stitchflow, Torii) disagree with each other. Verify on a
-real account whether `GET /users?status=inactive` ever returns `type = 2`; if not, retire or re-word the
-bucket and that copy.
+**Decision 2026-09-28:** KB0066997 says deactivation removes licenses, so a deactivated user classified
+`deactivated_licensed` is treated as an anomaly, not a headline category. The classifier is unchanged (it only
+fires when Zoom returns `type = 2` for an `inactive` user); the dashboard and weekly digest list it after
+pending and idle and hide it at 0; landing, free-audit and docs copy say leavers' cost shows up as unassigned
+seats. The demo fixture keeps one such user so the path stays exercised.
+
+**Real-account check:** deactivate a Licensed test user and see whether `GET /users?status=inactive` returns
+`type = 2`. If it never does, remove the bucket in a later version.

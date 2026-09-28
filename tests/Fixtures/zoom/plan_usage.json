@@ -2,7 +2,7 @@
     "plan_base": {
         "type": "yearly",
         "hosts": 64,
-        "usage": 59,
+        "usage": 55,
         "pending": 4,
         "active_hosts": 21
     },

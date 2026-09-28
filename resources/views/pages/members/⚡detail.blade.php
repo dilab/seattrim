@@ -55,7 +55,7 @@ new class extends Component {
         @endif
         @if ($member->bucket === Bucket::DeactivatedLicensed)
             <flux:callout icon="information-circle" variant="secondary" class="mt-2">
-                <flux:callout.text>{{ __('Zoom does not document whether a deactivated user\'s type can be changed by API. SeatTrim tries it; if Zoom refuses, reactivate the user in Zoom, downgrade, then deactivate again. Deleting the user with recording transfer only works for active users.') }}</flux:callout.text>
+                <flux:callout.text>{{ __('Zoom documents that deactivating a user removes their licenses, so this user still holding one is an anomaly worth fixing.') }} {{ __('Zoom does not document whether a deactivated user\'s type can be changed by API. SeatTrim tries it; if Zoom refuses, reactivate the user in Zoom, downgrade, then deactivate again. Deleting the user with recording transfer only works for active users.') }}</flux:callout.text>
             </flux:callout>
         @endif
     </flux:card>

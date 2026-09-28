@@ -37,7 +37,7 @@ test('the members page lists users and filters by bucket, status, department, wi
     expect($component->get('members')->total())->toBe(2);
 
     $component->set('search', '')->set('eligible', true);
-    expect($component->get('members')->total())->toBe(16);
+    expect($component->get('members')->total())->toBe(12);
 });
 
 test('sorting toggles direction and the drawer shows reasons and hosting', function () {

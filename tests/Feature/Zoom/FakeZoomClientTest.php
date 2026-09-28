@@ -32,7 +32,7 @@ test('fixtures cover every status and the documented shapes', function () {
     expect($summary->pending)->toBe(5)->and($summary->rooms)->toBe(2);
 
     $usage = $this->fake->planUsage($this->connection);
-    expect($usage->unassigned())->toBe(5)->and($usage->hasBundlePlans())->toBeTrue();
+    expect($usage->unassigned())->toBe(9)->and($usage->hasBundlePlans())->toBeTrue();
 });
 
 test('date placeholders resolve relative to now', function () {

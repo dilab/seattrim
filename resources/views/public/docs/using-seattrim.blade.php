@@ -3,7 +3,7 @@
     <p>{{ __('The headline is the annual cost of licensed seats you are paying for but not using, at your seat price. Below it: purchased, assigned and unassigned seats; the renewal card; and one card per bucket.') }}</p>
     <h2>{{ __('Buckets') }}</h2>
     <ul>
-        <li><strong>{{ __('Deactivated, still licensed') }}</strong> — {{ __('the user is deactivated in Zoom but still holds a Licensed seat.') }}</li>
+        <li><strong>{{ __('Deactivated, still licensed') }}</strong> — {{ __('should be rare: Zoom normally removes licenses when a user is deactivated. The card only appears when a deactivated user still shows as Licensed. Seats released by leavers show up as unassigned seats instead.') }}</li>
         <li><strong>{{ __('Pending invite, licensed') }}</strong> — {{ __('the invitation was never accepted, yet a seat is reserved.') }}</li>
         <li><strong>{{ __('Idle licensed') }}</strong> — {{ __('active and licensed, but has not hosted a meeting within your threshold (30, 60, 90 or 180 days). Joining meetings does not count.') }}</li>
         <li><strong>{{ __('Protected') }}</strong> — {{ __('would be idle, but a guardrail applies.') }}</li>

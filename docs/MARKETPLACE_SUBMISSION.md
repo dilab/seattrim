@@ -14,8 +14,8 @@ https://developers.zoom.us/docs/distribute/app-submission/common-rejection-issue
 
 SeatTrim is for Zoom admins at organizations with 50 to 2,000 seats who pay for Licensed users nobody
 uses. Once an admin adds SeatTrim, it scans the account every night and groups Licensed users into
-buckets: deactivated users still holding a seat, pending invites that reserve a seat, users who have not
-hosted a meeting within your threshold (30–180 days), and seats you bought but never assigned. It shows the
+buckets: pending invites that reserve a seat, any deactivated user still holding a seat, users who have not
+hosted a meeting within your threshold (30–180 days), and seats you pay for that nobody holds, including those released by leavers. It shows the
 annual cost at your seat price and lets you downgrade users to Basic with one click and restore them just
 as easily.
 
@@ -111,3 +111,4 @@ Demo without a Zoom account: `https://seattrim.com/demo` (fixture data, throw-aw
 1. `billing:read:plan_usage:admin` on a standard (non-master) account. If unavailable, SeatTrim falls back to `GET /users/summary` and hides purchased seats (still functional).
 2. `PATCH /users/{userId}` for deactivated users. If Zoom refuses, the audit row records the error and the UI suggests reactivate → downgrade → deactivate.
 3. Whether Zoom Rooms appear in `GET /users`; if they do, SeatTrim learns from Zoom error 200 and protects them afterwards.
+4. Whether a deactivated user ever comes back from `GET /users?status=inactive` as Licensed (`type = 2`). Zoom documents that deactivation removes licenses; if it never happens, the "Deactivated, still licensed" bucket stays hidden and can be removed.

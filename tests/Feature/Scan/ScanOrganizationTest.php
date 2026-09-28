@@ -46,9 +46,9 @@ test('a full scan of the fixture account produces the expected buckets, seats an
         $byBucket = ZoomMember::query()->present()->get()->groupBy(fn (ZoomMember $m) => $m->bucket->value)->map->count()->sortKeys()->all();
 
         expect($byBucket)->toEqual([
-            Bucket::Healthy->value => 37,
+            Bucket::Healthy->value => 41,
             Bucket::IdleLicensed->value => 11,
-            Bucket::DeactivatedLicensed->value => 5,
+            Bucket::DeactivatedLicensed->value => 1,
             Bucket::PendingLicensed->value => 4,
             Bucket::Protected->value => 12,
         ]);
@@ -83,19 +83,19 @@ test('a full scan of the fixture account produces the expected buckets, seats an
 
         $snapshot = ZoomSeatsSnapshot::query()->where('scan_id', $scan->id)->firstOrFail();
         expect($snapshot->source)->toBe('plan_usage')
-            ->and($snapshot->unassigned_seats)->toBe(5)
-            ->and($snapshot->purchased_seats)->toBe($snapshot->used_seats + 5);
+            ->and($snapshot->unassigned_seats)->toBe(9)
+            ->and($snapshot->purchased_seats)->toBe($snapshot->used_seats + 9);
 
         expect($scan->total('buckets.idle_licensed.count'))->toBe(11)
-            ->and($scan->total('unassigned.count'))->toBe(5)
-            ->and($scan->total('reclaimable_seats'))->toBe(5 + 5 + 4 + 11)
+            ->and($scan->total('unassigned.count'))->toBe(9)
+            ->and($scan->total('reclaimable_seats'))->toBe(9 + 1 + 4 + 11)
             ->and($scan->total('waste_annual_cents'))->toBe(25 * 14900)
-            ->and($scan->total('eligible_for_downgrade'))->toBe(5 + 11)
+            ->and($scan->total('eligible_for_downgrade'))->toBe(1 + 11)
             ->and($scan->total('members_total'))->toBe(69);
 
-        // Only candidates got the extra per-user calls: 11 idle + 12 idle-but-protected + 5 deactivated = 28; never healthy hosts or pending invites.
+        // Only candidates got the extra per-user calls: 11 idle + 12 idle-but-protected + 1 deactivated = 24; never healthy hosts or pending invites.
         $fake = app(FakeZoomClient::class);
-        expect(count($fake->callsTo('getUser')))->toBe(28)
+        expect(count($fake->callsTo('getUser')))->toBe(24)
             ->and(count($fake->callsTo('upcomingMeetings')))->toBe(23)
             ->and(count($fake->callsTo('hostReport')))->toBe(3)
             ->and(count($fake->callsTo('listUsers')))->toBe(3);
@@ -167,7 +167,7 @@ test('missing plan usage falls back to the user summary and warns', function () 
     app(Tenancy::class)->runAs($organization, function () use ($scan) {
         $snapshot = ZoomSeatsSnapshot::query()->where('scan_id', $scan->id)->firstOrFail();
         expect($snapshot->source)->toBe('user_summary')->and($snapshot->purchased_seats)->toBeNull()->and($snapshot->used_seats)->toBeGreaterThan(0);
-        expect($scan->total('unassigned.known'))->toBeFalse()->and($scan->total('reclaimable_seats'))->toBe(20);
+        expect($scan->total('unassigned.known'))->toBeFalse()->and($scan->total('reclaimable_seats'))->toBe(16);
         expect(collect($scan->warnings)->pluck('code'))->toContain('plan_usage_unavailable');
         // Unknown plan mix → bundles must be confirmed per user; the fake exposes bundle fields, so idle counts hold.
         expect($scan->total('buckets.idle_licensed.count'))->toBe(11);
@@ -184,7 +184,7 @@ test('a failing host report makes hosting unknown and warns instead of marking u
         expect($scan->status)->toBe(Scan::STATUS_DONE)
             ->and(collect($scan->warnings)->pluck('code'))->toContain('report_failed')
             ->and($scan->total('buckets.idle_licensed.count'))->toBe(0)
-            ->and($scan->total('buckets.deactivated_licensed.count'))->toBe(5)
+            ->and($scan->total('buckets.deactivated_licensed.count'))->toBe(1)
             ->and(ZoomMember::query()->where('zoom_user_id', 'u32_never1')->firstOrFail()->last_hosted_window)->toBe('unknown');
     });
 });

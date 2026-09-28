@@ -22,10 +22,14 @@ class DigestBuilder
         $actions = LicenseAction::query()->where('created_at', '>=', $since)->where('action', LicenseAction::ACTION_DOWNGRADE);
 
         $buckets = [];
-        foreach ([Bucket::DeactivatedLicensed, Bucket::PendingLicensed, Bucket::IdleLicensed, Bucket::Protected] as $bucket) {
+        foreach ([Bucket::PendingLicensed, Bucket::IdleLicensed, Bucket::DeactivatedLicensed, Bucket::Protected] as $bucket) {
+            $count = (int) ($scan?->total("buckets.{$bucket->value}.count") ?? 0);
+            if ($bucket === Bucket::DeactivatedLicensed && $count === 0) {
+                continue;
+            }
             $buckets[] = [
                 'label' => $bucket->label(),
-                'count' => (int) ($scan?->total("buckets.{$bucket->value}.count") ?? 0),
+                'count' => $count,
                 'money' => Money::forOrganization($organization, (int) ($scan?->total("buckets.{$bucket->value}.annual_cents") ?? 0)),
             ];
         }

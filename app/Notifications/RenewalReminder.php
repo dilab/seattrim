@@ -33,10 +33,10 @@ class RenewalReminder extends Notification implements ShouldQueue
             ->line("Your Zoom plan for **{$this->organization->name}** renews on **{$date}**, in {$this->daysBefore} days. This is the moment the seat count actually changes your bill.");
 
         if ($f['purchased'] !== null) {
-            $mail->line("You pay for **{$f['purchased']}** seats, **{$f['used']}** are assigned, **{$f['reclaimable']}** are reclaimable (unassigned, deactivated, pending invites and idle licensed users).")
+            $mail->line("You pay for **{$f['purchased']}** seats, **{$f['used']}** are assigned, **{$f['reclaimable']}** are reclaimable (unassigned seats, pending invites, idle licensed users and any deactivated user still licensed).")
                 ->line("Reduce to **{$f['target']}** seats → **{$f['target_money']}** per year (from {$f['current_money']}).");
         } else {
-            $mail->line("**{$f['reclaimable']}** seats are reclaimable (deactivated, pending invites and idle licensed users). Zoom did not expose your purchased quantity to SeatTrim, so check it in Zoom Billing and subtract {$f['reclaimable']}.");
+            $mail->line("**{$f['reclaimable']}** seats are reclaimable (pending invites, idle licensed users and any deactivated user still licensed). Zoom did not expose your purchased quantity to SeatTrim, so check it in Zoom Billing and subtract {$f['reclaimable']}.");
         }
 
         return $mail

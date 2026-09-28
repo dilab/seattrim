@@ -13,7 +13,7 @@ enum Bucket: string
     public function label(): string
     {
         return match ($this) {
-            self::DeactivatedLicensed => 'Deactivated, still licensed',
+            self::DeactivatedLicensed => 'Deactivated, still licensed (should be rare)',
             self::PendingLicensed => 'Pending invite, licensed',
             self::IdleLicensed => 'Idle licensed',
             self::Protected => 'Protected',
@@ -24,7 +24,7 @@ enum Bucket: string
     public function description(): string
     {
         return match ($this) {
-            self::DeactivatedLicensed => 'The user is deactivated in Zoom but still holds a Licensed seat.',
+            self::DeactivatedLicensed => 'Zoom normally removes licenses on deactivation. This user still shows as Licensed, so the seat is held.',
             self::PendingLicensed => 'The invitation was never accepted, yet a Licensed seat is reserved for it.',
             self::IdleLicensed => 'Active and licensed, but has not hosted a meeting within your threshold.',
             self::Protected => 'Would be idle, but a guardrail (bundle, add-on, role, upcoming meeting, exclusion or new hire) stops a downgrade.',

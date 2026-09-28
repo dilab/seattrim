@@ -20,7 +20,7 @@
 
             <div class="absolute left-1/2 top-16 z-10 flex w-[340px] max-w-[92vw] -translate-x-1/2 flex-col gap-3 rounded-2xl bg-white p-4 shadow-float">
                 <div class="flex items-center justify-between text-[13px]"><x-app-wordmark /><span class="text-xs text-ink-400">{{ __('Reviewing seats…') }}</span></div>
-                <div class="flex items-center justify-between rounded-xl border border-ink-100 px-3 py-2.5 text-[13px]"><div><div class="text-ink-900">Former Staff 3</div><div class="text-[11px] text-ink-500">{{ __('Deactivated · still Licensed') }}</div></div><span class="inline-flex h-6 items-center rounded-full bg-coral-100 px-2.5 text-[11px] font-medium text-coral-700">{{ __('Unused') }}</span></div>
+                <div class="flex items-center justify-between rounded-xl border border-ink-100 px-3 py-2.5 text-[13px]"><div><div class="text-ink-900">Pending Invite 3</div><div class="text-[11px] text-ink-500">{{ __('Invited 60 days ago · still pending') }}</div></div><span class="inline-flex h-6 items-center rounded-full bg-coral-100 px-2.5 text-[11px] font-medium text-coral-700">{{ __('Unused') }}</span></div>
                 <div class="flex items-center justify-between rounded-xl border border-brand-100 bg-brand-50 px-3 py-2.5 text-[13px]"><div><div class="text-ink-900">Never Hosted 2</div><div class="text-[11px] text-ink-500">{{ __('Licensed · no meetings in 180 days') }}</div></div><span class="inline-flex h-6 items-center rounded-full bg-brand-100 px-2.5 text-[11px] font-medium text-brand-600">{{ __('Eligible') }}</span></div>
                 <div class="flex items-center justify-between rounded-xl border border-ink-100 px-3 py-2.5 text-[13px] opacity-60"><div><div class="text-ink-900">Idle Thirty 1</div><div class="text-[11px] text-ink-500">{{ __('Licensed · last meeting 36 days ago') }}</div></div><span class="inline-flex h-6 items-center rounded-full bg-blush-100 px-2.5 text-[11px] font-medium text-blush-700">{{ __('Idle') }}</span></div>
             </div>
@@ -41,7 +41,7 @@
         <h2 class="max-w-3xl text-[32px] font-light leading-[1.15] tracking-[-0.015em] md:text-[40px]" style="text-wrap:balance">{{ __('Zoom keeps billing seats nobody uses.') }} <span class="text-ink-500">{{ __('SeatTrim finds them, quietly, before renewal.') }}</span></h2>
         <div class="grid w-full max-w-3xl gap-3 sm:grid-cols-2 md:grid-cols-4">
             @foreach ([
-                [__('Deactivated'), __('Someone left, an admin deactivated them, and the Licensed seat stayed assigned.'), 'coral'],
+                [__('Leavers'), __('Deactivating someone frees the license, but you keep paying for the seat until you lower the count.'), 'coral'],
                 [__('Pending invites'), __('Invitations never accepted still reserve a seat.'), 'blush'],
                 [__('Idle hosts'), __('Licensed, but no meeting hosted in 30, 60, 90 or 180 days. Joining needs no license.'), 'brand'],
                 [__('Unassigned'), __('Seats you bought and never gave to anyone.'), 'ink'],

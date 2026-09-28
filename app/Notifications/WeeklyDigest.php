@@ -37,11 +37,11 @@ class WeeklyDigest extends Notification implements ShouldQueue
         }
 
         $mail->line('**Current waste by bucket**');
-        foreach ($d['buckets'] as $bucket) {
-            $mail->line("- {$bucket['label']}: {$bucket['count']} ({$bucket['money']}/yr)");
-        }
         if ($d['unassigned'] !== null) {
             $mail->line("- Unassigned seats: {$d['unassigned']['count']} ({$d['unassigned']['money']}/yr)");
+        }
+        foreach ($d['buckets'] as $bucket) {
+            $mail->line("- {$bucket['label']}: {$bucket['count']} ({$bucket['money']}/yr)");
         }
 
         if ($d['renewal']) {

@@ -92,6 +92,17 @@ test('the dashboard shows waste, seats, buckets, warnings and the honesty note',
         ->assertSee('Scan now');
 });
 
+test('the deactivated-still-licensed card is hidden when Zoom reports none', function () {
+    [$user, $organization] = ownerWithOrganization();
+    app(FakeZoomClient::class)->patchUser('u38_gone1', ['type' => 1]);
+    scannedOrganization($user, $organization);
+
+    $this->actingAs($user)->get(route('dashboard'))
+        ->assertOk()
+        ->assertSee('Pending invite, licensed')
+        ->assertDontSee('Deactivated, still licensed');
+});
+
 test('scan now queues a manual scan and changing the threshold rescans', function () {
     [$user, $organization] = ownerWithOrganization();
     scannedOrganization($user, $organization);

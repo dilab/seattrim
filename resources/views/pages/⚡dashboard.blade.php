@@ -171,7 +171,7 @@ new #[Title('Dashboard')] class extends Component {
                         <div><dt class="text-xs text-zinc-500">{{ __('Assigned') }}</dt><dd class="text-2xl font-semibold">{{ $scan->total('used') }}</dd></div>
                         <div><dt class="text-xs text-zinc-500">{{ __('Unassigned') }}</dt><dd class="text-2xl font-semibold text-amber-600">{{ $scan->total('unassigned.count') }}</dd></div>
                     </dl>
-                    <flux:text class="text-xs">{{ __('Unassigned seats cost :money per year and nobody holds them. Reduce the quantity in Zoom Billing.', ['money' => $this->money($scan->total('unassigned.annual_cents'))]) }}</flux:text>
+                    <flux:text class="text-xs">{{ __('Unassigned seats cost :money per year and nobody holds them. Seats released by deactivated users land here. Reduce the quantity in Zoom Billing.', ['money' => $this->money($scan->total('unassigned.annual_cents'))]) }}</flux:text>
                 @else
                     <dl class="grid grid-cols-2 gap-2 text-center">
                         <div><dt class="text-xs text-zinc-500">{{ __('Licensed users') }}</dt><dd class="text-2xl font-semibold">{{ $scan->total('licensed_total') }}</dd></div>
@@ -206,8 +206,9 @@ new #[Title('Dashboard')] class extends Component {
 
         {{-- Buckets --}}
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            @foreach ([Bucket::DeactivatedLicensed, Bucket::PendingLicensed, Bucket::IdleLicensed, Bucket::Protected, Bucket::Healthy] as $bucket)
+            @foreach ([Bucket::PendingLicensed, Bucket::IdleLicensed, Bucket::DeactivatedLicensed, Bucket::Protected, Bucket::Healthy] as $bucket)
                 @php($b = $scan->total('buckets.'.$bucket->value))
+                @continue($bucket === Bucket::DeactivatedLicensed && ($b['count'] ?? 0) === 0)
                 <a href="{{ route('members', ['bucket' => $bucket->value]) }}" wire:navigate class="block rounded-xl border border-zinc-200 p-4 transition hover:border-zinc-400 dark:border-zinc-700 dark:hover:border-zinc-500" data-test="bucket-{{ $bucket->value }}">
                     <div class="flex items-center justify-between">
                         <flux:badge size="sm" :color="$bucket->color()">{{ $bucket->label() }}</flux:badge>

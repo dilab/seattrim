@@ -1,4 +1,4 @@
-<x-layouts::public :title="__('Free Zoom license audit')" :description="__('Connect your Zoom account, run one scan, and get a report of deactivated, pending, idle and unassigned licensed seats, with the annual cost. Free, no card.')">
+<x-layouts::public :title="__('Free Zoom license audit')" :description="__('Connect your Zoom account, run one scan, and get a report of idle, pending and unassigned licensed seats, with the annual cost. Free, no card.')">
     <x-slot name="hero">
         <x-public.page-hero :label="__('Free · about five minutes')" :heading="__('Free Zoom license audit.')" :muted="__('Keep the report.')" :intro="__('Find out how many Licensed seats your organization pays for that nobody uses, and what they cost per year. Connect as a Zoom admin, let SeatTrim run one scan, and keep the report.')">
             <x-slot name="actions">
@@ -22,7 +22,7 @@
             @foreach ([
                 [__('Create a free account'), __('Email and password. No card.')],
                 [__('Connect Zoom'), __('An admin-managed Marketplace app with read scopes for users, host reports and plan usage, plus one permission to change a user between Licensed and Basic, only used when you click.')],
-                [__('Get the report'), __('Deactivated users still holding a license, pending invites, idle hosts by threshold, unassigned seats, and the annual cost at your seat price. Guardrails show who must not be touched and why.')],
+                [__('Get the report'), __('Idle hosts by threshold, pending invites, unassigned seats (including those released by leavers), any deactivated user still holding a license, and the annual cost at your seat price. Guardrails show who must not be touched and why.')],
                 [__('Decide what to do'), __('Downgrade one at a time on the free plan, or upgrade for bulk actions and automation. Disconnect any time; all Zoom data is deleted immediately.')],
             ] as $i => [$heading, $text])
                 <li class="flex flex-col gap-3">

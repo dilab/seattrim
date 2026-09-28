@@ -12,7 +12,7 @@
  *   - owner + 2 admins (protected: role)
  *   - 18 healthy licensed hosts (hosted within 30 days)
  *   - 4 licensed hosts whose last meeting was 30–60 days ago, 3 at 60–90, 3 at 90–180, 6 never
- *   - 5 deactivated licensed, 2 deactivated basic
+ *   - 1 deactivated still licensed (rare: Zoom normally removes licenses on deactivation), 6 deactivated basic
  *   - 4 pending licensed, 1 pending basic
  *   - 6 active basic, 1 "unassigned without meetings basic" (type 4)
  *   - 2 Zoom Rooms (licensed, idle; update fails with Zoom error 200)
@@ -91,9 +91,9 @@ for ($i = 1; $i <= 6; $i++) {
     $id = $make("never{$i}", "Never Hosted {$i}", 2, 'active', ['dept' => 'Athletics', 'last_login_time' => '@days_ago:200']);
 }
 
-// Deactivated.
+// Deactivated. Zoom removes licenses on deactivation, so only one anomaly keeps Licensed.
 for ($i = 1; $i <= 5; $i++) {
-    $id = $make("gone{$i}", "Former Staff {$i}", 2, 'inactive', ['dept' => 'Admin', 'last_login_time' => '']);
+    $id = $make("gone{$i}", "Former Staff {$i}", $i === 1 ? 2 : 1, 'inactive', ['dept' => 'Admin', 'last_login_time' => '']);
 }
 for ($i = 1; $i <= 2; $i++) {
     $id = $make("gonebasic{$i}", "Former Basic {$i}", 1, 'inactive', ['last_login_time' => '']);
@@ -152,11 +152,11 @@ if (count($users) !== 69) {
 $licensedActive = count(array_filter($users, fn ($u) => $u['type'] === 2 && $u['status'] !== 'pending'));
 $pendingLicensed = count(array_filter($users, fn ($u) => $u['type'] === 2 && $u['status'] === 'pending'));
 
-// Plan usage: 5 seats bought and never assigned to anyone.
+// Plan usage: 9 seats bought and not assigned to anyone (5 never assigned, 4 released by leavers).
 $planUsage = [
     'plan_base' => [
         'type' => 'yearly',
-        'hosts' => $licensedActive + $pendingLicensed + 5,
+        'hosts' => $licensedActive + $pendingLicensed + 9,
         'usage' => $licensedActive + $pendingLicensed,
         'pending' => $pendingLicensed,
         'active_hosts' => 21,
