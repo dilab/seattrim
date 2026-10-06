@@ -3,7 +3,7 @@
 ## Server
 
 - Forge "App" server, PHP 8.3, MySQL 8, Redis, Nginx. 2 GB RAM is enough for the first few hundred organizations.
-- Site: `app.seattrim.com` (marketing pages are served by the same app at `seattrim.com`; point both at the site or redirect the apex to `app.`).
+- Site: `seattrim.com`. The marketing pages and the app are served by the same Laravel site; redirect `www.seattrim.com` to the apex.
 - Cloudflare in front: proxied DNS, SSL mode Full (strict), Forge-issued Let's Encrypt certificate on the origin.
   Add a Cloudflare rule to bypass cache for `/livewire/*`, `/zoom/*`, `/stripe/*`, `/keep/*`.
 - Nginx: keep the default Forge template. Increase `client_max_body_size` is not needed (no uploads).
@@ -15,15 +15,15 @@ Copy `.env.example` and set:
 | Key | Value |
 | --- | --- |
 | `APP_ENV`, `APP_DEBUG` | `production`, `false` |
-| `APP_URL` | `https://app.seattrim.com` |
+| `APP_URL` | `https://seattrim.com` |
 | `DB_CONNECTION` … | MySQL credentials from Forge |
 | `QUEUE_CONNECTION` | `redis` |
 | `CACHE_STORE`, `SESSION_DRIVER` | `redis` (locks for token refresh use the cache store) |
 | `ZOOM_DRIVER` | `http` |
 | `ZOOM_CLIENT_ID`, `ZOOM_CLIENT_SECRET` | **Production** credentials from the Marketplace app |
 | `ZOOM_WEBHOOK_SECRET_TOKEN` | Features → Access → Secret Token |
-| `ZOOM_REDIRECT_URI` | `https://app.seattrim.com/zoom/callback` |
-| `STRIPE_KEY`, `STRIPE_SECRET`, `STRIPE_WEBHOOK_SECRET` | from Stripe; webhook endpoint `https://app.seattrim.com/stripe/webhook` |
+| `ZOOM_REDIRECT_URI` | `https://seattrim.com/zoom/callback` |
+| `STRIPE_KEY`, `STRIPE_SECRET`, `STRIPE_WEBHOOK_SECRET` | from Stripe; webhook endpoint `https://seattrim.com/stripe/webhook` |
 | `STRIPE_PRICE_STARTER/GROWTH/SCALE` | yearly price ids |
 | `MAIL_*` | transactional provider (Postmark/SES). `MAIL_FROM_ADDRESS=hello@seattrim.com` |
 | `HORIZON_ADMIN_EMAILS` | who may open `/horizon` |
@@ -40,12 +40,12 @@ Queue names: everything runs on `default`. Scans are serialised per organization
 ## Stripe
 
 - Create three yearly prices (Starter 290, Growth 790, Scale 1990 USD) and put the ids in `.env`.
-- Run `php artisan cashier:webhook --url=https://app.seattrim.com/stripe/webhook` once, copy the signing secret to `STRIPE_WEBHOOK_SECRET`.
+- Run `php artisan cashier:webhook --url=https://seattrim.com/stripe/webhook` once, copy the signing secret to `STRIPE_WEBHOOK_SECRET`.
 - Enable the Customer Portal in Stripe (cancel, update card, invoices).
 
 ## Zoom
 
-Follow `docs/zoom-app-setup.md`. Production redirect URL and allow list must contain `https://app.seattrim.com/zoom/callback`; webhook and deauthorization URL `https://app.seattrim.com/zoom/webhook`. Validate the webhook from the Marketplace console after deploying (the CRC handler needs the secret token in `.env`).
+Follow `docs/zoom-app-setup.md`. Production redirect URL and allow list must contain `https://seattrim.com/zoom/callback`; webhook and deauthorization URL `https://seattrim.com/zoom/webhook`. Validate the webhook from the Marketplace console after deploying (the CRC handler needs the secret token in `.env`).
 
 ## Backups
 

@@ -31,9 +31,9 @@ does not match, the concept still applies.
      `.env` (`ZOOM_CLIENT_ID`, `ZOOM_CLIENT_SECRET`) now; production goes into Forge env later.
    - OAuth Information:
      - **OAuth Redirect URL:** `{APP_URL}/zoom/callback`, e.g. `https://abc123.sharedwithexpose.com/zoom/callback`
-       for dev and `https://app.seattrim.com/zoom/callback` for production.
+       for dev and `https://seattrim.com/zoom/callback` for production.
      - **OAuth allow list:** add both the full callback URLs *and* the bare origins
-       (`https://abc123.sharedwithexpose.com`, `https://app.seattrim.com`).
+       (`https://abc123.sharedwithexpose.com`, `https://seattrim.com`).
      - Leave *Strict Mode URL* and *Subdomain check* on if the UI offers them; our redirect is exact.
 
 ## 2. Features → Access
