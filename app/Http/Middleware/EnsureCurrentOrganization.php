@@ -12,6 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Resolves the authenticated user's current organization into Tenancy.
  * Users without one are sent to the create-organization step.
+ *
+ * The tenant is cleared in terminate(), not after $next(): Livewire replays this
+ * middleware on /livewire/update before running the component action, so clearing
+ * it on the way out of handle() would leave the action without an organization.
  */
 class EnsureCurrentOrganization
 {
@@ -42,10 +46,11 @@ class EnsureCurrentOrganization
 
         $this->tenancy->set($organization);
 
-        try {
-            return $next($request);
-        } finally {
-            $this->tenancy->forget();
-        }
+        return $next($request);
+    }
+
+    public function terminate(): void
+    {
+        $this->tenancy->forget();
     }
 }

@@ -159,7 +159,18 @@ test('viewers cannot manage members', function () {
         ->assertForbidden();
 });
 
-test('livewire action requests re-resolve the current organization', function () {
+test('livewire action requests keep the current organization after replaying the middleware', function () {
     expect(app(\Livewire\Mechanisms\PersistentMiddleware\PersistentMiddleware::class)->getPersistentMiddleware())
         ->toContain(\App\Http\Middleware\EnsureCurrentOrganization::class);
+
+    $user = User::factory()->create();
+    $organization = Organization::factory()->withMember($user)->create();
+    app(\App\Tenancy\Tenancy::class)->forget();
+
+    // Livewire replays persistent middleware to a dummy response, then runs the action.
+    $request = \Illuminate\Http\Request::create('/onboarding');
+    $request->setUserResolver(fn () => $user);
+    \Livewire\Drawer\Utils::applyMiddleware($request, [\App\Http\Middleware\EnsureCurrentOrganization::class]);
+
+    expect(app(\App\Tenancy\Tenancy::class)->current()?->is($organization))->toBeTrue();
 });
