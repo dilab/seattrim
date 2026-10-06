@@ -35,7 +35,7 @@ Copy `.env.example` and set:
 - **Scheduler** (Forge → Scheduler): `php artisan schedule:run` every minute. It runs the hourly scan dispatcher, digests, renewal reminders and demo pruning.
 - Deploy script (after `composer install --no-dev`): `php artisan migrate --force`, `php artisan config:cache`, `php artisan route:cache`, `php artisan view:cache`, `npm ci && npm run build`, `php artisan horizon:terminate`.
 
-Queue names: everything runs on `default`. Scans are serialised per organization by `WithoutOverlapping`; a large account takes a few minutes, so set Horizon's `timeout` ≥ 1800 (config/horizon.php) and `maxProcesses` 3–5.
+Queue names: everything runs on `default`. Scans are serialised per organization by `WithoutOverlapping`; a large account takes a few minutes, so Horizon's `timeout` is 1800 (config/horizon.php) and the Redis `retry_after` is 1900 (`REDIS_QUEUE_RETRY_AFTER`); keep retry_after above every job timeout. Set `maxProcesses` 3–5.
 
 ## Stripe
 
