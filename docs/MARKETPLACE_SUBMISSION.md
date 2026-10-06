@@ -8,33 +8,34 @@ https://developers.zoom.us/docs/distribute/app-submission/common-rejection-issue
 ## Listing
 
 **App name:** SeatTrim
-**Short description (≤150 chars):** Find Zoom licensed seats nobody uses, downgrade them safely, and right-size your seat count before renewal.
+**Short description (≤150 chars):** Find Zoom licensed seats nobody uses, downgrade them to Basic safely, and know how many seats to keep at renewal.
 **Category:** Administration / IT
-**Long description:**
+**Long description (≤2,000 chars, currently ~1,700):**
 
-SeatTrim is for Zoom admins at organizations with 50 to 2,000 seats who pay for Licensed users nobody
-uses. Once an admin adds SeatTrim, it scans the account every night and groups Licensed users into
-buckets: pending invites that reserve a seat, any deactivated user still holding a seat, users who have not
-hosted a meeting within your threshold (30–180 days), and seats you pay for that nobody holds, including those released by leavers. It shows the
-annual cost at your seat price and lets you downgrade users to Basic with one click and restore them just
-as easily.
+SeatTrim helps Zoom admins at organizations with 50 to 2,000 seats find Licensed seats nobody uses and reclaim them before renewal.
 
-Every change is guarded: account owners and admins, Zoom Rooms, users on Workplace/United bundles, users
-with Zoom Phone, Webinar or Large Meeting add-ons, users with upcoming scheduled meetings, recently created
-accounts and anyone on your exclusion list are never touched. SeatTrim re-checks each user in Zoom
-immediately before acting and writes an audit entry with Zoom's tracking id.
+After an account owner or admin adds SeatTrim, it scans the account every night and groups Licensed users into clear buckets:
+- Pending invites that hold a Licensed seat
+- Users who have not hosted a meeting within your chosen threshold (30 to 180 days)
+- Seats you pay for that nobody holds, including seats freed by people who left
 
-Paid plans add bulk actions, automation with a plain warning email and a "Keep my license" button, a weekly
-digest, renewal reminders and CSV export. SeatTrim does not change your Zoom subscription: it frees seats
-and tells you the number to reduce to in Zoom Billing.
+For each bucket, SeatTrim shows the yearly cost at your seat price. You can downgrade a user to Basic in one click and restore them just as easily.
+
+Every change has guardrails. SeatTrim never touches account owners and admins, users on Workplace or United bundles, users with Zoom Phone, Webinar or Large Meeting add-ons, users with upcoming scheduled meetings, recently created users, or anyone on your exclusion list. It re-checks each user in Zoom right before acting and records every change in an audit log.
 
 Main features:
-- Nightly scan of users, host reports and plan usage
-- Waste in dollars per bucket, purchased vs assigned seats
-- One-click downgrade and restore with guardrails and a full audit log
+- Nightly scan of users, host activity and plan usage
+- Yearly cost per bucket, and purchased vs assigned seats
+- One-click downgrade and restore, with a full audit log
 - Exclusions by email, domain or group
-- Optional automation with warning emails, dry run first
-- Renewal right-sizing target and reminders
+- Optional automation with a warning email and a "Keep my license" button, with a dry run first
+- Weekly digest, renewal reminders and CSV export
+
+SeatTrim does not change your Zoom subscription. It frees seats and tells you the number to reduce to in Zoom Billing.
+
+SeatTrim reads user, host activity and seat data only. It never reads meeting content, recordings, chat or participants, and all Zoom data is deleted when you remove the app.
+
+SeatTrim is built by StaticMaker Pte Ltd, Singapore.
 
 **Links (all on seattrim.com):** Privacy `https://seattrim.com/privacy`, Terms `https://seattrim.com/terms`,
 Support `https://seattrim.com/support`, Documentation `https://seattrim.com/docs`.
