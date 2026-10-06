@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1160" viewBox="0 0 1600 1160" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+    </marker>
+    <style>
+      .t{font-size:19px;font-weight:700;fill:#0f172a}
+      .s{font-size:14.5px;fill:#334155}
+      .g{font-size:15px;font-weight:700;fill:#475569;letter-spacing:.5px}
+      .l{font-size:13.5px;fill:#0f172a;paint-order:stroke;stroke:#fff;stroke-width:6px;stroke-linejoin:round}
+      .ln{stroke:#334155;stroke-width:2;fill:none;marker-end:url(#a)}
+      .bi{marker-start:url(#a)}
+      .box{fill:#fff;stroke:#94a3b8;stroke-width:1.5}
+      .h{font-size:17px;font-weight:700;fill:#0f172a}
+      .f{font-size:14.5px;fill:#1e293b}
+    </style>
+  </defs>
+  <rect width="1600" height="1160" fill="#fff"/>
+  <text x="40" y="52" font-size="28" font-weight="700" fill="#0f172a">SeatTrim architecture</text>
+  <text x="40" y="82" class="s">https://seattrim.com · StaticMaker Pte Ltd · admin-managed General app (OAuth 2.0, granular :admin scopes)</text>
+
+  <!-- People -->
+  <rect x="40" y="170" width="260" height="110" rx="10" class="box"/>
+  <text x="60" y="205" class="t">Zoom account admin</text>
+  <text x="60" y="230" class="s">Web browser</text>
+  <text x="60" y="252" class="s">Signs up, connects Zoom, reviews</text>
+  <text x="60" y="270" class="s">seats, downgrades / restores</text>
+
+  <rect x="40" y="625" width="260" height="110" rx="10" class="box"/>
+  <text x="60" y="660" class="t">Zoom user (licensed)</text>
+  <text x="60" y="685" class="s">Receives warning email before an</text>
+  <text x="60" y="703" class="s">automated downgrade; may click</text>
+  <text x="60" y="721" class="s">signed "Keep my license" link</text>
+
+  <!-- Cloudflare -->
+  <rect x="360" y="150" width="160" height="230" rx="10" fill="#fff4e6" stroke="#f38020" stroke-width="1.5"/>
+  <text x="378" y="186" class="t">Cloudflare</text>
+  <text x="378" y="214" class="s">DNS (proxied)</text>
+  <text x="378" y="236" class="s">TLS 1.2+</text>
+  <text x="378" y="258" class="s">Full (strict) to</text>
+  <text x="378" y="276" class="s">origin</text>
+  <text x="378" y="298" class="s">DDoS / WAF</text>
+  <text x="378" y="320" class="s">No caching of</text>
+  <text x="378" y="338" class="s">/zoom/*, /keep/*,</text>
+  <text x="378" y="356" class="s">/stripe/*, /livewire/*</text>
+
+  <!-- Server -->
+  <rect x="580" y="115" width="500" height="465" rx="14" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="600" y="143" class="g">SEATTRIM SERVER (Laravel Forge, Linux, Nginx + PHP 8.3)</text>
+
+  <rect x="610" y="160" width="440" height="140" rx="10" class="box"/>
+  <text x="630" y="192" class="t">Web app (Laravel 13, Livewire)</text>
+  <text x="630" y="218" class="s">Fortify auth: email verification, 2FA, passkeys</text>
+  <text x="630" y="240" class="s">OAuth connect + callback (per-attempt state)</text>
+  <text x="630" y="262" class="s">/zoom/webhook: HMAC check, CRC, 5-min window</text>
+  <text x="630" y="284" class="s">Per-organization tenancy and role policies</text>
+
+  <rect x="610" y="320" width="440" height="105" rx="10" class="box"/>
+  <text x="630" y="352" class="t">Horizon queue workers</text>
+  <text x="630" y="377" class="s">Scans, re-check + license change, webhook sync,</text>
+  <text x="630" y="397" class="s">emails. Token refresh under a distributed lock;</text>
+  <text x="630" y="417" class="s">Retry-After + backoff on Zoom rate limits</text>
+
+  <rect x="610" y="440" width="440" height="45" rx="10" class="box"/>
+  <text x="630" y="468" class="s"><tspan font-weight="700" fill="#0f172a">Scheduler</tspan> (every minute): nightly scans, digests, reminders</text>
+
+  <rect x="610" y="500" width="210" height="62" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="628" y="526" class="t">MySQL 8</text>
+  <text x="628" y="548" class="s">Tokens AES-256 encrypted</text>
+  <rect x="840" y="500" width="210" height="62" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="858" y="526" class="t">Redis</text>
+  <text x="858" y="548" class="s">Queue, cache, sessions</text>
+
+  <!-- Zoom -->
+  <rect x="1160" y="115" width="400" height="330" rx="14" fill="#eaf1ff" stroke="#0b5cff" stroke-width="1.5"/>
+  <text x="1180" y="143" class="g" fill="#0b5cff">ZOOM</text>
+  <rect x="1180" y="160" width="360" height="70" rx="10" class="box"/>
+  <text x="1198" y="190" class="t">Webhooks</text>
+  <text x="1198" y="213" class="s">user.* events, app_deauthorized</text>
+  <rect x="1180" y="245" width="360" height="70" rx="10" class="box"/>
+  <text x="1198" y="275" class="t">OAuth 2.0 (zoom.us/oauth)</text>
+  <text x="1198" y="298" class="s">Authorize, token, refresh, revoke</text>
+  <rect x="1180" y="330" width="360" height="100" rx="10" class="box"/>
+  <text x="1198" y="360" class="t">REST API v2 (api.zoom.us/v2)</text>
+  <text x="1198" y="383" class="s">Users, user settings, upcoming meetings,</text>
+  <text x="1198" y="403" class="s">active/inactive hosts report, plan usage.</text>
+  <text x="1198" y="423" class="s">Only write: PATCH user type (Licensed ↔ Basic)</text>
+
+  <!-- Third parties -->
+  <rect x="610" y="640" width="210" height="95" rx="10" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="628" y="672" class="t">Postmark</text>
+  <text x="628" y="696" class="s">Transactional email</text>
+  <text x="628" y="716" class="s">over SMTP (TLS)</text>
+  <rect x="1160" y="640" width="250" height="95" rx="10" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="1178" y="672" class="t">Stripe</text>
+  <text x="1178" y="696" class="s">Checkout, subscriptions,</text>
+  <text x="1178" y="716" class="s">signed billing webhooks</text>
+
+  <!-- Arrows -->
+  <path d="M300 225 H356" class="ln bi"/>
+  <text x="305" y="215" class="l">HTTPS</text>
+  <path d="M520 225 H606" class="ln bi"/>
+  <text x="530" y="215" class="l">HTTPS</text>
+
+  <path d="M1180 195 H1054" class="ln"/>
+  <text x="1068" y="185" class="l">POST (signed)</text>
+  <path d="M1054 280 H1176" class="ln bi"/>
+  <text x="1066" y="270" class="l">code → tokens</text>
+  <path d="M1054 375 H1176" class="ln bi"/>
+  <text x="1068" y="365" class="l">HTTPS, Bearer</text>
+
+  <path d="M715 580 V636" class="ln"/>
+  <text x="725" y="612" class="l">SMTP</text>
+  <path d="M606 700 H304" class="ln"/>
+  <text x="400" y="690" class="l">warning / admin emails</text>
+  <path d="M300 655 H440 V384" class="ln"/>
+  <text x="452" y="520" class="l">keep link</text>
+  <path d="M1000 580 V600 H1285 V636" class="ln bi"/>
+  <text x="1060" y="592" class="l">HTTPS API + webhooks</text>
+
+  <!-- Flows -->
+  <line x1="40" y1="775" x2="1560" y2="775" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="40" y="815" class="h">Main flows</text>
+  <text x="40" y="848" class="f"><tspan font-weight="700">1. Install.</tspan> Admin clicks Connect Zoom → redirect to zoom.us/oauth/authorize with a one-time state → callback exchanges the code for tokens → tokens stored encrypted.</text>
+  <text x="40" y="878" class="f"><tspan font-weight="700">2. Scan.</tspan> Scheduler queues a nightly scan per organization (one at a time) → worker reads users, host report and plan usage → buckets and seat cost saved to MySQL.</text>
+  <text x="40" y="908" class="f"><tspan font-weight="700">3. Downgrade / restore.</tspan> Admin action or an admin-configured rule → worker re-reads the user and checks guardrails (role, bundle, add-ons, upcoming meetings,</text>
+  <text x="66" y="928" class="f">exclusions) → PATCH /users/{id} type 2 ↔ 1 → audit entry. Automated rules email the user first with a signed, expiring "Keep my license" link.</text>
+  <text x="40" y="958" class="f"><tspan font-weight="700">4. Webhooks.</tspan> Zoom POSTs user events to /zoom/webhook → signature and timestamp verified → job updates the stored user record.</text>
+  <text x="40" y="988" class="f"><tspan font-weight="700">5. Uninstall.</tspan> app_deauthorized webhook or in-app disconnect → tokens revoked → all Zoom-derived data deleted immediately → owners emailed.</text>
+
+  <text x="40" y="1040" class="h">Data handling</text>
+  <text x="40" y="1072" class="f">Stored: Zoom user id, email, name, department, groups, role, license type, status, dates, hosted-meeting counts, add-on flags, upcoming-meeting count, seat totals.</text>
+  <text x="40" y="1100" class="f">Never read or stored: meeting content, recordings, chat, participants. Tokens are never logged. Payment card data stays with Stripe.</text>
+  <text x="40" y="1128" class="f">All traffic is HTTPS (TLS 1.2+). Database backed up nightly. Access to the server and admin tools limited to StaticMaker staff.</text>
+</svg>
