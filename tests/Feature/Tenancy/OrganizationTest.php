@@ -158,3 +158,8 @@ test('viewers cannot manage members', function () {
         ->call('add')
         ->assertForbidden();
 });
+
+test('livewire action requests re-resolve the current organization', function () {
+    expect(app(\Livewire\Mechanisms\PersistentMiddleware\PersistentMiddleware::class)->getPersistentMiddleware())
+        ->toContain(\App\Http\Middleware\EnsureCurrentOrganization::class);
+});

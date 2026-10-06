@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\EnsureCurrentOrganization;
 use App\Models\Organization;
 use App\Tenancy\Tenancy;
 use Carbon\CarbonImmutable;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Cashier\Cashier;
+use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,10 @@ class AppServiceProvider extends ServiceProvider
         $this->configureDefaults();
 
         Cashier::useCustomerModel(Organization::class);
+
+        // Livewire action requests (/livewire/update) skip route middleware unless it's
+        // persistent; without this, component actions run with no current organization.
+        Livewire::addPersistentMiddleware([EnsureCurrentOrganization::class]);
     }
 
     /**
