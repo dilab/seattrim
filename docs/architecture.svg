@@ -123,7 +123,7 @@
   <text x="40" y="815" class="h">Main flows</text>
   <text x="40" y="848" class="f"><tspan font-weight="700">1. Install.</tspan> Admin clicks Connect Zoom → redirect to zoom.us/oauth/authorize with a one-time state → callback exchanges the code for tokens → tokens stored encrypted.</text>
   <text x="40" y="878" class="f"><tspan font-weight="700">2. Scan.</tspan> Scheduler queues a nightly scan per organization (one at a time) → worker reads users, host report and plan usage → buckets and seat cost saved to MySQL.</text>
-  <text x="40" y="908" class="f"><tspan font-weight="700">3. Downgrade / restore.</tspan> Admin action or an admin-configured rule → worker re-reads the user and checks guardrails (role, bundle, add-ons, upcoming meetings,</text>
+  <text x="40" y="908" class="f"><tspan font-weight="700">3. Downgrade / restore.</tspan> Admin action or an admin-configured rule → worker re-reads the user and checks guardrails (role, add-ons, upcoming meetings,</text>
   <text x="66" y="928" class="f">exclusions) → PATCH /users/{id} type 2 ↔ 1 → audit entry. Automated rules email the user first with a signed, expiring "Keep my license" link.</text>
   <text x="40" y="958" class="f"><tspan font-weight="700">4. Webhooks.</tspan> Zoom POSTs user events to /zoom/webhook → signature and timestamp verified → job updates the stored user record.</text>
   <text x="40" y="988" class="f"><tspan font-weight="700">5. Uninstall.</tspan> app_deauthorized webhook or in-app disconnect → tokens revoked → all Zoom-derived data deleted immediately → owners emailed.</text>

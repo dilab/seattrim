@@ -115,6 +115,16 @@ class ZoomMember extends Model
         return $this->type === ZoomUser::TYPE_LICENSED;
     }
 
+    /** Copy the facts a license action just confirmed on a fresh GET /users/{id}. */
+    public function syncFromZoomUser(ZoomUser $user): void
+    {
+        $this->forceFill(['type' => $user->type, 'status' => $user->status]);
+        if ($user->hasBundleFields()) {
+            $this->forceFill(['has_bundled_license' => $user->hasBundle(), 'bundle_known' => true]);
+        }
+        $this->save();
+    }
+
     public function isPresent(): bool
     {
         return $this->removed_at === null;

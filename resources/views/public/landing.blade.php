@@ -85,7 +85,7 @@
                         <div class="flex items-center justify-between py-1"><span class="text-ink-700">{{ __('Never hosted') }}</span><x-public.pill tone="brand" class="h-6 text-[11px]">{{ __('Downgrade') }}</x-public.pill></div>
                     </div>
                 </div>
-                <div class="text-center"><div class="text-[15px] font-medium">{{ __('Downgrades safely') }}</div><p class="mt-1 text-[15px] leading-[1.6] text-ink-500">{{ __('Admins, rooms, bundles, add-ons and upcoming meetings are protected. Re-checked in Zoom before every change. One-click restore.') }}</p></div>
+                <div class="text-center"><div class="text-[15px] font-medium">{{ __('Downgrades safely') }}</div><p class="mt-1 text-[15px] leading-[1.6] text-ink-500">{{ __('Admins, rooms, add-ons and upcoming meetings are protected. Re-checked in Zoom before every change. One-click restore.') }}</p></div>
             </div>
             <div class="flex flex-col gap-4">
                 <div class="flex h-44 items-center justify-center rounded-3xl border border-ink-100 p-4" style="background:linear-gradient(135deg,#eceefc,#ffffff 50%,#d9ddfb)">

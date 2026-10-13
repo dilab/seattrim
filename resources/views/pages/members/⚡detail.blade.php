@@ -93,7 +93,7 @@ new class extends Component {
             <dt class="text-zinc-500">{{ __('Add-ons') }}</dt>
             <dd>{{ empty($member->add_ons) ? __('none detected') : implode(', ', $member->add_ons) }}</dd>
             <dt class="text-zinc-500">{{ __('Bundle') }}</dt>
-            <dd>{{ $member->has_bundled_license ? __('Workplace / United bundle') : ($member->bundle_known ? __('none') : __('unknown')) }}</dd>
+            <dd>{{ $member->has_bundled_license ? __('Workplace / United bundle (turned off on downgrade, restored with the seat)') : ($member->bundle_known ? __('none') : __('unknown')) }}</dd>
             @if ($member->isKeptByUser())
                 <dt class="text-zinc-500">{{ __('Kept by user until') }}</dt>
                 <dd>{{ $member->excluded_until?->toFormattedDateString() }}</dd>

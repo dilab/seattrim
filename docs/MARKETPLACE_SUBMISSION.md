@@ -21,7 +21,7 @@ After an account owner or admin adds SeatTrim, it scans the account every night 
 
 For each bucket, SeatTrim shows the yearly cost at your seat price. You can downgrade a user to Basic in one click and restore them just as easily.
 
-Every change has guardrails. SeatTrim never touches account owners and admins, users on Workplace or United bundles, users with Zoom Phone, Webinar or Large Meeting add-ons, users with upcoming scheduled meetings, recently created users, or anyone on your exclusion list. It re-checks each user in Zoom right before acting and records every change in an audit log.
+Every change has guardrails. SeatTrim never touches account owners and admins, Zoom Rooms, users with Zoom Phone, Webinar or Large Meeting add-ons, users with upcoming scheduled meetings, recently created users, or anyone on your exclusion list. Users on Zoom Workplace or Zoom United bundles can be downgraded; if their bundle includes Zoom Phone they stay protected by the Phone guardrail. It re-checks each user in Zoom right before acting and records every change in an audit log.
 
 Main features:
 - Nightly scan of users, host activity and plan usage
@@ -50,7 +50,7 @@ Support `https://seattrim.com/support`, Documentation `https://seattrim.com/docs
 | `user:read:list_users:admin` | Lists all users (active, deactivated, pending) to determine which hold a Licensed seat. Core inventory. | Run a scan; members page lists every user of the test account. |
 | `user:read:user:admin` | Re-reads a single user immediately before a downgrade/restore to confirm type, status, role and bundle on fresh data. | Downgrade a user; audit log shows the re-check. |
 | `user:read:settings:admin` | Reads the `feature` flags (Zoom Phone, Webinar, Large Meeting) so users with add-ons are protected from downgrade. Read-only, only for candidates. | A user with Zoom Phone shows "has Zoom Phone" in the Protected bucket. |
-| `user:update:user:admin` | The only write: changes a user's `type` between Licensed (2) and Basic (1) when an admin clicks Downgrade/Restore or a rule the admin configured fires. No other field is sent. | Downgrade then restore a test user; verify in the Zoom portal. |
+| `user:update:user:admin` | The only write. Changes a user's license when an admin clicks Downgrade/Restore or a rule the admin configured fires: `type` between Licensed (2) and Basic (1) and, for users on a Workplace/United bundle, `zoom_one_type` / `plan_united_type` to turn the bundle off or back on. One license field per request; no other field is sent. | Downgrade then restore a test user (bundled users work too, as long as they have no Zoom Phone); verify in the Zoom portal. |
 | `report:read:list_users:admin` | Active/inactive hosts report per 30-day window decides who is idle. Meeting content is never read. | Members drawer shows meetings hosted per window. |
 | `billing:read:plan_usage:admin` | Purchased vs assigned seats for the "unassigned seats" figure and the renewal target. Read-only. | Dashboard seat card. |
 | `meeting:read:list_meetings:admin` | Counts upcoming scheduled meetings (topic/time only) of downgrade candidates so hosts with meetings are protected (Basic = 40-minute limit). | A user with an upcoming meeting shows "has upcoming scheduled meetings". |
@@ -78,7 +78,7 @@ Zoom test account: the reviewer's own Pro+ account, or ask us for access to our 
 2. Onboarding asks for seat price and renewal date (optional) → **Save and run first scan**. Wait for the dashboard.
 3. Dashboard: headline waste, seat card (`billing:read:plan_usage:admin`), bucket cards.
 4. Members: filter bucket = Idle licensed; open a user; the drawer shows meetings per window (`report:read:list_users:admin`), last login, add-ons (`user:read:settings:admin`), upcoming meetings (`meeting:read:list_meetings:admin`).
-5. Click **Downgrade to Basic** → confirm. Audit log shows re-check + `user:update:user:admin` result with tracking id. Verify in Zoom User Management that the user is Basic.
+5. Click **Downgrade to Basic** → confirm. Audit log shows re-check + `user:update:user:admin` result with tracking id. Verify in Zoom User Management that the user is Basic. This works on a user with a Zoom Workplace / Zoom United bundle too, as long as they do not have Zoom Phone (the audit row then also records which license field was used).
 6. Click **Restore Licensed** → user is Licensed again.
 7. Automation: enable, keep dry run, save; run `Scan now`; the "Warnings sent" table lists scheduled notices (dry run makes no change).
 8. Removal: Connection → **Disconnect and delete data** → type DELETE. Members page is empty; owner receives an email. Alternatively remove the app from Zoom Marketplace → Added Apps; the same happens via the deauthorization webhook.
@@ -113,3 +113,5 @@ Demo without a Zoom account: `https://seattrim.com/demo` (fixture data, throw-aw
 2. `PATCH /users/{userId}` for deactivated users. If Zoom refuses, the audit row records the error and the UI suggests reactivate → downgrade → deactivate.
 3. Whether Zoom Rooms appear in `GET /users`; if they do, SeatTrim learns from Zoom error 200 and protects them afterwards.
 4. Whether a deactivated user ever comes back from `GET /users?status=inactive` as Licensed (`type = 2`). Zoom documents that deactivation removes licenses; if it never happens, the "Deactivated, still licensed" bucket stays hidden and can be removed.
+5. `PATCH /users/{userId}` with `type = 1` on a user whose Zoom Workplace bundle is the account's base plan. Expected (from the spec): the user becomes Basic and the bundle is released with the seat. SeatTrim re-reads the user; if they are still Licensed with the bundle on, it sends `zoom_one_type = 0` (or `plan_united_type = "none"`) as a second request.
+6. `zoom_one_type = 0` / `plan_united_type = "none"` on a bundle that is an add-on to a Meetings base plan (expected to free the seat; error 2039 when the account has no Basic licenses left), and whether `type = 2` re-assigns the same bundle option on restore. SeatTrim records the option on the audit row and re-applies it when `type = 2` alone does not bring it back.

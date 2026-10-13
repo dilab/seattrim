@@ -75,8 +75,6 @@ class GuardrailCheck
             type: $user->type,
             isOwnerOrAdmin: $user->isOwnerOrAdmin(),
             isRoom: $member->is_room,
-            hasBundle: $user->hasBundle(),
-            bundleKnown: $user->hasBundleFields() || $member->bundle_known,
             addOns: $addOns,
             upcomingMeetings: $upcoming,
             createdAt: $user->userCreatedAt ?? $member->created_at_zoom?->toImmutable(),

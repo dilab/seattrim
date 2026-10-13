@@ -79,8 +79,8 @@ test('the dashboard shows waste, seats, buckets, warnings and the honesty note',
     $response = $this->actingAs($user)->get(route('dashboard'));
 
     $response->assertOk()
-        ->assertSee('$3,725')             // 25 reclaimable seats × $149
-        ->assertSee('25 seats')
+        ->assertSee('$4,172')             // 28 reclaimable seats × $149
+        ->assertSee('28 seats')
         ->assertSee('does not reduce your Zoom bill')
         ->assertSee('Unassigned')
         ->assertSee('Idle licensed')

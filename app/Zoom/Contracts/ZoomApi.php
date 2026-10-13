@@ -5,6 +5,7 @@ namespace App\Zoom\Contracts;
 use App\Models\ZoomConnection;
 use App\Zoom\Data\ApiResult;
 use App\Zoom\Data\HostReportRow;
+use App\Zoom\Data\LicenseChange;
 use App\Zoom\Data\PagedList;
 use App\Zoom\Data\PlanUsage;
 use App\Zoom\Data\TokenSet;
@@ -47,7 +48,7 @@ interface ZoomApi
     public function userFeatures(ZoomConnection $connection, string $userId): UserFeatures;
 
     /** PATCH /users/{userId} {"type": 1|2} */
-    public function updateUserType(ZoomConnection $connection, string $userId, int $type): ApiResult;
+    public function updateUserLicense(ZoomConnection $connection, string $userId, LicenseChange $change): ApiResult;
 
     /**
      * GET /report/users?type=active|inactive&from&to, one ≤31-day window, followed to exhaustion.

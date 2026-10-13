@@ -6,6 +6,7 @@ use App\Models\ZoomConnection;
 use App\Zoom\Contracts\ZoomApi;
 use App\Zoom\Data\ApiResult;
 use App\Zoom\Data\HostReportRow;
+use App\Zoom\Data\LicenseChange;
 use App\Zoom\Data\PagedList;
 use App\Zoom\Data\PlanUsage;
 use App\Zoom\Data\TokenSet;
@@ -123,9 +124,9 @@ class ZoomClient implements ZoomApi
         return UserFeatures::fromArray((array) ($body['feature'] ?? []));
     }
 
-    public function updateUserType(ZoomConnection $connection, string $userId, int $type): ApiResult
+    public function updateUserLicense(ZoomConnection $connection, string $userId, LicenseChange $change): ApiResult
     {
-        $response = $this->request($connection, 'patch', '/users/'.rawurlencode($userId), json: ['type' => $type]);
+        $response = $this->request($connection, 'patch', '/users/'.rawurlencode($userId), json: $change->toArray());
 
         return new ApiResult($this->trackingId($response), $response->status());
     }

@@ -130,6 +130,42 @@ final readonly class ZoomUser
         return false;
     }
 
+    /**
+     * The bundle option currently on the user, in the shape PATCH expects to put it back:
+     * ['zoom_one_type' => 16] or ['plan_united_type' => '16']. Null when not bundled.
+     * A ZOOM_WORKPLACE_BUNDLE entry's license_option is the Workplace option value.
+     *
+     * @return array<string, int|string>|null
+     */
+    public function bundleOption(): ?array
+    {
+        if ($this->zoomOneType !== null && $this->zoomOneType > 0) {
+            return [LicenseChange::FIELD_ZOOM_ONE => $this->zoomOneType];
+        }
+
+        if ($this->planUnitedType !== null) {
+            return [LicenseChange::FIELD_UNITED => $this->planUnitedType];
+        }
+
+        foreach ($this->licenseInfoList as $license) {
+            if (($license['license_type'] ?? null) === 'ZOOM_WORKPLACE_BUNDLE' && is_numeric($license['license_option'] ?? null) && (int) $license['license_option'] > 0) {
+                return [LicenseChange::FIELD_ZOOM_ONE => (int) $license['license_option']];
+            }
+        }
+
+        return null;
+    }
+
+    /** The PATCH that turns this user's bundle off, or null when there is no bundle to turn off. */
+    public function bundleOffChange(): ?LicenseChange
+    {
+        if ($this->planUnitedType !== null) {
+            return LicenseChange::united(LicenseChange::UNITED_OFF);
+        }
+
+        return $this->hasBundle() ? LicenseChange::zoomOne(0) : null;
+    }
+
     /** Whether the payload carried any bundle field at all (single-user responses do; list rows may not). */
     public function hasBundleFields(): bool
     {

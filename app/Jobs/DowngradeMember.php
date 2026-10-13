@@ -7,10 +7,10 @@ use App\Enums\Bucket;
 use App\Models\LicenseAction;
 use App\Models\Organization;
 use App\Models\ZoomConnection;
-use App\Models\ZoomMember;
 use App\Scan\Classifier;
 use App\Tenancy\Tenancy;
 use App\Zoom\Contracts\ZoomApi;
+use App\Zoom\Data\LicenseChange;
 use App\Zoom\Data\ZoomUser;
 use App\Zoom\Exceptions\ConnectionRevokedException;
 use App\Zoom\Exceptions\ZoomApiException;
@@ -22,6 +22,13 @@ use Illuminate\Support\Facades\Log;
 /**
  * Licensed → Basic for one member, with a fresh guardrail check first and a
  * re-fetch afterwards to confirm. Every outcome lands on the license_actions row.
+ *
+ * Bundled users (Zoom Workplace / Zoom One / Zoom United) are downgraded in up to
+ * two PATCH calls, because Zoom accepts only one license field per request:
+ * `type=1` first (enough when the bundle is the account's base plan), then, if the
+ * user is still Licensed with the bundle on, `zoom_one_type=0` or
+ * `plan_united_type="none"`. The bundle option found on the user is recorded on the
+ * audit row so RestoreMember can put it back. See docs/zoom-api-notes.md §4.
  */
 class DowngradeMember implements ShouldQueue
 {
@@ -80,7 +87,9 @@ class DowngradeMember implements ShouldQueue
 
             if ($skip !== null) {
                 $action->markSkipped($skip);
-                $this->syncFromUser($member, $user);
+                if ($user !== null) {
+                    $member->syncFromZoomUser($user);
+                }
 
                 return;
             }
@@ -91,57 +100,114 @@ class DowngradeMember implements ShouldQueue
                 return;
             }
 
+            /** @var ZoomUser $user */
             $identifier = $member->zoom_user_id ?? $member->email;
+            $bundleBefore = $user->bundleOption();
+            $action->forceFill(['bundle_before' => $bundleBefore])->save();
+
+            // Step 1: type=1. On a Workplace-base-plan account this also releases the bundle.
+            $first = LicenseChange::type(ZoomUser::TYPE_BASIC);
+            $fresh = null;
+            $result = null;
 
             try {
-                $result = $zoom->updateUserType($connection, $identifier, ZoomUser::TYPE_BASIC);
+                $result = $zoom->updateUserLicense($connection, $identifier, $first);
             } catch (ZoomApiException $e) {
                 if ($e->zoomCode === 200 && str_contains($e->getMessage(), 'Zoom Room')) {
                     $member->forceFill(['is_room' => true, 'eligible_for_downgrade' => false, 'bucket' => Bucket::Protected, 'protected_reasons' => array_values(array_unique([...($member->protected_reasons ?? []), Classifier::REASON_ROOM]))])->save();
                 }
-                $action->markFailed($e->summary(), $e->trackingId);
-                Log::notice('license.downgrade.failed', ['organization' => $organization->id, 'action' => $action->id, 'error' => $e->summary()]);
 
-                return;
-            } catch (ConnectionRevokedException $e) {
+                // Error 300 on a bundled user ("can't change type … at the same time" and friends) means the
+                // bundle has to be turned off through its own field instead. Zoom Events is a real refusal.
+                $fallBack = $e->zoomCode === 300 && $bundleBefore !== null && ! str_contains($e->getMessage(), 'Zoom Events');
+
+                if (! $fallBack) {
+                    $this->fail($organization, $action, $this->describeFailure($e), $e->trackingId);
+
+                    return;
+                }
+
+                $fresh = $user;
+            } catch (ConnectionRevokedException) {
                 $action->markFailed('Zoom access was revoked; reconnect Zoom.');
 
                 return;
             }
 
-            // Confirm on fresh data. Zoom answers 204 with no body, so this is the only proof.
-            try {
-                $fresh = $zoom->getUser($connection, $identifier);
-            } catch (ZoomApiException $e) {
-                $action->markFailed('Downgrade sent but could not be confirmed: '.$e->summary(), $result->trackingId);
+            $path = $first->describe();
 
-                return;
+            if ($fresh === null) {
+                // Confirm on fresh data. Zoom answers 204 with no body, so this is the only proof.
+                try {
+                    $fresh = $zoom->getUser($connection, $identifier);
+                } catch (ZoomApiException $e) {
+                    $action->markFailed('Downgrade sent but could not be confirmed: '.$e->summary(), $result->trackingId);
+
+                    return;
+                }
             }
 
+            // Step 2: still Licensed with the bundle on → turn the bundle off through its own field.
             if ($fresh->type !== ZoomUser::TYPE_BASIC) {
-                $action->markFailed("Zoom accepted the request but the user is still type {$fresh->type}.", $result->trackingId);
+                $off = $fresh->isLicensed() ? $fresh->bundleOffChange() : null;
 
-                return;
+                if ($off === null) {
+                    $action->markFailed("Zoom accepted the request but the user is still type {$fresh->type}.", $result?->trackingId);
+
+                    return;
+                }
+
+                try {
+                    $result = $zoom->updateUserLicense($connection, $identifier, $off);
+                } catch (ZoomApiException $e) {
+                    $this->fail($organization, $action, $this->describeFailure($e), $e->trackingId);
+
+                    return;
+                } catch (ConnectionRevokedException) {
+                    $action->markFailed('Zoom access was revoked; reconnect Zoom.');
+
+                    return;
+                }
+
+                $path = $off->describe();
+
+                try {
+                    $fresh = $zoom->getUser($connection, $identifier);
+                } catch (ZoomApiException $e) {
+                    $action->markFailed('Downgrade sent but could not be confirmed: '.$e->summary(), $result->trackingId);
+
+                    return;
+                }
+
+                if ($fresh->type !== ZoomUser::TYPE_BASIC) {
+                    $member->syncFromZoomUser($fresh);
+                    $action->markFailed("Zoom turned the bundle off but the user is still Licensed (type {$fresh->type}); run Downgrade again to move them to Basic.", $result->trackingId);
+
+                    return;
+                }
             }
 
-            $this->syncFromUser($member, $fresh);
+            $member->syncFromZoomUser($fresh);
             $member->forceFill(['bucket' => Bucket::Healthy, 'eligible_for_downgrade' => false])->save();
-            $action->markDone($result->trackingId);
+            $action->markDone($result?->trackingId, $bundleBefore === null ? null : "Downgraded via {$path}; bundle option recorded for restore.");
 
-            Log::info('license.downgraded', ['organization' => $organization->id, 'action' => $action->id, 'tracking_id' => $result->trackingId]);
+            Log::info('license.downgraded', ['organization' => $organization->id, 'action' => $action->id, 'path' => $path, 'tracking_id' => $result?->trackingId]);
         });
     }
 
-    private function syncFromUser(ZoomMember $member, ?ZoomUser $user): void
+    private function fail(Organization $organization, LicenseAction $action, string $reason, ?string $trackingId): void
     {
-        if ($user === null) {
-            return;
-        }
+        $action->markFailed($reason, $trackingId);
+        Log::notice('license.downgrade.failed', ['organization' => $organization->id, 'action' => $action->id, 'error' => $reason]);
+    }
 
-        $member->forceFill(['type' => $user->type, 'status' => $user->status]);
-        if ($user->hasBundleFields()) {
-            $member->forceFill(['has_bundled_license' => $user->hasBundle(), 'bundle_known' => true]);
-        }
-        $member->save();
+    /** Zoom's own text, with the two license-pool errors explained (docs/zoom-api-notes.md §7). */
+    private function describeFailure(ZoomApiException $e): string
+    {
+        return match ($e->zoomCode) {
+            2039 => 'Zoom has no free Basic license to move this user onto: '.$e->summary().' Buy or free a Basic seat in Zoom Billing first.',
+            2033, 3412 => 'Zoom has reached its maximum number of Basic users: '.$e->summary(),
+            default => $e->summary(),
+        };
     }
 }

@@ -4,6 +4,7 @@ use App\Models\Organization;
 use App\Models\User;
 use App\Models\ZoomConnection;
 use App\Tenancy\Tenancy;
+use App\Zoom\Data\LicenseChange;
 use App\Zoom\Exceptions\ZoomApiException;
 use App\Zoom\TokenManager;
 use App\Zoom\ZoomClient;
@@ -97,13 +98,18 @@ test('zoom errors become ZoomApiException with code, status and tracking id', fu
     }
 });
 
-test('updateUserType patches only the type and returns the tracking id', function () {
+test('updateUserLicense patches exactly one license field and returns the tracking id', function () {
     Http::fake(['api.zoom.us/v2/users/u1' => Http::response('', 204, ['x-zm-trackingid' => 'trk-patch'])]);
 
-    $result = $this->client->updateUserType($this->connection, 'u1', 1);
-
+    $result = $this->client->updateUserLicense($this->connection, 'u1', LicenseChange::type(1));
     expect($result->trackingId)->toBe('trk-patch')->and($result->httpStatus)->toBe(204);
     Http::assertSent(fn (Request $r) => $r->method() === 'PATCH' && $r->data() === ['type' => 1]);
+
+    $this->client->updateUserLicense($this->connection, 'u1', LicenseChange::zoomOne(0));
+    Http::assertSent(fn (Request $r) => $r->method() === 'PATCH' && $r->data() === ['zoom_one_type' => 0]);
+
+    $this->client->updateUserLicense($this->connection, 'u1', LicenseChange::united('none'));
+    Http::assertSent(fn (Request $r) => $r->method() === 'PATCH' && $r->data() === ['plan_united_type' => 'none']);
 });
 
 test('plan usage 400 degrades to unavailable instead of throwing', function () {

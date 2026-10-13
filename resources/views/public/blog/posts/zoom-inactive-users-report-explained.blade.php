@@ -40,7 +40,7 @@
 <p>30 days catches the most seats and the most false alarms. 90 days is a sensible default for most companies. Use 180 days for teams whose meetings are seasonal, such as education, boards, or finance around quarter end.</p>
 
 <h3>2. Apply the guardrails</h3>
-<p>Remove anyone who shouldn't be downgraded regardless of activity: owners and admins; users on Zoom Workplace or Zoom United bundles; anyone with Webinar, Large Meeting, Zoom Phone or other add-ons; users with upcoming scheduled meetings; and accounts created in the last month. <a href="{{ route('blog.show', 'how-to-free-up-zoom-licenses') }}">The full checklist is in our guide to freeing up Zoom licenses</a>.</p>
+<p>Remove anyone who shouldn't be downgraded regardless of activity: owners and admins; anyone with Webinar, Large Meeting, Zoom Phone or other add-ons, including bundled users whose bundle includes Zoom Phone; users with upcoming scheduled meetings; and accounts created in the last month. <a href="{{ route('blog.show', 'how-to-free-up-zoom-licenses') }}">The full checklist is in our guide to freeing up Zoom licenses</a>.</p>
 
 <h3>3. Keep an exclusion list</h3>
 <p>Some people should never be on the list: executives, their assistants, the person who runs the training program. Keep a short list of emails (or whole departments) and remove them every time. It's the fastest way to avoid a very awkward email.</p>

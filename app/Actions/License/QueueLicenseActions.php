@@ -60,6 +60,7 @@ class QueueLicenseActions
                 'action' => $action,
                 'from_type' => $member->type,
                 'to_type' => $action === LicenseAction::ACTION_DOWNGRADE ? 1 : 2,
+                'bundle_before' => $action === LicenseAction::ACTION_RESTORE ? $this->bundleBefore($member) : null,
                 'source' => $source,
                 'performed_by' => $performer?->getKey(),
                 'status' => LicenseAction::STATUS_QUEUED,
@@ -76,5 +77,22 @@ class QueueLicenseActions
         $batch = Bus::batch($jobs)->name("license:{$action}:{$organization->getKey()}")->allowFailures()->dispatch();
 
         return ['batch' => $batch, 'actions' => $actions];
+    }
+
+    /**
+     * The bundle option recorded by the member's latest completed downgrade, so the restore can re-apply it.
+     *
+     * @return array<string, int|string>|null
+     */
+    private function bundleBefore(ZoomMember $member): ?array
+    {
+        $previous = LicenseAction::query()
+            ->where('zoom_member_id', $member->id)
+            ->where('action', LicenseAction::ACTION_DOWNGRADE)
+            ->where('status', LicenseAction::STATUS_DONE)
+            ->latest('id')
+            ->first();
+
+        return $previous?->bundle_before ?: null;
     }
 }

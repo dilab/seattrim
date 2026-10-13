@@ -1,9 +1,14 @@
 <?php
 
 use App\Enums\Role;
+use App\Http\Middleware\EnsureCurrentOrganization;
 use App\Models\Organization;
 use App\Models\User;
+use App\Tenancy\Tenancy;
+use Illuminate\Http\Request;
+use Livewire\Drawer\Utils;
 use Livewire\Livewire;
+use Livewire\Mechanisms\PersistentMiddleware\PersistentMiddleware;
 
 test('a user without an organization is sent to create one', function () {
     $user = User::factory()->create();
@@ -160,17 +165,17 @@ test('viewers cannot manage members', function () {
 });
 
 test('livewire action requests keep the current organization after replaying the middleware', function () {
-    expect(app(\Livewire\Mechanisms\PersistentMiddleware\PersistentMiddleware::class)->getPersistentMiddleware())
-        ->toContain(\App\Http\Middleware\EnsureCurrentOrganization::class);
+    expect(app(PersistentMiddleware::class)->getPersistentMiddleware())
+        ->toContain(EnsureCurrentOrganization::class);
 
     $user = User::factory()->create();
     $organization = Organization::factory()->withMember($user)->create();
-    app(\App\Tenancy\Tenancy::class)->forget();
+    app(Tenancy::class)->forget();
 
     // Livewire replays persistent middleware to a dummy response, then runs the action.
-    $request = \Illuminate\Http\Request::create('/onboarding');
+    $request = Request::create('/onboarding');
     $request->setUserResolver(fn () => $user);
-    \Livewire\Drawer\Utils::applyMiddleware($request, [\App\Http\Middleware\EnsureCurrentOrganization::class]);
+    Utils::applyMiddleware($request, [EnsureCurrentOrganization::class]);
 
-    expect(app(\App\Tenancy\Tenancy::class)->current()?->is($organization))->toBeTrue();
+    expect(app(Tenancy::class)->current()?->is($organization))->toBeTrue();
 });

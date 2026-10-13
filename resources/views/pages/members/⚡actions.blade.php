@@ -97,7 +97,7 @@ new class extends Component {
                 <div class="space-y-5">
                     <div>
                         <flux:heading size="lg">{{ __('Downgrade :name to Basic?', ['name' => $member->name ?: $member->email]) }}</flux:heading>
-                        <flux:text class="mt-2">{{ __('SeatTrim re-checks the user in Zoom first (role, bundle, add-ons, upcoming meetings, exclusions) and skips if anything changed. You can restore with one click as long as a seat is free.') }}</flux:text>
+                        <flux:text class="mt-2">{{ __('SeatTrim re-checks the user in Zoom first (role, add-ons, upcoming meetings, exclusions) and skips if anything changed. You can restore with one click as long as a seat is free.') }}</flux:text>
                     </div>
                     <flux:callout icon="information-circle" variant="warning">
                         <flux:callout.text>{{ __('This does not reduce your Zoom bill until you lower the seat count in Zoom Billing.') }}</flux:callout.text>

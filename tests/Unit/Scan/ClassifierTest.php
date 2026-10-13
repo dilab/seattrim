@@ -17,8 +17,6 @@ function facts(array $overrides = []): MemberFacts
         'type' => ZoomUser::TYPE_LICENSED,
         'isOwnerOrAdmin' => false,
         'isRoom' => false,
-        'hasBundle' => false,
-        'bundleKnown' => true,
         'addOns' => [],
         'upcomingMeetings' => 0,
         'createdAt' => CarbonImmutable::parse('2025-01-01'),
@@ -38,7 +36,7 @@ function classifier(int $threshold = 90, int $newHire = 30): Classifier
 }
 
 test('non-licensed members are always healthy and never eligible', function (int $type, string $status) use ($now) {
-    $c = classifier()->classify(facts(['type' => $type, 'status' => $status, 'isRoom' => true, 'hasBundle' => true]), $now);
+    $c = classifier()->classify(facts(['type' => $type, 'status' => $status, 'isRoom' => true, 'addOns' => ['zoom_phone']]), $now);
 
     expect($c->bucket)->toBe(Bucket::Healthy)
         ->and($c->eligibleForDowngrade)->toBeFalse()
@@ -93,11 +91,11 @@ test('an idle licensed user with no guardrail is idle_licensed and eligible', fu
 });
 
 test('a hosting licensed user is healthy even when guardrails apply', function () use ($now) {
-    $c = classifier()->classify(facts(['meetingsByWindow' => ['0-30' => 4], 'hasBundle' => true]), $now);
+    $c = classifier()->classify(facts(['meetingsByWindow' => ['0-30' => 4], 'addOns' => ['zoom_phone']]), $now);
 
     expect($c->bucket)->toBe(Bucket::Healthy)
         ->and($c->eligibleForDowngrade)->toBeFalse()
-        ->and($c->protectedReasons)->toBe([Classifier::REASON_BUNDLE]);
+        ->and($c->protectedReasons)->toBe(['has Zoom Phone']);
 });
 
 test('each guardrail protects an idle user with a readable reason', function (array $overrides, string $reason) use ($now) {
@@ -107,8 +105,6 @@ test('each guardrail protects an idle user with a readable reason', function (ar
         ->and($c->eligibleForDowngrade)->toBeFalse()
         ->and($c->protectedReasons)->toContain($reason);
 })->with([
-    'bundle' => [['hasBundle' => true], Classifier::REASON_BUNDLE],
-    'bundle unknown' => [['bundleKnown' => false], Classifier::REASON_BUNDLE_UNKNOWN],
     'phone' => [['addOns' => ['zoom_phone']], 'has Zoom Phone'],
     'webinar' => [['addOns' => ['webinar']], 'has a Webinar add-on'],
     'large meeting' => [['addOns' => ['large_meeting']], 'has a Large Meeting add-on'],
@@ -138,9 +134,9 @@ test('the new-hire rule uses the configured days and can be disabled', function 
 });
 
 test('multiple guardrails are all listed once, in a stable order', function () use ($now) {
-    $c = classifier()->classify(facts(['isOwnerOrAdmin' => true, 'hasBundle' => true, 'addOns' => ['zoom_phone', 'zoom_phone'], 'upcomingMeetings' => 1]), $now);
+    $c = classifier()->classify(facts(['isOwnerOrAdmin' => true, 'isRoom' => true, 'addOns' => ['zoom_phone', 'zoom_phone'], 'upcomingMeetings' => 1]), $now);
 
-    expect($c->protectedReasons)->toBe([Classifier::REASON_ROLE, Classifier::REASON_BUNDLE, 'has Zoom Phone', Classifier::REASON_UPCOMING]);
+    expect($c->protectedReasons)->toBe([Classifier::REASON_ROOM, Classifier::REASON_ROLE, 'has Zoom Phone', Classifier::REASON_UPCOMING]);
 });
 
 test('deactivated licensed users are bucketed regardless of hosting, and skip host-only guardrails', function () use ($now) {
@@ -150,11 +146,11 @@ test('deactivated licensed users are bucketed regardless of hosting, and skip ho
         ->and($c->eligibleForDowngrade)->toBeTrue()
         ->and($c->protectedReasons)->toBe([]);
 
-    $protectedDeactivated = classifier()->classify(facts(['status' => ZoomUser::STATUS_INACTIVE, 'hasBundle' => true]), $now);
+    $protectedDeactivated = classifier()->classify(facts(['status' => ZoomUser::STATUS_INACTIVE, 'addOns' => ['zoom_phone']]), $now);
 
     expect($protectedDeactivated->bucket)->toBe(Bucket::DeactivatedLicensed)
         ->and($protectedDeactivated->eligibleForDowngrade)->toBeFalse()
-        ->and($protectedDeactivated->protectedReasons)->toBe([Classifier::REASON_BUNDLE]);
+        ->and($protectedDeactivated->protectedReasons)->toBe(['has Zoom Phone']);
 });
 
 test('pending licensed invites are bucketed, recent invites are protected, upcoming meetings are not required', function () use ($now) {

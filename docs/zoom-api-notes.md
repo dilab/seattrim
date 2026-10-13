@@ -2,7 +2,7 @@
 
 Everything SeatTrim relies on from the Zoom platform, with where it was verified. Rule from the build brief:
 **no Zoom field, path, scope or limit goes into code without a row here.** If a row says *unverified*, the
-code must treat it as unknown (e.g. "license bundle unknown" → protected).
+code must treat it as unknown (e.g. "upcoming meetings could not be checked" → protected).
 
 Verification date: **2026-09-25**. Method: Zoom's reference pages are client-rendered, but every product
 page embeds its OpenAPI document and exposes it for download. Those documents were downloaded and read
@@ -132,10 +132,33 @@ Bundle detection **from the user object alone** (no extra scope):
   "You can't change the type or plan_united_type or zoom_one_type at the same time" / 2039 "You can't turn
   off your Zoom One license now because you don't have enough basic licenses."
 
-So the rule in `Classifier`: `zoom_one_type > 0` or `plan_united_type` set or a `ZOOM_WORKPLACE_BUNDLE`
-entry ⇒ **protected: "Workplace/United bundle"**. If the single-user fetch fails or omits all three fields
-on an account whose plan usage shows `plan_zoom_one`/`plan_united` seats ⇒ **protected: "license bundle
-unknown"** (brief §6.4).
+**Decision 2026-10-13 (Marketplace review):** a bundle no longer protects a user. The reviewer's account,
+like most accounts sold since Zoom renamed its plans to "Zoom Workplace", only has bundle licenses, so the
+old rule (`zoom_one_type > 0` or `plan_united_type` set or a `ZOOM_WORKPLACE_BUNDLE` entry ⇒ protected
+"Workplace/United bundle", unknown ⇒ protected "license bundle unknown") blocked every downgrade. The bundle
+fields are still read and stored (`has_bundled_license`, `bundle_known`) for the member drawer and to choose
+the PATCH strategy. What still protects a user whose bundle includes Phone is `feature.zoom_phone` (below).
+
+PATCH semantics for bundled users, **from the 2026-10-13 users spec, unverified on a real bundle account**:
+
+- `PATCH /users/{userId}` accepts only one of `type`, `zoom_one_type`, `plan_united_type` per request
+  (error 300 "You can't change the \"type\" or \"plan_united_type\" or \"zoom_one_type\" at the same time.").
+- `type` doc: "If a Zoom Workplace series plan is configured as the account's base plan, you can directly
+  assign the corresponding Zoom Workplace license by setting type = 2." So on a base-plan account `type`
+  alone moves the bundle with the seat, in both directions.
+- `zoom_one_type: 0` = "Turn off Zoom Workplace license"; refused with error 300 "You can't turn off your
+  Zoom One license now because you are having Zoom One as your basic plan type." when the bundle *is* the base
+  plan. The PATCH enum omits `4` (Workplace Enterprise) and `8` (Enterprise Plus), which `GET` can return, so
+  those options cannot be re-applied through the API.
+- `plan_united_type: "none"` = "Turn off Zoom United type".
+- Error 2039 "You can't turn off your Zoom One/United license now because you don't have enough basic
+  licenses." and 2033 (maximum Basic users) are license-pool problems the admin must fix in Zoom Billing.
+
+So `DowngradeMember` sends `type = 1` first, re-reads the user, and only if they are still Licensed with the
+bundle on (or Zoom answered 300 on a bundled user) sends `zoom_one_type = 0` / `plan_united_type = "none"`.
+The bundle option found on the user is recorded on the audit row (`license_actions.bundle_before`).
+`RestoreMember` sends `type = 2`, re-reads, and re-applies the recorded option when it did not come back.
+The fake client models the base-plan account by default and the add-on account via `withBundleAsAddOn()`.
 
 Add-ons come from `GET /users/{userId}/settings` → `feature` object (scope `user:read:settings:admin`):
 `zoom_phone` (bool), `webinar` (bool) + `webinar_capacity`, `large_meeting` (bool) + `large_meeting_capacity`,
@@ -202,14 +225,14 @@ Documented error codes to map explicitly (all HTTP 400 unless noted):
 | Code | Meaning (doc text, abbreviated) | SeatTrim handling |
 | --- | --- | --- |
 | 200 | "A Zoom Room user cannot be changed to a free user type" / other admin-only fields | Skip, reason from message; flag `is_room` |
-| 300 | "You cannot change the user type to 'Basic' because this user has an upcoming Zoom Events scheduled." / "You can't change the type or plan_united_type or zoom_one_type at the same time." | Skip with message |
+| 300 | "You cannot change the user type to 'Basic' because this user has an upcoming Zoom Events scheduled." / "You can't change the type or plan_united_type or zoom_one_type at the same time." / "…because you are having Zoom One as your basic plan type." | Zoom Events: fail with message. On a bundled user otherwise: fall back to turning the bundle off through its own field (§4) |
 | 1001 (404) | User does not exist | Mark member removed, skip |
 | 1108 | "Permission requirements to change the user type of this user were not met." | Fail with message (installer's role lacks permission) |
 | 1109 | "Host is not a paid user." | Skip (already Basic) |
 | 1120 | Invitation expired, userId invalid | Mark removed, skip |
-| 2033 / 3412 | Account reached maximum Basic users | Fail with message, surface prominently |
+| 2033 / 3412 | Account reached maximum Basic users | Fail: "Zoom has reached its maximum number of Basic users" + Zoom's text |
 | 2034 / 2038 / 3412 | Reached maximum paying users / subscription has no licenses | Restore fails "no free seat" (brief §7) |
-| 2039 | "You can't turn off your Zoom One/United license now because you don't have enough basic licenses." | Fail with message |
+| 2039 | "You can't turn off your Zoom One/United license now because you don't have enough basic licenses." | Fail: "Zoom has no free Basic license to move this user onto" + Zoom's text |
 | 4700 | Invalid access token / missing scope | Refresh or mark connection `error` |
 | 429 | Rate limit | Retry per §9 |
 
@@ -329,10 +352,9 @@ Source: https://developers.zoom.us/docs/api/errors/. Body shape `{"code": 300, "
 
 ## 14. Implementation decisions that follow from the above
 
-- **Pending invites in accounts with bundle plans** are classified `pending_licensed` but *not* eligible for
-  downgrade, with reason "license bundle unknown": list rows for pending users carry no `zoom_one_type`
-  and no id to fetch. Accounts without any bundle plan get eligible pending invites. Revisit once a real
-  bundle account has been observed (M10 checklist).
+- **Pending invites** are classified `pending_licensed` and are eligible once older than the new-hire window,
+  regardless of the account's plan mix (until 2026-10-13 they were protected as "license bundle unknown" on
+  accounts with bundle plans; bundles no longer protect, see §4). They are addressed by email in `PATCH`.
 - **Zoom Rooms** are not detectable up front; they become protected after the first `PATCH` answers error
   200 "A Zoom Room user cannot be changed to a free user type". The fixture account contains two rooms to
   exercise this path.
@@ -358,7 +380,7 @@ Every Zoom claim in `resources/views/public/blog/posts/*` traces to one of these
 | Six-month history, one-month range, active/inactive host definitions, Pro+ prerequisite | §5 above (`GET /report/users`) |
 | `last_login_time` three-day buffer | §3 above |
 | Pending counted separately in plan usage | §6 above (`plan_base.pending`) |
-| Upcoming Zoom Events block change to Basic (error 300); bundles may refuse (2039) | §7 above |
+| Upcoming Zoom Events block change to Basic (error 300); bundles may refuse (2039) or need their own field (§4) | §7 above |
 
 **Decision 2026-09-28:** KB0066997 says deactivation removes licenses, so a deactivated user classified
 `deactivated_licensed` is treated as an anomaly, not a headline category. The classifier is unchanged (it only

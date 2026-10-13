@@ -60,11 +60,11 @@ test('the first run warns eligible idle and pending users with a signed keep lin
 
     $result = runAutomation($this->organization);
 
-    // 11 idle + 4 pending in the bucket, but pending invites are not eligible on this account (bundle unknown).
-    expect($result['warned'])->toBe(11)->and($result['executed'])->toBe(0);
+    // 14 idle (3 of them bundled) + 3 pending invites older than 30 days; the 4th invite is recent and protected.
+    expect($result['warned'])->toBe(17)->and($result['executed'])->toBe(0);
 
     $notices = app(Tenancy::class)->runAs($this->organization, fn () => DowngradeNotice::query()->open()->with('member')->get());
-    expect($notices)->toHaveCount(11)
+    expect($notices)->toHaveCount(17)
         ->and($notices->first()->scheduled_for->toDateString())->toBe(now()->addDays(7)->toDateString());
 
     Notification::assertSentOnDemand(DowngradeWarning::class, function (DowngradeWarning $n, array $channels, AnonymousNotifiable $notifiable) {
@@ -77,7 +77,8 @@ test('the first run warns eligible idle and pending users with a signed keep lin
             && $mail->actionUrl === $url
             && str_contains($mail->subject, 'Your Zoom license');
     });
-    Notification::assertSentOnDemandTimes(DowngradeWarning::class, 11);
+    // Pending invites have no mailbox to warn yet, so only the 14 idle users get an email.
+    Notification::assertSentOnDemandTimes(DowngradeWarning::class, 14);
 
     // A second run does not warn the same people twice.
     expect(runAutomation($this->organization)['warned'])->toBe(0);
@@ -93,7 +94,7 @@ test('warnings are cancelled when the user is no longer eligible, and due notice
 
     $result = runAutomation($this->organization, CarbonImmutable::now()->addDays(8));
 
-    expect($result['cancelled'])->toBe(1)->and($result['executed'])->toBe(10)->and($result['deferred'])->toBe(0);
+    expect($result['cancelled'])->toBe(1)->and($result['executed'])->toBe(10)->and($result['deferred'])->toBe(6);
 
     app(Tenancy::class)->runAs($this->organization, function () use ($member) {
         expect(DowngradeNotice::query()->where('zoom_member_id', $member->id)->firstOrFail()->cancel_reason)->toContain('guardrail');
@@ -120,7 +121,7 @@ test('with dry run off, due notices downgrade for real and respect the safety ca
 
     $result = runAutomation($this->organization, CarbonImmutable::now()->addDays(8));
 
-    expect($result['executed'])->toBe(10)->and($result['deferred'])->toBe(1);
+    expect($result['executed'])->toBe(10)->and($result['deferred'])->toBe(7);
 
     app(Tenancy::class)->runAs($this->organization, function () {
         // The two fixture Zoom Rooms are idle and eligible until Zoom refuses them (error 200), so they show up as failed.
@@ -129,12 +130,12 @@ test('with dry run off, due notices downgrade for real and respect the safety ca
             ->and($rule->where('status', 'done')->count() + $rule->where('status', 'failed')->count())->toBe(10)
             ->and($rule->where('status', 'failed')->count())->toBeLessThanOrEqual(2)
             ->and(ZoomMember::query()->where('zoom_user_id', 'u33_never2')->firstOrFail()->type)->toBe(1)
-            ->and(DowngradeNotice::query()->open()->count())->toBe(1);
+            ->and(DowngradeNotice::query()->open()->count())->toBe(7);
     });
 
-    // Next night picks up the deferred one.
+    // Next night picks up the deferred ones.
     $result = runAutomation($this->organization, CarbonImmutable::now()->addDays(9));
-    expect($result['executed'])->toBe(1);
+    expect($result['executed'])->toBe(7);
 });
 
 test('keep my license works from the signed link without login, excludes the user for 90 days and tells admins', function () {
@@ -189,7 +190,7 @@ test('the weekly digest summarises the week and is sent on Monday 08:00 local ti
     runAutomation($this->organization, CarbonImmutable::now()->addDays(8));
 
     $data = app(Tenancy::class)->runAs($this->organization, fn () => DigestBuilder::build($this->organization));
-    expect($data['downgraded'] + $data['skipped'])->toBe(10)->and($data['downgraded'])->toBeGreaterThanOrEqual(8)->and($data['pending'])->toBe(1)->and($data['renewal'])->toContain('reduce to');
+    expect($data['downgraded'] + $data['skipped'])->toBe(10)->and($data['downgraded'])->toBeGreaterThanOrEqual(8)->and($data['pending'])->toBe(7)->and($data['renewal'])->toContain('reduce to');
 
     $admin = User::factory()->create();
     $viewer = User::factory()->create();

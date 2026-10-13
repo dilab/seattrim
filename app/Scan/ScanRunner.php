@@ -76,7 +76,7 @@ class ScanRunner
             $snapshot = $this->seats();
             $this->users();
             [$hosting, $hostingKnown, $reportOnly] = $this->hosting();
-            $this->classifyAll($snapshot, $hosting, $hostingKnown);
+            $this->classifyAll($hosting, $hostingKnown);
 
             if ($reportOnly > 0) {
                 $scan->addWarning('report_only_hosts', "{$reportOnly} host(s) in the report were not in the users list (often Zoom Rooms). They were ignored.");
@@ -271,19 +271,18 @@ class ScanRunner
     // --------------------------------------------------------- 4–5. classify
 
     /** @param array<string, array<string, int>> $hosting */
-    private function classifyAll(?ZoomSeatsSnapshot $snapshot, array $hosting, bool $hostingKnown): void
+    private function classifyAll(array $hosting, bool $hostingKnown): void
     {
         $labels = Window::labels($this->settings->lookbackDays());
-        $accountHasBundlePlans = $this->accountHasBundlePlans($snapshot);
         $detailFailures = 0;
 
-        ZoomMember::query()->present()->orderBy('id')->chunkById(200, function ($members) use ($labels, $hosting, $hostingKnown, $accountHasBundlePlans, &$detailFailures): void {
+        ZoomMember::query()->present()->orderBy('id')->chunkById(200, function ($members) use ($labels, $hosting, $hostingKnown, &$detailFailures): void {
             foreach ($members as $member) {
                 $byWindow = $member->zoom_user_id !== null
                     ? ($hosting[$member->zoom_user_id] ?? array_fill_keys($labels, 0))
                     : array_fill_keys($labels, 0);
 
-                $facts = $this->baseFacts($member, $byWindow, $hostingKnown, $accountHasBundlePlans);
+                $facts = $this->baseFacts($member, $byWindow, $hostingKnown);
 
                 if ($this->isCandidate($member, $facts)) {
                     $facts = $this->enrich($member, $facts, $detailFailures);
@@ -302,20 +301,18 @@ class ScanRunner
         });
 
         if ($detailFailures > 0) {
-            $this->scan->addWarning('detail_failed', "{$detailFailures} per-user lookup(s) failed; those users were protected as a precaution.");
+            $this->scan->addWarning('detail_failed', "{$detailFailures} per-user lookup(s) failed; checks that could not be completed were treated as unknown, which keeps those users protected.");
         }
     }
 
     /** @param array<string, int> $byWindow */
-    private function baseFacts(ZoomMember $member, array $byWindow, bool $hostingKnown, bool $accountHasBundlePlans): MemberFacts
+    private function baseFacts(ZoomMember $member, array $byWindow, bool $hostingKnown): MemberFacts
     {
         return new MemberFacts(
             status: $member->status,
             type: $member->type,
             isOwnerOrAdmin: in_array($member->role_id, ['0', '1'], true) || in_array(mb_strtolower((string) $member->role_name), ['owner', 'admin'], true),
             isRoom: $member->is_room,
-            hasBundle: $member->has_bundled_license,
-            bundleKnown: $member->bundle_known || ! $accountHasBundlePlans,
             addOns: $member->add_ons ?? [],
             upcomingMeetings: $member->upcoming_meetings_count,
             createdAt: $member->created_at_zoom?->toImmutable(),
@@ -344,24 +341,22 @@ class ScanRunner
     private function enrich(ZoomMember $member, MemberFacts $facts, int &$failures): MemberFacts
     {
         $userId = (string) $member->zoom_user_id;
-        $hasBundle = $facts->hasBundle;
-        $bundleKnown = $facts->bundleKnown;
         $addOns = $facts->addOns;
         $upcoming = null;
         $isRoom = $member->is_room;
 
+        // Bundle fields are informational only (shown in the drawer, used to pick the PATCH
+        // strategy); a bundle no longer protects a user. See docs/zoom-api-notes.md §4.
         if ($this->connection->hasScope(self::SCOPE_USER)) {
             try {
                 $user = $this->zoom->getUser($this->connection, $userId);
-                $hasBundle = $user->hasBundle();
-                $bundleKnown = $user->hasBundleFields() || $bundleKnown;
                 $member->fill(['type' => $user->type, 'status' => $user->status, 'role_id' => $user->roleId ?? $member->role_id, 'role_name' => $user->roleName ?? $member->role_name]);
+                if ($user->hasBundleFields()) {
+                    $member->fill(['has_bundled_license' => $user->hasBundle(), 'bundle_known' => true]);
+                }
             } catch (ZoomApiException $e) {
                 $failures++;
-                $bundleKnown = false;
             }
-        } else {
-            $bundleKnown = false;
         }
 
         if ($this->connection->hasScope(self::SCOPE_SETTINGS)) {
@@ -387,8 +382,6 @@ class ScanRunner
         }
 
         $member->fill([
-            'has_bundled_license' => $hasBundle,
-            'bundle_known' => $bundleKnown,
             'add_ons' => $addOns,
             'upcoming_meetings_count' => $upcoming,
         ]);
@@ -398,8 +391,6 @@ class ScanRunner
             type: $member->type,
             isOwnerOrAdmin: $facts->isOwnerOrAdmin,
             isRoom: $isRoom,
-            hasBundle: $hasBundle,
-            bundleKnown: $bundleKnown,
             addOns: $addOns,
             upcomingMeetings: $upcoming,
             createdAt: $facts->createdAt,
@@ -409,14 +400,5 @@ class ScanRunner
             hostingKnown: $facts->hostingKnown,
             meetingsByWindow: $facts->meetingsByWindow,
         );
-    }
-
-    private function accountHasBundlePlans(?ZoomSeatsSnapshot $snapshot): bool
-    {
-        if ($snapshot === null || $snapshot->source !== 'plan_usage') {
-            return true; // unknown → be careful
-        }
-
-        return PlanUsage::fromArray($snapshot->raw ?? [])->hasBundlePlans();
     }
 }

@@ -16,10 +16,6 @@ use Carbon\CarbonImmutable;
  */
 class Classifier
 {
-    public const REASON_BUNDLE = 'Workplace/United bundle: downgrading would break Phone and other bundled products';
-
-    public const REASON_BUNDLE_UNKNOWN = 'license bundle unknown';
-
     public const REASON_ROLE = 'Zoom account owner or admin';
 
     public const REASON_ROOM = 'Zoom Room';
@@ -128,12 +124,6 @@ class Classifier
 
         if ($facts->isOwnerOrAdmin) {
             $reasons[] = self::REASON_ROLE;
-        }
-
-        if ($facts->hasBundle) {
-            $reasons[] = self::REASON_BUNDLE;
-        } elseif (! $facts->bundleKnown) {
-            $reasons[] = self::REASON_BUNDLE_UNKNOWN;
         }
 
         foreach ($facts->addOns as $addOn) {

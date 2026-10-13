@@ -33,7 +33,7 @@
 <p>Downgrading the wrong person is worse than wasting a seat. A Basic user can host meetings of up to 40 minutes only, and loses any features that came with the license. Before you change anyone from Licensed to Basic, check these:</p>
 <ul>
     <li><strong>Owners and admins.</strong> Leave them alone. They run the account, and a mistake there is the hardest one to undo.</li>
-    <li><strong>Bundles.</strong> On Zoom Workplace or Zoom United plans the meeting license is tied to other products, such as Zoom Phone. Removing it can take more with it, and Zoom may refuse the change.</li>
+    <li><strong>Bundles.</strong> On Zoom Workplace or Zoom United plans the meeting license comes as a bundle, and downgrading turns the whole bundle off. Check whether it includes Zoom Phone before you change anyone, and expect Zoom to refuse when the account has no Basic licenses left.</li>
     <li><strong>Add-ons.</strong> Webinar, Large Meeting, Zoom Phone and similar licenses are assigned per user. Someone who never hosts meetings may still run your webinars.</li>
     <li><strong>Upcoming meetings.</strong> A user with scheduled meetings may be about to host a long call. Zoom also blocks the change to Basic for users with upcoming Zoom Events sessions.</li>
     <li><strong>New starters.</strong> Someone created last week hasn't had time to host anything. Give new accounts at least a month.</li>

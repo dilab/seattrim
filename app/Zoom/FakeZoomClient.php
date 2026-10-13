@@ -6,6 +6,7 @@ use App\Models\ZoomConnection;
 use App\Zoom\Contracts\ZoomApi;
 use App\Zoom\Data\ApiResult;
 use App\Zoom\Data\HostReportRow;
+use App\Zoom\Data\LicenseChange;
 use App\Zoom\Data\PagedList;
 use App\Zoom\Data\PlanUsage;
 use App\Zoom\Data\TokenSet;
@@ -40,6 +41,8 @@ class FakeZoomClient implements ZoomApi
 
     private bool $partialUserList = false;
 
+    private bool $bundleAsAddOn = false;
+
     /** @var array<int, array<string, mixed>>|null */
     private ?array $usersOverride = null;
 
@@ -65,6 +68,19 @@ class FakeZoomClient implements ZoomApi
     public function withPartialUserList(bool $value = true): self
     {
         $this->partialUserList = $value;
+
+        return $this;
+    }
+
+    /**
+     * Model an account whose bundles are add-ons on top of a base Meetings plan instead of
+     * the base plan itself: `type=1` on a bundled user is accepted but changes nothing, and
+     * only `zoom_one_type=0` / `plan_united_type="none"` frees the seat. The default models
+     * a Workplace-base-plan account, where `type` alone moves the bundle with the seat.
+     */
+    public function withBundleAsAddOn(bool $value = true): self
+    {
+        $this->bundleAsAddOn = $value;
 
         return $this;
     }
@@ -239,31 +255,121 @@ class FakeZoomClient implements ZoomApi
         return UserFeatures::fromArray((array) ($features[$userId] ?? ['zoom_phone' => false, 'webinar' => false, 'large_meeting' => false, 'meeting_capacity' => 100]));
     }
 
-    public function updateUserType(ZoomConnection $connection, string $userId, int $type): ApiResult
+    public function updateUserLicense(ZoomConnection $connection, string $userId, LicenseChange $change): ApiResult
     {
-        $this->record(__FUNCTION__, [$userId, $type]);
+        $this->record(__FUNCTION__, [$userId, $change->toArray()]);
         $this->maybeFail(__FUNCTION__);
 
-        if (in_array($userId, $this->fixtures->load('rooms'), true) && $type === ZoomUser::TYPE_BASIC) {
+        if (in_array($userId, $this->fixtures->load('rooms'), true) && $change->isType(ZoomUser::TYPE_BASIC)) {
             throw new ZoomApiException("A Zoom Room user cannot be changed to a free user type: {$userId}", 400, 200, 'fake-'.Str::random(6), "/users/{$userId}");
         }
 
         // Zoom accepts either the user id or the email address as {userId}.
         $resolvedId = null;
+        $current = null;
         foreach ($this->users($connection) as $user) {
             if (($user['id'] ?? null) === $userId || ($user['email'] ?? null) === $userId) {
                 $resolvedId = (string) $user['id'];
+                $current = $user;
             }
         }
-        if ($resolvedId === null) {
+        if ($resolvedId === null || $current === null) {
             throw new ZoomApiException("User does not exist: {$userId}", 404, 1001, 'fake-'.Str::random(6), "/users/{$userId}");
         }
 
-        $overrides = $this->overrides($connection);
-        $overrides[$resolvedId]['type'] = $type;
-        Cache::forever($this->overridesKey($connection), $overrides);
+        $original = $this->originalUser($resolvedId) ?? $current;
+        $bundled = ZoomUser::fromArray($current)->hasBundle();
+        $patch = match ($change->field) {
+            LicenseChange::FIELD_TYPE => $this->fakeTypeChange((int) $change->value, $bundled, $original),
+            LicenseChange::FIELD_ZOOM_ONE => $this->fakeZoomOneChange((int) $change->value, $current, $userId),
+            default => $this->fakeUnitedChange((string) $change->value),
+        };
+
+        if ($patch !== []) {
+            $overrides = $this->overrides($connection);
+            $overrides[$resolvedId] = array_merge($overrides[$resolvedId] ?? [], $patch);
+            Cache::forever($this->overridesKey($connection), $overrides);
+        }
 
         return new ApiResult('fake-'.Str::random(6));
+    }
+
+    /**
+     * Base-plan account (default): `type` moves the bundle with the seat. Add-on account: `type=1`
+     * on a bundled user is a silent no-op and `type=2` never brings a bundle back.
+     *
+     * @param  array<string, mixed>  $original
+     * @return array<string, mixed>
+     */
+    private function fakeTypeChange(int $type, bool $bundled, array $original): array
+    {
+        if ($type === ZoomUser::TYPE_BASIC) {
+            if ($bundled && $this->bundleAsAddOn) {
+                return [];
+            }
+
+            return ['type' => ZoomUser::TYPE_BASIC] + self::bundleOff();
+        }
+
+        if ($type === ZoomUser::TYPE_LICENSED && ! $this->bundleAsAddOn && ZoomUser::fromArray($original)->hasBundle()) {
+            return ['type' => ZoomUser::TYPE_LICENSED] + array_intersect_key($original, array_flip(['zoom_one_type', 'plan_united_type', 'license_info_list']));
+        }
+
+        return ['type' => $type];
+    }
+
+    /**
+     * @param  array<string, mixed>  $current
+     * @return array<string, mixed>
+     */
+    private function fakeZoomOneChange(int $option, array $current, string $userId): array
+    {
+        if ($option === 0) {
+            if (! $this->bundleAsAddOn && (int) ($current['zoom_one_type'] ?? 0) > 0) {
+                throw new ZoomApiException("You can't turn off your Zoom One license now because you are having Zoom One as your basic plan type.", 400, 300, 'fake-'.Str::random(6), "/users/{$userId}");
+            }
+
+            return ['type' => ZoomUser::TYPE_BASIC] + self::bundleOff();
+        }
+
+        if (in_array($option, [4, 8], true)) {
+            // The PATCH enum omits Workplace Enterprise / Enterprise Plus.
+            throw new ZoomApiException('Invalid parameter: zoom_one_type.', 400, 300, 'fake-'.Str::random(6), "/users/{$userId}");
+        }
+
+        return ['type' => ZoomUser::TYPE_LICENSED, 'zoom_one_type' => $option];
+    }
+
+    /** @return array<string, mixed> */
+    private function fakeUnitedChange(string $option): array
+    {
+        if ($option === LicenseChange::UNITED_OFF) {
+            return ['type' => ZoomUser::TYPE_BASIC] + self::bundleOff();
+        }
+
+        return ['type' => ZoomUser::TYPE_LICENSED, 'plan_united_type' => $option];
+    }
+
+    /** @return array<string, mixed> */
+    private static function bundleOff(): array
+    {
+        return ['zoom_one_type' => 0, 'plan_united_type' => null, 'license_info_list' => []];
+    }
+
+    /**
+     * The fixture row before any override, so a restore can put the original bundle back.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function originalUser(string $id): ?array
+    {
+        foreach ($this->usersOverride ?? $this->fixtures->loadList('users') as $user) {
+            if (($user['id'] ?? null) === $id) {
+                return $user;
+            }
+        }
+
+        return null;
     }
 
     // ---------------------------------------------------------------- Reports

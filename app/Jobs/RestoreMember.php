@@ -7,6 +7,7 @@ use App\Models\Organization;
 use App\Models\ZoomConnection;
 use App\Tenancy\Tenancy;
 use App\Zoom\Contracts\ZoomApi;
+use App\Zoom\Data\LicenseChange;
 use App\Zoom\Data\ZoomUser;
 use App\Zoom\Exceptions\ConnectionRevokedException;
 use App\Zoom\Exceptions\ZoomApiException;
@@ -17,6 +18,12 @@ use Illuminate\Foundation\Queue\Queueable;
 /**
  * Basic → Licensed. Fails with a clear message when Zoom has no free seat
  * (error 2034/2038/3412), which is the honest signal that the admin must buy one.
+ *
+ * When the matching downgrade recorded a bundle option (license_actions.bundle_before),
+ * the bundle is put back too: `type=2` alone does that on a Workplace-base-plan account;
+ * otherwise a second PATCH re-applies `zoom_one_type` / `plan_united_type`. The seat is
+ * what matters, so the action is still "done" when the bundle cannot be re-applied; the
+ * reason says so.
  */
 class RestoreMember implements ShouldQueue
 {
@@ -82,14 +89,14 @@ class RestoreMember implements ShouldQueue
             }
 
             if ($current->isLicensed()) {
-                $member->forceFill(['type' => ZoomUser::TYPE_LICENSED])->save();
+                $member->syncFromZoomUser($current);
                 $action->markSkipped('User is already Licensed.');
 
                 return;
             }
 
             try {
-                $result = $zoom->updateUserType($connection, $identifier, ZoomUser::TYPE_LICENSED);
+                $result = $zoom->updateUserLicense($connection, $identifier, LicenseChange::type(ZoomUser::TYPE_LICENSED));
             } catch (ZoomApiException $e) {
                 $message = in_array($e->zoomCode, [2034, 2038, 3412], true)
                     ? 'No free Licensed seat: '.$e->summary().' Buy a seat in Zoom Billing or free one first.'
@@ -117,8 +124,49 @@ class RestoreMember implements ShouldQueue
                 return;
             }
 
-            $member->forceFill(['type' => ZoomUser::TYPE_LICENSED, 'status' => $fresh->status])->save();
-            $action->markDone($result->trackingId);
+            $wanted = LicenseChange::fromBundleOption($action->bundle_before ?? []);
+
+            if ($wanted === null) {
+                $member->syncFromZoomUser($fresh);
+                $action->markDone($result->trackingId);
+
+                return;
+            }
+
+            if ($fresh->hasBundle()) {
+                $member->syncFromZoomUser($fresh);
+                $action->markDone($result->trackingId, 'Restored Licensed; the bundle came back with the seat.');
+
+                return;
+            }
+
+            // The seat is back but the bundle is not: re-apply the recorded option through its own field.
+            try {
+                $second = $zoom->updateUserLicense($connection, $identifier, $wanted);
+            } catch (ZoomApiException $e) {
+                $member->syncFromZoomUser($fresh);
+                $action->markDone($result->trackingId, 'Licensed seat restored, but the bundle option ('.$wanted->describe().') could not be re-applied: '.$e->summary());
+
+                return;
+            } catch (ConnectionRevokedException) {
+                $member->syncFromZoomUser($fresh);
+                $action->markDone($result->trackingId, 'Licensed seat restored, but Zoom access was revoked before the bundle option ('.$wanted->describe().') could be re-applied; reconnect Zoom.');
+
+                return;
+            }
+
+            try {
+                $fresh = $zoom->getUser($connection, $identifier);
+            } catch (ZoomApiException $e) {
+                $action->markDone($second->trackingId, 'Licensed seat restored and '.$wanted->describe().' sent, but the bundle could not be confirmed: '.$e->summary());
+
+                return;
+            }
+
+            $member->syncFromZoomUser($fresh);
+            $action->markDone($second->trackingId, $fresh->hasBundle()
+                ? 'Restored Licensed and re-applied '.$wanted->describe().'.'
+                : 'Licensed seat restored, but Zoom accepted '.$wanted->describe().' without applying it; assign the bundle in Zoom User Management.');
         });
     }
 }

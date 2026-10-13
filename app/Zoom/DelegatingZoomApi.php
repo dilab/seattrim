@@ -5,6 +5,7 @@ namespace App\Zoom;
 use App\Models\ZoomConnection;
 use App\Zoom\Contracts\ZoomApi;
 use App\Zoom\Data\ApiResult;
+use App\Zoom\Data\LicenseChange;
 use App\Zoom\Data\PagedList;
 use App\Zoom\Data\PlanUsage;
 use App\Zoom\Data\TokenSet;
@@ -77,9 +78,9 @@ class DelegatingZoomApi implements ZoomApi
         return $this->for($connection)->userFeatures($connection, $userId);
     }
 
-    public function updateUserType(ZoomConnection $connection, string $userId, int $type): ApiResult
+    public function updateUserLicense(ZoomConnection $connection, string $userId, LicenseChange $change): ApiResult
     {
-        return $this->for($connection)->updateUserType($connection, $userId, $type);
+        return $this->for($connection)->updateUserLicense($connection, $userId, $change);
     }
 
     public function hostReport(ZoomConnection $connection, string $type, CarbonInterface $from, CarbonInterface $to): PagedList

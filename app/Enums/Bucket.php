@@ -27,7 +27,7 @@ enum Bucket: string
             self::DeactivatedLicensed => 'Zoom normally removes licenses on deactivation. This user still shows as Licensed, so the seat is held.',
             self::PendingLicensed => 'The invitation was never accepted, yet a Licensed seat is reserved for it.',
             self::IdleLicensed => 'Active and licensed, but has not hosted a meeting within your threshold.',
-            self::Protected => 'Would be idle, but a guardrail (bundle, add-on, role, upcoming meeting, exclusion or new hire) stops a downgrade.',
+            self::Protected => 'Would be idle, but a guardrail (add-on, role, upcoming meeting, exclusion or new hire) stops a downgrade.',
             self::Healthy => 'Basic users, and licensed users who host meetings.',
         };
     }

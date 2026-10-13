@@ -21,7 +21,7 @@ Read-only. Used to check a downgrade candidate's feature flags (Zoom Phone, Webi
 
 ## 4. `user:update:user:admin`
 
-SeatTrim's only write. Changes a user's license type between Licensed and Basic, only when an admin clicks Downgrade/Restore or a rule the admin configured fires. No other field is ever sent. We store an audit record of each change (user, old type, new type, who made it, time) in plain text in MySQL. It is deleted on uninstall or disconnect.
+SeatTrim's only write. Changes a user's license, only when an admin clicks Downgrade/Restore or a rule the admin configured fires: the license type between Licensed and Basic and, for users on a Zoom Workplace or Zoom United bundle, the bundle option (zoom_one_type / plan_united_type) to turn the bundle off or back on. One license field per request; no other field is ever sent. We store an audit record of each change (user, old type, new type, bundle option before the change, who made it, time) in plain text in MySQL. It is deleted on uninstall or disconnect.
 
 ## 5. `report:read:list_users:admin`
 

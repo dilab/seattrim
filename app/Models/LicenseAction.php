@@ -20,6 +20,7 @@ use Illuminate\Support\Carbon;
  * @property string $action
  * @property int|null $from_type
  * @property int|null $to_type
+ * @property array<string, int|string>|null $bundle_before
  * @property string $source
  * @property int|null $performed_by
  * @property string $status
@@ -31,7 +32,7 @@ use Illuminate\Support\Carbon;
  * @property-read ZoomMember|null $member
  * @property-read User|null $performer
  */
-#[Fillable(['organization_id', 'zoom_member_id', 'member_email', 'member_name', 'action', 'from_type', 'to_type', 'source', 'performed_by', 'status', 'reason', 'zoom_tracking_id', 'batch_id', 'dry_run', 'performed_at'])]
+#[Fillable(['organization_id', 'zoom_member_id', 'member_email', 'member_name', 'action', 'from_type', 'to_type', 'bundle_before', 'source', 'performed_by', 'status', 'reason', 'zoom_tracking_id', 'batch_id', 'dry_run', 'performed_at'])]
 class LicenseAction extends Model
 {
     use BelongsToOrganization;
@@ -57,7 +58,7 @@ class LicenseAction extends Model
     /** @return array<string, string> */
     protected function casts(): array
     {
-        return ['dry_run' => 'boolean', 'performed_at' => 'datetime', 'from_type' => 'integer', 'to_type' => 'integer'];
+        return ['dry_run' => 'boolean', 'performed_at' => 'datetime', 'from_type' => 'integer', 'to_type' => 'integer', 'bundle_before' => 'array'];
     }
 
     /** @return BelongsTo<ZoomMember, $this> */
@@ -72,9 +73,14 @@ class LicenseAction extends Model
         return $this->belongsTo(User::class, 'performed_by');
     }
 
-    public function markDone(?string $trackingId = null): void
+    /** A reason on a done row is a note about how it was done (e.g. which bundle PATCH path was used). */
+    public function markDone(?string $trackingId = null, ?string $reason = null): void
     {
-        $this->forceFill(['status' => self::STATUS_DONE, 'zoom_tracking_id' => $trackingId, 'performed_at' => now()])->save();
+        $this->forceFill(['status' => self::STATUS_DONE, 'zoom_tracking_id' => $trackingId, 'performed_at' => now()]);
+        if ($reason !== null) {
+            $this->forceFill(['reason' => mb_substr($reason, 0, 2000)]);
+        }
+        $this->save();
     }
 
     public function markSkipped(string $reason): void

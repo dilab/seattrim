@@ -20,8 +20,6 @@ final readonly class MemberFacts
         public int $type,
         public bool $isOwnerOrAdmin = false,
         public bool $isRoom = false,
-        public bool $hasBundle = false,
-        public bool $bundleKnown = true,
         public array $addOns = [],
         public ?int $upcomingMeetings = null,
         public ?CarbonImmutable $createdAt = null,

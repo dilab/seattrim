@@ -27,9 +27,9 @@ test('renewal figures match the dashboard maths', function () {
     $this->organization->update(['renewal_date' => now()->addDays(45)]);
     $f = app(Tenancy::class)->runAs($this->organization, fn () => RenewalFigures::for($this->organization));
 
-    expect($f['reclaimable'])->toBe(25)
-        ->and($f['target'])->toBe($f['purchased'] - 25)
-        ->and($f['target_money'])->toBe('$'.number_format(($f['purchased'] - 25) * 150))
+    expect($f['reclaimable'])->toBe(28)
+        ->and($f['target'])->toBe($f['purchased'] - 28)
+        ->and($f['target_money'])->toBe('$'.number_format(($f['purchased'] - 28) * 150))
         ->and($f['days_left'])->toBe(45);
 });
 
@@ -38,7 +38,7 @@ test('reminders go to owners and admins at 60, 30 and 7 days, once each, at 09:0
 
     $this->travelTo(CarbonImmutable::parse('2026-10-02 09:30', 'Europe/London')); // 60 days before
     $this->artisan('seattrim:send-renewal-reminders')->assertSuccessful();
-    Notification::assertSentTo([$this->owner, $this->admin], RenewalReminder::class, fn ($n) => $n->daysBefore === 60 && $n->figures['reclaimable'] === 25);
+    Notification::assertSentTo([$this->owner, $this->admin], RenewalReminder::class, fn ($n) => $n->daysBefore === 60 && $n->figures['reclaimable'] === 28);
     Notification::assertNotSentTo($this->viewer, RenewalReminder::class);
 
     $this->travelTo(CarbonImmutable::parse('2026-10-03 09:30', 'Europe/London'));

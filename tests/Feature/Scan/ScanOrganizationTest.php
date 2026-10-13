@@ -12,6 +12,7 @@ use App\Models\ZoomMember;
 use App\Models\ZoomSeatsSnapshot;
 use App\Scan\Classifier;
 use App\Tenancy\Tenancy;
+use App\Zoom\Data\LicenseChange;
 use App\Zoom\Data\ZoomUser;
 use App\Zoom\Exceptions\ZoomApiException;
 use App\Zoom\FakeZoomClient;
@@ -47,16 +48,16 @@ test('a full scan of the fixture account produces the expected buckets, seats an
 
         expect($byBucket)->toEqual([
             Bucket::Healthy->value => 41,
-            Bucket::IdleLicensed->value => 11,
+            Bucket::IdleLicensed->value => 14,
             Bucket::DeactivatedLicensed->value => 1,
             Bucket::PendingLicensed->value => 4,
-            Bucket::Protected->value => 12,
+            Bucket::Protected->value => 9,
         ]);
 
         $reasons = fn (string $id) => ZoomMember::query()->where('zoom_user_id', $id)->firstOrFail()->protected_reasons;
         expect($reasons('u03_leeadmin'))->toBe([Classifier::REASON_ROLE])
-            ->and($reasons('u59_bundleworkplace1'))->toBe([Classifier::REASON_BUNDLE])
-            ->and($reasons('u61_bundleunited'))->toBe([Classifier::REASON_BUNDLE])
+            ->and($reasons('u59_bundleworkplace1'))->toBe([])
+            ->and($reasons('u61_bundleunited'))->toBe([])
             ->and($reasons('u62_phone1'))->toBe(['has Zoom Phone'])
             ->and($reasons('u64_webinar1'))->toBe(['has a Webinar add-on'])
             ->and($reasons('u66_upcoming1'))->toBe([Classifier::REASON_UPCOMING])
@@ -66,8 +67,18 @@ test('a full scan of the fixture account produces the expected buckets, seats an
         expect($pendingRecent->zoom_user_id)->toBeNull()
             ->and($pendingRecent->bucket)->toBe(Bucket::PendingLicensed)
             ->and($pendingRecent->eligible_for_downgrade)->toBeFalse()
-            // The account has Workplace bundle seats and pending rows carry no bundle fields, so bundle status is unknown.
-            ->and($pendingRecent->protected_reasons)->toBe([Classifier::REASON_BUNDLE_UNKNOWN, 'invited less than 30 days ago']);
+            ->and($pendingRecent->protected_reasons)->toBe(['invited less than 30 days ago']);
+
+        // Bundles no longer protect: an idle bundled user is a downgrade candidate like any other.
+        $bundled = ZoomMember::query()->where('zoom_user_id', 'u59_bundleworkplace1')->firstOrFail();
+        expect($bundled->bucket)->toBe(Bucket::IdleLicensed)
+            ->and($bundled->eligible_for_downgrade)->toBeTrue()
+            ->and($bundled->has_bundled_license)->toBeTrue()
+            ->and($bundled->bundle_known)->toBeTrue();
+
+        // Older pending invites are eligible too; they are addressed by email when acted on.
+        $pendingOld = ZoomMember::query()->where('email', 'invite2@example.edu')->firstOrFail();
+        expect($pendingOld->eligible_for_downgrade)->toBeTrue()->and($pendingOld->protected_reasons)->toBe([]);
 
         $idle = ZoomMember::query()->where('zoom_user_id', 'u32_never1')->firstOrFail();
         expect($idle->last_hosted_window)->toBe('none')
@@ -86,14 +97,14 @@ test('a full scan of the fixture account produces the expected buckets, seats an
             ->and($snapshot->unassigned_seats)->toBe(9)
             ->and($snapshot->purchased_seats)->toBe($snapshot->used_seats + 9);
 
-        expect($scan->total('buckets.idle_licensed.count'))->toBe(11)
+        expect($scan->total('buckets.idle_licensed.count'))->toBe(14)
             ->and($scan->total('unassigned.count'))->toBe(9)
-            ->and($scan->total('reclaimable_seats'))->toBe(9 + 1 + 4 + 11)
-            ->and($scan->total('waste_annual_cents'))->toBe(25 * 14900)
-            ->and($scan->total('eligible_for_downgrade'))->toBe(1 + 11)
+            ->and($scan->total('reclaimable_seats'))->toBe(9 + 1 + 4 + 14)
+            ->and($scan->total('waste_annual_cents'))->toBe(28 * 14900)
+            ->and($scan->total('eligible_for_downgrade'))->toBe(1 + 14 + 3)
             ->and($scan->total('members_total'))->toBe(69);
 
-        // Only candidates got the extra per-user calls: 11 idle + 12 idle-but-protected + 1 deactivated = 24; never healthy hosts or pending invites.
+        // Only candidates got the extra per-user calls: 14 idle + 9 idle-but-protected + 1 deactivated = 24; never healthy hosts or pending invites.
         $fake = app(FakeZoomClient::class);
         expect(count($fake->callsTo('getUser')))->toBe(24)
             ->and(count($fake->callsTo('upcomingMeetings')))->toBe(23)
@@ -109,7 +120,7 @@ test('the threshold changes who is idle and how far back reports go', function (
     $scan = runScan($organization);
 
     app(Tenancy::class)->runAs($organization, function () use ($scan) {
-        expect($scan->total('buckets.idle_licensed.count'))->toBe(18);
+        expect($scan->total('buckets.idle_licensed.count'))->toBe(21);
     });
     expect(count(app(FakeZoomClient::class)->callsTo('hostReport')))->toBe(3);
 
@@ -118,8 +129,8 @@ test('the threshold changes who is idle and how far back reports go', function (
     $scan = runScan($organization);
     expect(count(app(FakeZoomClient::class)->callsTo('hostReport')) - $before)->toBe(6);
     app(Tenancy::class)->runAs($organization, function () use ($scan) {
-        // idle90 users hosted 120-160 days ago: within 180 → healthy. never-hosted 6 + rooms 2 remain idle.
-        expect($scan->total('buckets.idle_licensed.count'))->toBe(8);
+        // idle90 users hosted 120-160 days ago: within 180 → healthy. never-hosted 6 + rooms 2 + bundled 3 remain idle.
+        expect($scan->total('buckets.idle_licensed.count'))->toBe(11);
     });
 });
 
@@ -167,10 +178,10 @@ test('missing plan usage falls back to the user summary and warns', function () 
     app(Tenancy::class)->runAs($organization, function () use ($scan) {
         $snapshot = ZoomSeatsSnapshot::query()->where('scan_id', $scan->id)->firstOrFail();
         expect($snapshot->source)->toBe('user_summary')->and($snapshot->purchased_seats)->toBeNull()->and($snapshot->used_seats)->toBeGreaterThan(0);
-        expect($scan->total('unassigned.known'))->toBeFalse()->and($scan->total('reclaimable_seats'))->toBe(16);
+        expect($scan->total('unassigned.known'))->toBeFalse()->and($scan->total('reclaimable_seats'))->toBe(19);
         expect(collect($scan->warnings)->pluck('code'))->toContain('plan_usage_unavailable');
-        // Unknown plan mix → bundles must be confirmed per user; the fake exposes bundle fields, so idle counts hold.
-        expect($scan->total('buckets.idle_licensed.count'))->toBe(11);
+        // The plan mix only feeds the seat card; idle classification does not depend on it.
+        expect($scan->total('buckets.idle_licensed.count'))->toBe(14);
     });
 });
 
@@ -259,7 +270,7 @@ test('a user webhook refreshes the member and drops a now-basic user out of the 
     runScan($organization);
     $connection = app(Tenancy::class)->runAs($organization, fn () => ZoomConnection::query()->firstOrFail());
 
-    app(FakeZoomClient::class)->updateUserType($connection, 'u32_never1', ZoomUser::TYPE_BASIC);
+    app(FakeZoomClient::class)->updateUserLicense($connection, 'u32_never1', LicenseChange::type(ZoomUser::TYPE_BASIC));
     (new SyncZoomMemberFromWebhook($organization->id, 'user.updated', ['id' => 'u32_never1']))->handle(app(Tenancy::class), app(FakeZoomClient::class));
 
     app(Tenancy::class)->runAs($organization, function () {

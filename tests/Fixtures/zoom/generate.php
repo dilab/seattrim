@@ -16,7 +16,7 @@
  *   - 4 pending licensed, 1 pending basic
  *   - 6 active basic, 1 "unassigned without meetings basic" (type 4)
  *   - 2 Zoom Rooms (licensed, idle; update fails with Zoom error 200)
- *   - bundles: 2 Workplace (zoom_one_type), 1 United (plan_united_type)
+ *   - bundles: 2 Workplace (zoom_one_type), 1 United (plan_united_type); idle and downgradeable, they exercise the bundle PATCH paths
  *   - add-ons: 2 phone, 1 webinar, 1 large meeting (all idle, all protected)
  *   - 2 idle users with upcoming meetings (protected)
  *   - 2 new hires (< 30 days old, never hosted; protected)
@@ -117,7 +117,7 @@ foreach (['room.library', 'room.boardroom'] as $i => $slug) {
     $rooms[] = $id;
 }
 
-// Bundles (idle so the guardrail is what protects them).
+// Bundles (idle, so they are downgrade candidates and exercise the type=1 / zoom_one_type=0 / plan_united_type=none paths).
 $id = $make('bundle.workplace1', 'Wanda Workplace', 2, 'active', ['zoom_one_type' => 16, 'license_info_list' => [['license_type' => 'ZOOM_WORKPLACE_BUNDLE', 'license_option' => 16, 'subscription_id' => 'SUBREF-1']]]);
 $id = $make('bundle.workplace2', 'Walter Workplace', 2, 'active', ['zoom_one_type' => 4]);
 $id = $make('bundle.united', 'Uma United', 2, 'active', ['plan_united_type' => '16']);

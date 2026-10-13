@@ -10,7 +10,8 @@
         <li><strong>{{ __('Healthy') }}</strong> — {{ __('basic users, and licensed users who host.') }}</li>
     </ul>
     <h2>{{ __('Guardrails') }}</h2>
-    <p>{{ __('A user is never suggested for downgrade, and automation never touches them, if they are an account owner or admin, a Zoom Room, on a Workplace or United bundle, have Zoom Phone, Webinar, Large Meeting or another add-on, have upcoming scheduled meetings, match an exclusion, clicked "Keep my license", or were created less than 30 days ago. SeatTrim re-checks all of this in Zoom immediately before any change.') }}</p>
+    <p>{{ __('A user is never suggested for downgrade, and automation never touches them, if they are an account owner or admin, a Zoom Room, have Zoom Phone, Webinar, Large Meeting or another add-on, have upcoming scheduled meetings, match an exclusion, clicked "Keep my license", or were created less than 30 days ago. SeatTrim re-checks all of this in Zoom immediately before any change.') }}</p>
+    <p>{{ __('Users on a Zoom Workplace or Zoom United bundle can be downgraded: SeatTrim turns the bundle off with the seat and puts it back when you restore. If the bundle includes Zoom Phone, the Phone guardrail still protects them.') }}</p>
     <h2>{{ __('Downgrade and restore') }}</h2>
     <p>{{ __('Open a member from the table and click Downgrade to Basic. SeatTrim re-reads the user, re-runs the guardrails, changes the type, reads the user again to confirm, and writes an audit entry with Zoom\'s tracking id. Restore puts the Licensed type back as long as Zoom has a free seat. Paid plans add bulk actions with a safety cap of max(10, 10% of licensed seats) per run.') }}</p>
     <p><strong>{{ __('Important:') }}</strong> {{ __('downgrading does not reduce your Zoom bill by itself. Lower the seat count in Zoom Billing, usually at renewal.') }}</p>
