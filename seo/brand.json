@@ -1,0 +1,31 @@
+{
+  "product": "SeatTrim",
+  "domain": "seattrim.com",
+  "colors": {
+    "primary": "#2c63e0",
+    "accent": "#3d7bff",
+    "bg": "#eef1f7",
+    "surface": "#ffffff",
+    "text": "#0f1420",
+    "muted": "#6b7280",
+    "on_primary": "#ffffff"
+  },
+  "fonts": {
+    "heading": "Manrope",
+    "body": "Manrope",
+    "source": "google",
+    "google_url": "https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&display=swap"
+  },
+  "radius": "28px",
+  "logo": "public/brand/mark.svg",
+  "motif": "dots",
+  "derived_from": [
+    "resources/css/app.css (@theme: --color-brand-600, --color-brand-500, --color-page, --color-ink-900, --color-ink-500, --font-display, --radius-3xl)",
+    "resources/views/layouts/public.blade.php (bg-brand-600 hero field with white text, bg-page body, white cards, halftone dot pattern)",
+    "vite.config.js (Manrope 300/400/500/600, served from Bunny on the site)",
+    "public/brand/mark.svg",
+    "config/app.php (name)",
+    "docs/deploy.md (APP_URL https://seattrim.com)"
+  ],
+  "defaults_used": []
+}

@@ -1,0 +1,164 @@
+{
+  "generated": "2026-11-26",
+  "root": "seattrim",
+  "articles_glob": "resources/views/public/blog/posts/*.blade.php",
+  "sitemap": null,
+  "pages": [
+    {
+      "path": "/",
+      "file": "resources/views/public/landing.blade.php",
+      "source": "route",
+      "in_sitemap": false,
+      "title": null,
+      "description": "Reclaim unused Zoom licenses before your renewal.",
+      "h1": null,
+      "h2s": [
+        "{{ __('Zoom keeps billing seats nobody uses.') }} {{ __('SeatTrim finds them, quietly, before renewal.') }}",
+        "{{ __('Everything SeatTrim watches,') }} {{ __('so you don’t have to.') }}",
+        "{{ __('A downgrade frees a seat.') }} {{ __('Renewal changes the bill.') }}",
+        "{{ __('Your next renewal is already smaller.') }}"
+      ],
+      "word_count": 478,
+      "kind": "home",
+      "images_dir": "public/images/home/",
+      "last_commit": {
+        "date": "2026-10-13",
+        "author": "xuding",
+        "subject": "Licenses: downgrade Zoom Workplace/United bundle users instead of protecting them",
+        "by_agent": false
+      }
+    },
+    {
+      "path": "/docs",
+      "file": "resources/views/public/docs/index.blade.php",
+      "source": "route",
+      "in_sitemap": false,
+      "title": null,
+      "description": null,
+      "h1": null,
+      "h2s": [
+        "{{ __('Scopes SeatTrim requests') }}"
+      ],
+      "word_count": 138,
+      "kind": "public",
+      "images_dir": "public/images/docs/",
+      "last_commit": {
+        "date": "2026-09-26",
+        "author": "xuding",
+        "subject": "Every marketing page opens in the home light field",
+        "by_agent": false
+      }
+    },
+    {
+      "path": "/pricing",
+      "file": "resources/views/public/pricing.blade.php",
+      "source": "route",
+      "in_sitemap": false,
+      "title": null,
+      "description": null,
+      "h1": null,
+      "h2s": [],
+      "word_count": 203,
+      "kind": "public",
+      "images_dir": "public/images/pricing/",
+      "last_commit": {
+        "date": "2026-09-26",
+        "author": "xuding",
+        "subject": "Marketing readability: contrast, weight, type size, spacing, on-page navigation",
+        "by_agent": false
+      }
+    },
+    {
+      "path": "/privacy",
+      "file": "resources/views/public/legal/privacy.blade.php",
+      "source": "route",
+      "in_sitemap": false,
+      "title": null,
+      "description": null,
+      "h1": null,
+      "h2s": [
+        "{{ __('What we collect') }}",
+        "{{ __('Why') }}",
+        "{{ __('Legal basis') }}",
+        "{{ __('Retention and deletion') }}",
+        "{{ __('Processors') }}",
+        "{{ __('Your rights') }}",
+        "{{ __('Contact') }}"
+      ],
+      "word_count": 329,
+      "kind": "public",
+      "images_dir": "public/images/privacy/",
+      "last_commit": {
+        "date": "2026-09-26",
+        "author": "xuding",
+        "subject": "Marketing readability: contrast, weight, type size, spacing, on-page navigation",
+        "by_agent": false
+      }
+    },
+    {
+      "path": "/support",
+      "file": "resources/views/public/support.blade.php",
+      "source": "route",
+      "in_sitemap": false,
+      "title": null,
+      "description": null,
+      "h1": null,
+      "h2s": [],
+      "word_count": 30,
+      "kind": "public",
+      "images_dir": "public/images/support/",
+      "last_commit": {
+        "date": "2026-09-26",
+        "author": "xuding",
+        "subject": "Marketing readability: contrast, weight, type size, spacing, on-page navigation",
+        "by_agent": false
+      }
+    },
+    {
+      "path": "/terms",
+      "file": "resources/views/public/legal/terms.blade.php",
+      "source": "route",
+      "in_sitemap": false,
+      "title": null,
+      "description": null,
+      "h1": null,
+      "h2s": [
+        "{{ __('The service') }}",
+        "{{ __('Your obligations') }}",
+        "{{ __('Plans and payment') }}",
+        "{{ __('Availability and support') }}",
+        "{{ __('Liability') }}",
+        "{{ __('Termination') }}",
+        "{{ __('Governing law') }}"
+      ],
+      "word_count": 260,
+      "kind": "public",
+      "images_dir": "public/images/terms/",
+      "last_commit": {
+        "date": "2026-09-26",
+        "author": "xuding",
+        "subject": "Marketing readability: contrast, weight, type size, spacing, on-page navigation",
+        "by_agent": false
+      }
+    },
+    {
+      "path": "/zoom-license-audit",
+      "file": "resources/views/public/audit.blade.php",
+      "source": "route",
+      "in_sitemap": false,
+      "title": null,
+      "description": null,
+      "h1": null,
+      "h2s": [],
+      "word_count": 181,
+      "kind": "public",
+      "images_dir": "public/images/zoom-license-audit/",
+      "last_commit": {
+        "date": "2026-09-28",
+        "author": "xuding",
+        "subject": "Align product with Zoom: deactivation removes the license, leavers show as unassigned seats",
+        "by_agent": false
+      }
+    }
+  ]
+}
