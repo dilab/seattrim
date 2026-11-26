@@ -29,6 +29,98 @@
       }
     },
     {
+      "path": "/blog/how-to-free-up-zoom-licenses",
+      "file": "resources/views/public/blog/posts/how-to-free-up-zoom-licenses.blade.php",
+      "source": "articles",
+      "partial": {
+        "route": "blog.show",
+        "wrapper": "resources/views/public/blog/show.blade.php",
+        "registry": "app/Support/Blog.php"
+      },
+      "in_sitemap": false,
+      "title": "How to free up Zoom licenses (without cutting anyone off)",
+      "description": "A practical guide for Zoom admins: find deactivated, pending and idle licensed users, downgrade them safely, and right-size your seat count at renewal.",
+      "h1": "How to free up Zoom licenses (without cutting anyone off)",
+      "h2s": [
+        "Where Zoom seats go to waste",
+        "Why downgrading doesn't lower the bill until renewal",
+        "The safe downgrade checklist",
+        "Reading the inactive hosts report",
+        "Deactivated users and the seats they leave behind",
+        "Right-sizing at renewal: the one number that matters",
+        "Doing this every month instead of once a year"
+      ],
+      "word_count": 1315,
+      "kind": "article",
+      "images_dir": "public/images/blog/how-to-free-up-zoom-licenses/",
+      "last_commit": {
+        "date": "2026-10-13",
+        "author": "xuding",
+        "subject": "Licenses: downgrade Zoom Workplace/United bundle users instead of protecting them",
+        "by_agent": false
+      }
+    },
+    {
+      "path": "/blog/zoom-deactivated-user-still-using-a-license",
+      "file": "resources/views/public/blog/posts/zoom-deactivated-user-still-using-a-license.blade.php",
+      "source": "articles",
+      "partial": {
+        "route": "blog.show",
+        "wrapper": "resources/views/public/blog/show.blade.php",
+        "registry": "app/Support/Blog.php"
+      },
+      "in_sitemap": false,
+      "title": "Zoom deactivated user still using a license? Here is why, and the fix",
+      "description": "Deactivating a Zoom user removes their license, but the seat stays on your bill until renewal. Where the seat goes, how to check for leftovers, and what to do: reassign, reduce, or delete with data transfer.",
+      "h1": "Zoom deactivated user still using a license? Here is why, and the fix",
+      "h2s": [
+        "Deactivating removes the license, not the seat",
+        "Check: are any deactivated users still Licensed?",
+        "Your options",
+        "Automating the clean-up"
+      ],
+      "word_count": 750,
+      "kind": "article",
+      "images_dir": "public/images/blog/zoom-deactivated-user-still-using-a-license/",
+      "last_commit": {
+        "date": "2026-09-28",
+        "author": "xuding",
+        "subject": "Blog: write the three Zoom license posts from verified Zoom sources",
+        "by_agent": false
+      }
+    },
+    {
+      "path": "/blog/zoom-inactive-users-report-explained",
+      "file": "resources/views/public/blog/posts/zoom-inactive-users-report-explained.blade.php",
+      "source": "articles",
+      "partial": {
+        "route": "blog.show",
+        "wrapper": "resources/views/public/blog/show.blade.php",
+        "registry": "app/Support/Blog.php"
+      },
+      "in_sitemap": false,
+      "title": "Zoom inactive users report, explained",
+      "description": "What Zoom's active/inactive hosts report actually measures, its one-month window and six-month limit, and how to turn it into a list of licenses to reclaim.",
+      "h1": "Zoom inactive users report, explained",
+      "h2s": [
+        "Hosting versus logging in: the metric that matters",
+        "Where to find the report in the Zoom admin portal",
+        "Limits: one month per report, six months of history",
+        "Why last login time misleads",
+        "From report to action: thresholds, guardrails and exclusions",
+        "Running this every month"
+      ],
+      "word_count": 918,
+      "kind": "article",
+      "images_dir": "public/images/blog/zoom-inactive-users-report-explained/",
+      "last_commit": {
+        "date": "2026-10-13",
+        "author": "xuding",
+        "subject": "Licenses: downgrade Zoom Workplace/United bundle users instead of protecting them",
+        "by_agent": false
+      }
+    },
+    {
       "path": "/docs",
       "file": "resources/views/public/docs/index.blade.php",
       "source": "route",

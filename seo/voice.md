@@ -58,9 +58,9 @@ Rewrites of the three paragraphs above, written for this file to show what to av
 - rhetorical openers ("Ever wondered…?"), triple adjectives, exclamation marks
 - em-dash chains; more than one parenthetical per paragraph
 - Nothing was removed from the default list: none of these words, no exclamation mark and no em dash appears in the three posts.
-- "save", "savings", "cut costs" with SeatTrim or a downgrade as the subject; the posts say "frees a seat" (hub) and the home page says "It never claims you saved money today" (resources/views/public/landing.blade.php)
-- "simply", "just" before an instruction that takes several portal steps
-- "Zoom-certified", "official", "partner" for SeatTrim; the footer says "SeatTrim is not affiliated with Zoom Video Communications, Inc." (resources/views/layouts/public.blade.php)
+- "savings" when SeatTrim or a downgrade is the subject, "cut costs" when SeatTrim or a downgrade is the subject; the hub says a downgrade frees a seat, and the home page says SeatTrim never claims you saved money today (resources/views/public/landing.blade.php)
+- "simply" before an instruction that takes several portal steps, "just" before an instruction that takes several portal steps
+- "Zoom-certified", "official" for SeatTrim, "partner" for SeatTrim; the footer says SeatTrim is not affiliated with Zoom Video Communications, Inc. (resources/views/layouts/public.blade.php)
 
 ## Product claims
 <!-- Where a verifiable fact about the product lives in the repo (feature lists, config, docs, pricing). `write` may only state product facts found there; `review` checks them. -->
