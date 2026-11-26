@@ -28,6 +28,7 @@
         @endif
         @fonts
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <x-ga />
     </head>
     <body class="min-h-screen bg-page font-display text-ink-900 antialiased">
         @php($nav = [
