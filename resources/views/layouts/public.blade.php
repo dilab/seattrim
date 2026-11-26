@@ -114,6 +114,8 @@
                 {{-- Directory badges: each listing site verifies its link is on this page; removing one drops that listing. --}}
                 <div class="flex flex-wrap items-center gap-3">
                     <span class="text-[11px] font-medium text-ink-500">{{ __('Featured on') }}</span>
+                    {{-- TinyShelf's checker wants this exact href and no rel="nofollow|sponsored|ugc". --}}
+                    <a href="https://www.tinyshelf.co" title="Featured on TinyShelf"><img src="https://www.tinyshelf.co/badge/tinyshelf-badge-light-5ca4026a.svg" alt="Featured on TinyShelf" width="135" height="40" loading="lazy" class="h-10 w-auto"></a>
                     <a href="https://twelve.tools" target="_blank" rel="noopener"><img src="https://twelve.tools/badge0-white.svg" alt="Featured on Twelve Tools" width="148" height="40" loading="lazy" class="h-10 w-auto"></a>
                     <a href="https://easylaunch.dev/saas/seattrim" target="_blank" rel="noopener"><img src="https://easylaunch.dev/badge/easylaunch-badge-light.svg" alt="Featured on EasyLaunch" width="134" height="40" loading="lazy" class="h-10 w-auto"></a>
                     <a href="https://easydofollow.dev/saas/seattrim" target="_blank" rel="noopener"><img src="https://easydofollow.dev/badge/easydofollow-badge-light.svg" alt="Featured on EasyDoFollow" width="134" height="40" loading="lazy" class="h-10 w-auto"></a>
